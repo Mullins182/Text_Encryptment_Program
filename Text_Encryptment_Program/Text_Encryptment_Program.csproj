@@ -9,13 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="TextSample.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="TextSample.txt">
+    <None Update="TextSample.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
 
 </Project>

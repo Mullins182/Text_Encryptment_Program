@@ -17,7 +17,7 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <TextBox x:Name="DecryptedText" Height="auto" MinHeight="150" Background="Black" Foreground="DarkOrange" Grid.Column="0" Grid.Row="0"
+        <TextBox x:Name="DecryptedText" Height="auto" MinHeight="150" Background="Black" Foreground="DarkOrange" Grid.Column="0" Grid.Row="0" 
                  UseLayoutRounding="True" VerticalScrollBarVisibility="Auto" FontFamily="Century Gothic" FontSize="17" TextWrapping="Wrap" IsReadOnly="True"/>
         <TextBox x:Name="EncryptedText" Height="auto" MinHeight="150" Background="Black" Foreground="DarkOrange" Grid.Column="1" Grid.Row="0"
                  UseLayoutRounding="True" VerticalScrollBarVisibility="Auto" FontFamily="Century Gothic" FontSize="17" TextWrapping="Wrap" IsReadOnly="True"/>
