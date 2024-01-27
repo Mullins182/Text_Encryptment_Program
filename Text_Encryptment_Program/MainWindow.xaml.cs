@@ -22,13 +22,33 @@ namespace Text_Encryptment_Program
         {
             InitializeComponent();
 
+        }
+
+        private void OpenFile_Click(object sender, RoutedEventArgs e)
+        {
             List<string> TextData = new List<string>();
 
-            TextData = LoadContentIntoDecryptedText.ReadFileData("TextSample.txt");
+            // Configure open file dialog box
+            var dialog = new Microsoft.Win32.OpenFileDialog();
+            dialog.FileName = "Document"; // Default file name
+            dialog.DefaultExt = ".txt"; // Default file extension
+            dialog.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
 
-            foreach (var item in TextData)
+            // Show open file dialog box
+            bool? result = dialog.ShowDialog();
+
+            // Process open file dialog box results
+            if (result == true)
             {
-                DecryptedText.AppendText($"\n{item}");
+                //// Open document
+                //string filename = dialog.FileName;
+
+                TextData = LoadContentIntoDecryptedText.ReadFileData(dialog.FileName);
+
+                foreach (var item in TextData)
+                {
+                    DecryptedText.AppendText($"\n{item}");
+                }
             }
         }
     }
