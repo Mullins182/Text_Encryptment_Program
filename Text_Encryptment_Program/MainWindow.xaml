@@ -23,7 +23,8 @@
                  UseLayoutRounding="True" VerticalScrollBarVisibility="Auto" FontFamily="Century Gothic" FontSize="17" TextWrapping="Wrap" IsReadOnly="True"/>
 
         <StackPanel x:Name="Stack1" Orientation="Horizontal" Grid.Column="0" Grid.Row="1">
-            <Button x:Name="OpenFile" Width="200" Height="80" Content="Open File" Foreground="Orange" Background="Black" FontFamily="Century Gothic" FontSize="20" Click="OpenFile_Click"/>
+            <Button x:Name="OpenFile" MinWidth="150" Width="auto" Height="50" Padding="10,10,10,10" Foreground="Orange" Background="Black" 
+                    FontFamily="Comic Sans MS" FontSize="20" FontWeight="Bold" Click="OpenFile_Click"/>
         </StackPanel>
         <StackPanel x:Name="Stack2" Orientation="Horizontal" Grid.Column="1" Grid.Row="1"/>
 

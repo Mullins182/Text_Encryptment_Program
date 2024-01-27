@@ -22,6 +22,7 @@ namespace Text_Encryptment_Program
         {
             InitializeComponent();
 
+            OpenFile.Content = "Open File For Text-Encryption";
         }
 
         private void OpenFile_Click(object sender, RoutedEventArgs e)
@@ -30,7 +31,7 @@ namespace Text_Encryptment_Program
 
             // Configure open file dialog box
             var dialog = new Microsoft.Win32.OpenFileDialog();
-            dialog.FileName = "Document"; // Default file name
+            dialog.FileName = "Your File !"; // Default file name
             dialog.DefaultExt = ".txt"; // Default file extension
             dialog.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
 
