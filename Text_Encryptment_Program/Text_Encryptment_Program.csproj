@@ -9,7 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Other_Methods\" />
+    <None Remove="TextSample.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="TextSample.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -8,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Text_Encryptment_Program.Other_Methods;
 
 namespace Text_Encryptment_Program
 {
@@ -19,6 +21,15 @@ namespace Text_Encryptment_Program
         public MainWindow()
         {
             InitializeComponent();
+
+            List<string> TextData = new List<string>();
+
+            TextData = LoadContentIntoDecryptedText.ReadFileData("TextSample.txt");
+
+            foreach (var item in TextData)
+            {
+                DecryptedText.AppendText($"\n{item}");
+            }
         }
     }
 }
