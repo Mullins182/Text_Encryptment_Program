@@ -31,7 +31,7 @@ namespace Text_Encryptment_Program
 
             // Configure open file dialog box
             var dialog = new Microsoft.Win32.OpenFileDialog();
-            dialog.FileName = "Your File !"; // Default file name
+            dialog.FileName = "Select a txt file !"; // Default file name
             dialog.DefaultExt = ".txt"; // Default file extension
             dialog.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
             dialog.InitialDirectory = Environment.CurrentDirectory; // Sets the initial Dir for File Dialog Box to actual working Directory !
