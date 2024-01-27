@@ -15,7 +15,19 @@ namespace Text_Encryptment_Program.Other_Methods
         {
             Content.Clear();
 
-            Content = File.ReadAllLines(source, Encoding.UTF8).ToList();
+            if(!File.Exists(source)) 
+            {
+                Content.Add("QUELLDATEI NICHT GEFUNDEN !!!");
+            }
+            else
+            {
+                Content = [.. File.ReadAllLines(source, Encoding.UTF8)];      // [.. ] Konvertiert das übergebene String[] in eine Liste (Intellisense vereinfachung von methode ".ToList()"!
+
+                if(Content.Count == 0) 
+                {
+                    Content.Add("DIE QUELLDATEI IST LEER !!!");
+                }
+            }
 
             return Content;
         }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Text_Encryptment_Program"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="1750" Background="DarkRed" HorizontalAlignment="Center" VerticalAlignment="Center">
+        Title="MainWindow" Height="900" Width="1750" Background="DarkRed" HorizontalAlignment="Center" VerticalAlignment="Center" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -17,8 +17,10 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <TextBox x:Name="DecryptedText" Height="auto" MinHeight="150" Background="Black" Foreground="GreenYellow" Grid.Column="0" Grid.Row="0"/>
-        <TextBox x:Name="EncryptedText" Height="auto" MinHeight="150" Background="Black" Foreground="GreenYellow" Grid.Column="1" Grid.Row="0"/>
+        <TextBox x:Name="DecryptedText" Height="auto" MinHeight="150" Background="Black" Foreground="DarkOrange" Grid.Column="0" Grid.Row="0"
+                 UseLayoutRounding="True" VerticalScrollBarVisibility="Auto" FontFamily="Century Gothic" FontSize="17" TextWrapping="Wrap"/>
+        <TextBox x:Name="EncryptedText" Height="auto" MinHeight="150" Background="Black" Foreground="DarkOrange" Grid.Column="1" Grid.Row="0"
+                 UseLayoutRounding="True" VerticalScrollBarVisibility="Auto" FontFamily="Century Gothic" FontSize="17"/>
 
         <StackPanel x:Name="Stack1" Orientation="Horizontal" Grid.Column="0" Grid.Row="1"/>
         <StackPanel x:Name="Stack2" Orientation="Horizontal" Grid.Column="1" Grid.Row="1"/>
