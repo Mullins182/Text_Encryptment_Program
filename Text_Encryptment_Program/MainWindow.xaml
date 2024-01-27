@@ -18,9 +18,9 @@
         </Grid.RowDefinitions>
 
         <TextBox x:Name="DecryptedText" Height="auto" MinHeight="150" Background="Black" Foreground="DarkOrange" Grid.Column="0" Grid.Row="0"
-                 UseLayoutRounding="True" VerticalScrollBarVisibility="Auto" FontFamily="Century Gothic" FontSize="17" TextWrapping="Wrap"/>
+                 UseLayoutRounding="True" VerticalScrollBarVisibility="Auto" FontFamily="Century Gothic" FontSize="17" TextWrapping="Wrap" IsReadOnly="True"/>
         <TextBox x:Name="EncryptedText" Height="auto" MinHeight="150" Background="Black" Foreground="DarkOrange" Grid.Column="1" Grid.Row="0"
-                 UseLayoutRounding="True" VerticalScrollBarVisibility="Auto" FontFamily="Century Gothic" FontSize="17"/>
+                 UseLayoutRounding="True" VerticalScrollBarVisibility="Auto" FontFamily="Century Gothic" FontSize="17" TextWrapping="Wrap" IsReadOnly="True"/>
 
         <StackPanel x:Name="Stack1" Orientation="Horizontal" Grid.Column="0" Grid.Row="1"/>
         <StackPanel x:Name="Stack2" Orientation="Horizontal" Grid.Column="1" Grid.Row="1"/>
