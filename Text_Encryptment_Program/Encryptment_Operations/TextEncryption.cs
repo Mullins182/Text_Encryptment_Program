@@ -8,14 +8,20 @@ namespace Text_Encryptment_Program.Encryptment_Operations
 {
     public class TextEncryption                     // Hiermit wird der Text einer Textdatei verschlüsselt !
     {
+        private int charOne = 0;
+        private int charTwo = 0;
         public TextEncryption() { }
 
-        public TextEncryption(List<string> text) 
+        public List<string> EncryptText(List<string> decrText) 
         {
-            foreach (var item in text)
+            List<string> encrText = new List<string>();
+
+            foreach (var item in decrText)
             {
-                item.Replace('c', 'l');
+                encrText.Add(item.Replace('e', '#'));
             }
+
+            return encrText;
         }
     }
 }
