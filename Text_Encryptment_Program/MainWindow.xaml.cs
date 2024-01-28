@@ -19,10 +19,12 @@ namespace Text_Encryptment_Program
     /// </summary>
     public partial class MainWindow : Window
     {
-
         TextEncryption EncryptStart = new TextEncryption();
         List<string> TextData = new List<string>();
         List<string> EncryptedData = new List<string>();
+
+        Random generateRandoms = new Random();                                   // Neue Instanz der Random Klasse erstellen !
+                                                                                 // GenerateRandoms.Next() = Zufallszahl zwischen (x, y) erzeugen ! (x ist inklusiv, y ist exklusiv)
 
         public MainWindow()
         {
@@ -59,13 +61,33 @@ namespace Text_Encryptment_Program
             }
         }
 
-        private void Encrypt_Click(object sender, RoutedEventArgs e)
+        private async void Encrypt_Click(object sender, RoutedEventArgs e)
         {
-            EncryptedData = EncryptStart.EncryptText(TextData);
+            int rN = 0;
 
-            foreach (var item in EncryptedData)
+            EncryptedData = EncryptStart.EncryptText(TextData, rN);
+
+            foreach (var item in TextData)
             {
-                EncryptedText.AppendText($"\n{item}");                
+                EncryptedText.AppendText($"\n{item}");
+            }
+
+            await Task.Delay(5000);
+
+            for (int i = 100; i > 0; i--)
+            {
+                rN = generateRandoms.Next(33, 127);
+
+                EncryptedData = EncryptStart.EncryptText(TextData, rN);
+                
+                EncryptedText.Clear();
+
+                foreach (var item in EncryptedData)
+                {
+                    EncryptedText.AppendText($"\n{item}");                
+                }
+
+                await Task.Delay(30);
             }
         }
     }
