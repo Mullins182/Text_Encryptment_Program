@@ -21,7 +21,7 @@ namespace Text_Encryptment_Program.Other_Methods
             }
             else
             {
-                Content = [.. File.ReadAllLines(source, Encoding.UTF8)];      // [.. ] Konvertiert das übergebene String[] in eine Liste (Intellisense vereinfachung von methode ".ToList()"!
+                Content = [.. File.ReadAllLines(source, Encoding.UTF8)];      // [.. ] Konvertiert das übergebene String[] in eine Liste (Intellisense vereinfachung von Methode ".ToList()"!
 
                 if(Content.Count == 0) 
                 {
