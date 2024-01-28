@@ -9,18 +9,15 @@ namespace Text_Encryptment_Program.Encryptment_Operations
 {
     public class TextEncryption                     // Hiermit wird der Text einer Textdatei verschlüsselt !
     {
-        private int charOne = 0;
-        private int charTwo = 0;
-        private int encryptChar = 36;
         public TextEncryption() { }
 
-        public List<string> EncryptText(List<string> decrText, int randomNumber) 
+        public List<string> EncryptText(List<string> decrText, int randomNumber, int encryptionChar) 
         {
             List<string> encrText = new List<string>();
                         
             foreach (var item in decrText)
             {
-                encrText.Add(item.Replace('e', Convert.ToChar(randomNumber)));
+                encrText.Add(item.Replace(Convert.ToChar(encryptionChar), Convert.ToChar(randomNumber)));
             }
 
             return encrText;

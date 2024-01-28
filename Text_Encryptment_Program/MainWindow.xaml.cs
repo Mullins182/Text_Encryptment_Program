@@ -23,7 +23,7 @@ namespace Text_Encryptment_Program
         List<string> TextData = new List<string>();
         List<string> EncryptedData = new List<string>();
 
-        Random generateRandoms = new Random();                                   // Neue Instanz der Random Klasse erstellen !
+        Random generateRandoms = new Random();                             // Neue Instanz der Random Klasse erstellen !
                                                                                  // GenerateRandoms.Next() = Zufallszahl zwischen (x, y) erzeugen ! (x ist inklusiv, y ist exklusiv)
 
         public MainWindow()
@@ -65,7 +65,7 @@ namespace Text_Encryptment_Program
         {
             int rN = 0;
 
-            EncryptedData = EncryptStart.EncryptText(TextData, rN);
+            EncryptedData = EncryptStart.EncryptText(TextData, rN, 174);
 
             foreach (var item in TextData)
             {
@@ -74,20 +74,32 @@ namespace Text_Encryptment_Program
 
             await Task.Delay(5000);
 
-            for (int i = 100; i > 0; i--)
+            EncryptionFunction(rN);
+        }
+
+        private async void EncryptionFunction(int rN)
+        {
+            List<string> Cache = TextData;
+            
+            for(int encryptionChar = 32; encryptionChar <= 126;  encryptionChar++) 
             {
-                rN = generateRandoms.Next(33, 127);
-
-                EncryptedData = EncryptStart.EncryptText(TextData, rN);
-                
-                EncryptedText.Clear();
-
-                foreach (var item in EncryptedData)
+                for (int i = 3; i >= 0; i--)
                 {
-                    EncryptedText.AppendText($"\n{item}");                
+                    rN = generateRandoms.Next(32, 127);
+
+                    EncryptedData = EncryptStart.EncryptText(Cache, rN, encryptionChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
+
+                    EncryptedText.Clear();
+
+                    foreach (var item in EncryptedData)
+                    {
+                        EncryptedText.AppendText($"\n{item}");
+                    }
+
+                    await Task.Delay(15);
                 }
 
-                await Task.Delay(30);
+                Cache = EncryptedData;
             }
         }
     }
