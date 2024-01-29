@@ -6,6 +6,32 @@
         xmlns:local="clr-namespace:Text_Encryptment_Program"
         mc:Ignorable="d"
         Title="Text-Encryption / Decryption Program" Height="900" Width="1750" Background="#330000" HorizontalAlignment="Center" VerticalAlignment="Center" WindowStartupLocation="CenterScreen">
+    
+    <!--Control Template Override für Buttons um Highlighting bei Mouseover zu verhindern !-->
+    <Window.Resources>
+        <ControlTemplate x:Key="NoMouseOverButtonTemplate"
+                 TargetType="Button">
+            <Border Background="{TemplateBinding Background}"
+          BorderBrush="{TemplateBinding BorderBrush}"
+          BorderThickness="{TemplateBinding BorderThickness}">
+                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"  
+                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+            </Border>
+
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled"  
+             Value="False">
+                    <Setter Property="Background"  
+              Value="{x:Static SystemColors.ControlLightBrush}" />
+                    <Setter Property="Foreground"  
+              Value="{x:Static SystemColors.GrayTextBrush}" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
+
+    <!--Control Templates Override ENDE !-->
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -24,9 +50,9 @@
 
         <StackPanel x:Name="Stack1" Orientation="Horizontal" Grid.Column="0" Grid.Row="1">
             <Button x:Name="OpenFile" MinWidth="150" Width="auto" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
-                    FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="OpenFile_Click"/>
+                    FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="OpenFile_Click" Template="{StaticResource NoMouseOverButtonTemplate}"/>
             <Button x:Name="Encrypt" MinWidth="150" Width="auto" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
-                    FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="Encrypt_Click"/>
+                    FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="Encrypt_Click" Template="{StaticResource NoMouseOverButtonTemplate}"/>
 
         </StackPanel>
         <StackPanel x:Name="Stack2" Orientation="Horizontal" Grid.Column="1" Grid.Row="1"/>
