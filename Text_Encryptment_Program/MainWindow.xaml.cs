@@ -66,6 +66,7 @@ namespace Text_Encryptment_Program
         private async void Encrypt_Click(object sender, RoutedEventArgs e)
         {
             List<string> Cache = TextData;
+            List<int> usedRandoms = new List<int>();
 
             //Dictionary<int, int> Key = new Dictionary<int, int>();
 
@@ -85,7 +86,18 @@ namespace Text_Encryptment_Program
             {
                 for (int i = 6; i >= 0; i--)
                 {
-                    rN = generateRandoms.Next(191, 256);
+                    var usedNumber = false;
+
+                    do
+                    {
+                        rN = generateRandoms.Next(191, 256);
+
+                        foreach (var item in usedRandoms)
+                        {
+                            usedNumber = item.Equals(rN);
+                        }
+
+                    } while (usedNumber);
 
                     if (rN == 252 || rN == 246 || rN == 220 || rN == 223 || rN == 228 || rN == 196 || rN == 214 || rN == 215)
                     {
@@ -106,8 +118,11 @@ namespace Text_Encryptment_Program
                     }
                 }
 
+                usedRandoms.Add(rN);
+
                 Cache = EncryptedData;
             }
+         
 
             encryptChar = 246;
             EncryptionLogic(encryptChar, Cache);
