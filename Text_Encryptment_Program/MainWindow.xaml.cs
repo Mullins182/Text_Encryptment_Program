@@ -80,11 +80,11 @@ namespace Text_Encryptment_Program
                 EncryptedText.AppendText($"\n{item}");
             }
 
-            await Task.Delay(3500);
+            await Task.Delay(5500);
 
             for (; encryptChar <= 126; encryptChar++)
             {
-                for (int i = 6; i >= 0; i--)
+                for (int i = 8; i >= 0; i--)
                 {
                     var usedNumber = false;
 
@@ -123,7 +123,6 @@ namespace Text_Encryptment_Program
                 Cache = EncryptedData;
             }
          
-
             encryptChar = 246;
             EncryptionLogic(encryptChar, Cache);
 
@@ -151,9 +150,9 @@ namespace Text_Encryptment_Program
 
         private async void EncryptionLogic(int encryptChar, List<string> Cache)
         {
-            int rN;
+            int rN = 0;
 
-            for (int i = 6; i >= 0; i--)
+            for (int i = 8; i >= 0; i--)
             {
                 rN = generateRandoms.Next(191, 256);
 
@@ -175,7 +174,17 @@ namespace Text_Encryptment_Program
                     await Task.Delay(15);
                 }
 
-                Cache = EncryptedData;
+            }
+            
+            Cache = EncryptedData;
+
+            EncryptedData = EncryptStart.EncryptText(Cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
+            
+            EncryptedText.Clear();
+
+            foreach (var item in EncryptedData)
+            {
+                EncryptedText.AppendText($"\n{item}");
             }
         }
     }

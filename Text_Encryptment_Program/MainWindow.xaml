@@ -39,13 +39,19 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
+            <RowDefinition Height="12*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <TextBox x:Name="DecryptedText" Height="auto" MinHeight="150" Background="Black" Foreground="DarkOrange" Grid.Column="0" Grid.Row="0" 
+        <Label Content="Decryption Box" Grid.Column="0" Grid.Row="0" Height="auto" Width="auto" FontSize="30" FontFamily="Kristen ITC" FontWeight="ExtraLight" HorizontalAlignment="Center"
+               VerticalAlignment="Top" Foreground="OrangeRed" Background="Transparent" Padding="10"/>
+
+        <Label Content="Encryption Box" Grid.Column="1" Grid.Row="0" Height="auto" Width="auto" FontSize="30" FontFamily="Kristen ITC" FontWeight="ExtraLight" HorizontalAlignment="Center"
+               VerticalAlignment="Top" Foreground="OrangeRed" Background="Transparent" Padding="10"/>
+
+        <TextBox x:Name="DecryptedText" Height="750" MinHeight="150" VerticalAlignment="Bottom" Background="Black" Foreground="DarkOrange" Grid.Column="0" Grid.Row="0" 
                  UseLayoutRounding="True" VerticalScrollBarVisibility="Auto" FontFamily="Century Gothic" FontSize="17" TextWrapping="Wrap" IsReadOnly="True"/>
-        <TextBox x:Name="EncryptedText" Height="auto" MinHeight="150" Background="Black" Foreground="DarkOrange" Grid.Column="1" Grid.Row="0"
+        <TextBox x:Name="EncryptedText" Height="750" MinHeight="150" VerticalAlignment="Bottom" Background="Black" Foreground="DarkOrange" Grid.Column="1" Grid.Row="0"
                  UseLayoutRounding="True" VerticalScrollBarVisibility="Auto" FontFamily="Century Gothic" FontSize="17" TextWrapping="Wrap" IsReadOnly="True"/>
 
         <StackPanel x:Name="Stack1" Orientation="Horizontal" Grid.Column="0" Grid.Row="1">
