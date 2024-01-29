@@ -20,10 +20,11 @@ namespace Text_Encryptment_Program
     public partial class MainWindow : Window
     {
         TextEncryption EncryptStart = new TextEncryption();
-        List<string> TextData = new List<string>();
-        List<string> EncryptedData = new List<string>();
 
-        Random generateRandoms = new Random();                             // Neue Instanz der Random Klasse erstellen !
+        List<string> EncryptedData = new List<string>();
+        List<string> TextData = new List<string>();
+
+        Random generateRandoms = new Random();                                    // Neue Instanz der Random Klasse erstellen !
                                                                                  // GenerateRandoms.Next() = Zufallszahl zwischen (x, y) erzeugen ! (x ist inklusiv, y ist exklusiv)
 
         public MainWindow()
@@ -61,8 +62,14 @@ namespace Text_Encryptment_Program
             }
         }
 
+
         private async void Encrypt_Click(object sender, RoutedEventArgs e)
         {
+            List<string> Cache = TextData;
+
+            //Dictionary<int, int> Key = new Dictionary<int, int>();
+
+            int encryptChar = 32;
             int rN = 0;
 
             EncryptedData = EncryptStart.EncryptText(TextData, rN, 174);
@@ -72,22 +79,76 @@ namespace Text_Encryptment_Program
                 EncryptedText.AppendText($"\n{item}");
             }
 
-            await Task.Delay(5000);
+            await Task.Delay(3500);
 
-            EncryptionFunction(rN);
+            for (; encryptChar <= 126; encryptChar++)
+            {
+                for (int i = 6; i >= 0; i--)
+                {
+                    rN = generateRandoms.Next(191, 256);
+
+                    if (rN == 252 || rN == 246 || rN == 220 || rN == 223 || rN == 228 || rN == 196 || rN == 214 || rN == 215)
+                    {
+                        i++;
+                    }
+                    else
+                    {
+                        EncryptedData = EncryptStart.EncryptText(Cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
+
+                        EncryptedText.Clear();
+
+                        foreach (var item in EncryptedData)
+                        {
+                            EncryptedText.AppendText($"\n{item}");
+                        }
+
+                        await Task.Delay(15);
+                    }
+                }
+
+                Cache = EncryptedData;
+            }
+
+            encryptChar = 246;
+            EncryptionLogic(encryptChar, Cache);
+
+            encryptChar = 252;
+            EncryptionLogic(encryptChar, Cache);
+
+            encryptChar = 220;
+            EncryptionLogic(encryptChar, Cache);
+
+            encryptChar = 223;
+            EncryptionLogic(encryptChar, Cache);
+
+            encryptChar = 228;
+            EncryptionLogic(encryptChar, Cache);
+
+            encryptChar = 196;
+            EncryptionLogic(encryptChar, Cache);
+
+            encryptChar = 214;
+            EncryptionLogic(encryptChar, Cache);
+
+            encryptChar = 215;
+            EncryptionLogic(encryptChar, Cache);
         }
 
-        private async void EncryptionFunction(int rN)
+        private async void EncryptionLogic(int encryptChar, List<string> Cache)
         {
-            List<string> Cache = TextData;
-            
-            for(int encryptionChar = 32; encryptionChar <= 126;  encryptionChar++) 
-            {
-                for (int i = 3; i >= 0; i--)
-                {
-                    rN = generateRandoms.Next(32, 127);
+            int rN;
 
-                    EncryptedData = EncryptStart.EncryptText(Cache, rN, encryptionChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
+            for (int i = 6; i >= 0; i--)
+            {
+                rN = generateRandoms.Next(191, 256);
+
+                if (rN == 252 || rN == 246 || rN == 220 || rN == 223 || rN == 228 || rN == 196 || rN == 214 || rN == 215)
+                {
+                    i++;
+                }
+                else
+                {
+                    EncryptedData = EncryptStart.EncryptText(Cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
 
                     EncryptedText.Clear();
 
