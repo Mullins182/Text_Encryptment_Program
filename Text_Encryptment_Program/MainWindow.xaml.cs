@@ -109,16 +109,16 @@ namespace Text_Encryptment_Program
                     //}
                     //else
                     //{
-                        EncryptedData = EncryptStart.EncryptText(Cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
+                    EncryptedData = EncryptStart.EncryptText(Cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
 
-                        EncryptedText.Clear();
+                    EncryptedText.Clear();
 
-                        foreach (var item in EncryptedData)
-                        {
-                            EncryptedText.AppendText($"\n{item}");
-                        }
+                    foreach (var item in EncryptedData)
+                    {
+                        EncryptedText.AppendText($"\n{item}");
+                    }
 
-                        await Task.Delay(15);
+                    await Task.Delay(15);
                     //}
                 }
 
@@ -164,12 +164,12 @@ namespace Text_Encryptment_Program
             {
                 rN = generateRandoms.Next(191, 256);
 
-                if (rN == 252 || rN == 246 || rN == 220 || rN == 223 || rN == 228 || rN == 196 || rN == 214 || rN == 215)
-                {
-                    i++;
-                }
-                else
-                {
+                //if (rN == 252 || rN == 246 || rN == 220 || rN == 223 || rN == 228 || rN == 196 || rN == 214 || rN == 215)
+                //{
+                //    i++;
+                //}
+                //else
+                //{
                     EncryptedData = EncryptStart.EncryptText(Cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
 
                     EncryptedText.Clear();
@@ -180,7 +180,7 @@ namespace Text_Encryptment_Program
                     }
 
                     await Task.Delay(15);
-                }
+                //}
 
             }
 
@@ -205,8 +205,8 @@ namespace Text_Encryptment_Program
 
             foreach (var item in KeyDict)
             {
-                DecryptedText.AppendText($"\n Key: {item.Key}");
-                DecryptedText.AppendText($"\n Value: {item.Value}");
+                DecryptedText.AppendText($"\nKey:   {item.Key}");
+                DecryptedText.AppendText($"\nValue: {item.Value}");
             }
         }
 
@@ -214,10 +214,9 @@ namespace Text_Encryptment_Program
         {
             List<string> DecryptedData = new List<string>();
 
+            DecryptedText.Clear();
 
             DecryptedData = Decryption.DecryptText(EncryptedData, KeyDict, 32);
-
-            DecryptedText.Clear();
 
             foreach (var item in DecryptedData)
             {

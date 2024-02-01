@@ -17,13 +17,12 @@ namespace Text_Encryptment_Program
 
             foreach (var item in text)
             {
-                for(; key < 126; key++) 
+                for (int i = key; i < 126; i++)
                 {
-                    cache = item.Replace(Convert.ToChar(keyList[key]), Convert.ToChar(key));
-                    result.Add(cache);                
+                    cache = item.Replace(Convert.ToChar(keyList[i]), Convert.ToChar(i));
+                    //cache = Convert.ToString(keyList[i]);
+                    result.Add(cache);
                 }
-
-                key = 32;
             }
 
             return result;
