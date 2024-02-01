@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Text_Encryptment_Program.Encryptment_Operations
+namespace Text_Encryptment_Program
 {
     public class TextEncryption                     // Hiermit wird der Text einer Textdatei verschlüsselt !
     {

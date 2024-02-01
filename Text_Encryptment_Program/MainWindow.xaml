@@ -61,7 +61,15 @@
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="Encrypt_Click" Template="{StaticResource NoMouseOverButtonTemplate}"/>
 
         </StackPanel>
-        <StackPanel x:Name="Stack2" Orientation="Horizontal" Grid.Column="1" Grid.Row="1"/>
+        <StackPanel x:Name="Stack2" Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
+            
+            <Button x:Name="KeyTable" MinWidth="150" Width="auto" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
+                    FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Template="{StaticResource NoMouseOverButtonTemplate}" Click="KeyTable_Click"/>
+
+            <Button x:Name="Decrypt" MinWidth="150" Width="auto" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
+                    FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Template="{StaticResource NoMouseOverButtonTemplate}" Click="Decrypt_Click"/>
+
+        </StackPanel>
 
     </Grid>
 </Window>

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Text_Encryptment_Program.Encryptment_Operations;
+using System.Windows.Shell;
 using Text_Encryptment_Program.Other_Methods;
 
 namespace Text_Encryptment_Program
@@ -20,19 +21,24 @@ namespace Text_Encryptment_Program
     public partial class MainWindow : Window
     {
         TextEncryption EncryptStart = new TextEncryption();
+        TextDecryption Decryption = new TextDecryption();
 
+        Dictionary<int, int> KeyDict = new Dictionary<int, int>();
         List<string> EncryptedData = new List<string>();
+        List<string> DecryptedData = new List<string>();
         List<string> TextData = new List<string>();
+        List<int> usedRandoms = new List<int>();
 
         Random generateRandoms = new Random();                                    // Neue Instanz der Random Klasse erstellen !
                                                                                  // GenerateRandoms.Next() = Zufallszahl zwischen (x, y) erzeugen ! (x ist inklusiv, y ist exklusiv)
-
         public MainWindow()
         {
             InitializeComponent();
 
             OpenFile.Content    = "Open File For Text-Encryption";
             Encrypt.Content     = "Encrypt Text";
+            Decrypt.Content     = "Decrypt Text";
+            KeyTable.Content    = "Show Encryption Key Table";
         }
 
         private void OpenFile_Click(object sender, RoutedEventArgs e)
@@ -62,18 +68,13 @@ namespace Text_Encryptment_Program
             }
         }
 
-
         private async void Encrypt_Click(object sender, RoutedEventArgs e)
         {
             List<string> Cache = TextData;
-            List<int> usedRandoms = new List<int>();
 
-            //Dictionary<int, int> Key = new Dictionary<int, int>();
-
-            int encryptChar = 32;
+            int encryptChar = 33;
             int rN = 0;
-
-            EncryptedData = EncryptStart.EncryptText(TextData, rN, 174);
+            //EncryptedData = EncryptStart.EncryptText(TextData, rN, 130);
 
             foreach (var item in TextData)
             {
@@ -86,25 +87,28 @@ namespace Text_Encryptment_Program
             {
                 for (int i = 8; i >= 0; i--)
                 {
-                    var usedNumber = false;
+                    bool usedNumberFound = false;
 
-                    do
+                    Jump:
+
+                    rN = generateRandoms.Next(161, 256);
+
+                    foreach (var item in usedRandoms)
                     {
-                        rN = generateRandoms.Next(191, 256);
+                        usedNumberFound = item.Equals(rN);
 
-                        foreach (var item in usedRandoms)
+                        if(usedNumberFound)
                         {
-                            usedNumber = item.Equals(rN);
+                            goto Jump;
                         }
-
-                    } while (usedNumber);
-
-                    if (rN == 252 || rN == 246 || rN == 220 || rN == 223 || rN == 228 || rN == 196 || rN == 214 || rN == 215)
-                    {
-                        i++;
                     }
-                    else
-                    {
+
+                    //if (rN == 252 || rN == 246 || rN == 220 || rN == 223 || rN == 228 || rN == 196 || rN == 214 || rN == 215)
+                    //{
+                    //    goto Jump;
+                    //}
+                    //else
+                    //{
                         EncryptedData = EncryptStart.EncryptText(Cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
 
                         EncryptedText.Clear();
@@ -115,37 +119,41 @@ namespace Text_Encryptment_Program
                         }
 
                         await Task.Delay(15);
-                    }
+                    //}
                 }
 
                 usedRandoms.Add(rN);
+                KeyDict.Add(encryptChar, rN);
 
                 Cache = EncryptedData;
             }
-         
-            encryptChar = 246;
+
+            encryptChar = 32;
             EncryptionLogic(encryptChar, Cache);
 
-            encryptChar = 252;
-            EncryptionLogic(encryptChar, Cache);
+            //encryptChar = 246;
+            //EncryptionLogic(encryptChar, Cache);
 
-            encryptChar = 220;
-            EncryptionLogic(encryptChar, Cache);
+            //encryptChar = 252;
+            //EncryptionLogic(encryptChar, Cache);
 
-            encryptChar = 223;
-            EncryptionLogic(encryptChar, Cache);
+            //encryptChar = 220;
+            //EncryptionLogic(encryptChar, Cache);
 
-            encryptChar = 228;
-            EncryptionLogic(encryptChar, Cache);
+            //encryptChar = 223;
+            //EncryptionLogic(encryptChar, Cache);
 
-            encryptChar = 196;
-            EncryptionLogic(encryptChar, Cache);
+            //encryptChar = 228;
+            //EncryptionLogic(encryptChar, Cache);
 
-            encryptChar = 214;
-            EncryptionLogic(encryptChar, Cache);
+            //encryptChar = 196;
+            //EncryptionLogic(encryptChar, Cache);
 
-            encryptChar = 215;
-            EncryptionLogic(encryptChar, Cache);
+            //encryptChar = 214;
+            //EncryptionLogic(encryptChar, Cache);
+
+            //encryptChar = 215;
+            //EncryptionLogic(encryptChar, Cache);
         }
 
         private async void EncryptionLogic(int encryptChar, List<string> Cache)
@@ -175,16 +183,46 @@ namespace Text_Encryptment_Program
                 }
 
             }
-            
+
             Cache = EncryptedData;
 
+            usedRandoms.Add(rN);
+            KeyDict.Add(encryptChar, rN);
+
             EncryptedData = EncryptStart.EncryptText(Cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
-            
+
             EncryptedText.Clear();
 
             foreach (var item in EncryptedData)
             {
                 EncryptedText.AppendText($"\n{item}");
+            }
+        }
+
+        private void KeyTable_Click(object sender, RoutedEventArgs e)
+        {
+            DecryptedText.Clear();
+
+            foreach (var item in KeyDict)
+            {
+                DecryptedText.AppendText($"\n Key: {item.Key}");
+                DecryptedText.AppendText($"\n Value: {item.Value}");
+            }
+        }
+
+        private void Decrypt_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> DecryptedData = new List<string>();
+
+
+            DecryptedData = Decryption.DecryptText(EncryptedData, KeyDict, 32);
+
+            DecryptedText.Clear();
+
+            foreach (var item in DecryptedData)
+            {
+
+                DecryptedText.AppendText($"\n{item}");
             }
         }
     }
