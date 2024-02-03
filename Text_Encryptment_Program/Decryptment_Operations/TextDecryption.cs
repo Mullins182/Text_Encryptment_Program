@@ -14,32 +14,21 @@ namespace Text_Encryptment_Program
         public List<string> DecryptText(List<string> encryptedText, Dictionary<int, int> keyList, int key) 
         {
             List<string> result = new List<string>();
-            string cacheDecrpt = "";
-            string cache = "";
-
-            //List<string> textList = new List<string>();
-            //string cache2 = "";
 
             foreach (var item in encryptedText)
             {
-                    cache       = item;
+                string cacheDecrpt  = "";
+                string cache        = item;
 
-                for (int i = 32; i < 127; i++)
+                for (int i = key; i <= 127; i++) // Complete decryption of first Line in the List
                 {
-                    cacheDecrpt = cache.Replace(Convert.ToChar(keyList[i]), Convert.ToChar(i));
-                    cache = cacheDecrpt;
+                    cacheDecrpt = cache.Replace(Convert.ToChar(keyList[i]), Convert.ToChar(i)); // Decryption of one given char in the String (Actual line in the List)
+                    cache = cacheDecrpt;    // Cache becomes new modified string, and is given to replace method in the next loop round !
                 }
-                    result.Add(cacheDecrpt);
+                    result.Add(cacheDecrpt); // The complete decrypted Line from the list is added to the list result !
             }
 
             return result;
         }
-
-        //public string DecryptedString(string text, Dictionary<int, int> keys) 
-        //{
-        //    text.Replace(Convert.ToChar(keys[32]), Convert.ToChar(32));
-
-        //    return text;
-        //}
     }
 }

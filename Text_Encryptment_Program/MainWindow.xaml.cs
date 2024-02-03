@@ -38,7 +38,7 @@ namespace Text_Encryptment_Program
             OpenFile.Content    = "Open File For Text-Encryption";
             Encrypt.Content     = "Encrypt Text";
             Decrypt.Content     = "Decrypt Text";
-            KeyTable.Content    = "Show Encryption Key Table";
+            KeyTable.Content    = "Show Used Randoms AND Key Table";
         }
 
         private void OpenFile_Click(object sender, RoutedEventArgs e)
@@ -70,10 +70,13 @@ namespace Text_Encryptment_Program
 
         private async void Encrypt_Click(object sender, RoutedEventArgs e)
         {
-            List<string> Cache = TextData;
+            List<string> Cache      = TextData;
 
-            int encryptChar = 33;
-            int rN = 0;
+            bool usedNumberFound    = false;
+
+            int encryptChar         = 33;
+            int rN                  = 0;
+
             //EncryptedData = EncryptStart.EncryptText(TextData, rN, 130);
 
             foreach (var item in TextData)
@@ -83,13 +86,13 @@ namespace Text_Encryptment_Program
 
             await Task.Delay(5500);
 
-            for (; encryptChar <= 126; encryptChar++)
+            for (; encryptChar <= 127; encryptChar++)
             {
                 for (int i = 8; i >= 0; i--)
                 {
-                    bool usedNumberFound = false;
-
                     Jump:
+
+                    usedNumberFound = false;
 
                     rN = generateRandoms.Next(161, 256);
 
@@ -109,16 +112,16 @@ namespace Text_Encryptment_Program
                     //}
                     //else
                     //{
-                    EncryptedData = EncryptStart.EncryptText(Cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
+                        EncryptedData = EncryptStart.EncryptText(Cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
 
-                    EncryptedText.Clear();
+                        EncryptedText.Clear();
 
-                    foreach (var item in EncryptedData)
-                    {
-                        EncryptedText.AppendText($"\n{item}");
-                    }
+                        foreach (var item in EncryptedData)
+                        {
+                            EncryptedText.AppendText($"\n{item}");
+                        }
 
-                    await Task.Delay(15);
+                        await Task.Delay(15);
                     //}
                 }
 
@@ -128,8 +131,10 @@ namespace Text_Encryptment_Program
                 Cache = EncryptedData;
             }
 
-            encryptChar = 32;
-            EncryptionLogic(encryptChar, Cache);
+            usedNumberFound = false;
+
+            //encryptChar = 32;
+            //EncryptionLogic(encryptChar, Cache);
 
             //encryptChar = 246;
             //EncryptionLogic(encryptChar, Cache);
@@ -203,11 +208,23 @@ namespace Text_Encryptment_Program
         {
             DecryptedText.Clear();
 
+            foreach (var item in usedRandoms)
+            {
+                DecryptedText.AppendText($"\n\n{item}");
+            }
+
+            DecryptedText.AppendText("\n\n________________________________________________________\n");
+
             foreach (var item in KeyDict)
             {
                 DecryptedText.AppendText($"\nKey:   {item.Key}");
                 DecryptedText.AppendText($"\nValue: {item.Value}");
+                DecryptedText.AppendText($"\n");
             }
+
+            DecryptedText.AppendText("\n\n________________________________________________________\n");
+
+            DecryptedText.AppendText($"\nUsed Numbers Count:{usedRandoms.Count}\nKey Table Count: {KeyDict.Count}");
         }
 
         private void Decrypt_Click(object sender, RoutedEventArgs e)
@@ -216,7 +233,7 @@ namespace Text_Encryptment_Program
 
             DecryptedText.Clear();
 
-            DecryptedData = Decryption.DecryptText(EncryptedData, KeyDict, 32);
+            DecryptedData = Decryption.DecryptText(EncryptedData, KeyDict, 33);
 
             foreach (var item in DecryptedData)
             {
