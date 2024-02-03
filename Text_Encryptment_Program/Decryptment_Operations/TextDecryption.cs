@@ -14,17 +14,22 @@ namespace Text_Encryptment_Program
         public List<string> DecryptText(List<string> encryptedText, Dictionary<int, int> keyList, int key) 
         {
             List<string> result = new List<string>();
-            //List<string> textList = new List<string>();
+            string cacheDecrpt = "";
             string cache = "";
+
+            //List<string> textList = new List<string>();
             //string cache2 = "";
 
             foreach (var item in encryptedText)
             {
+                    cache       = item;
+
                 for (int i = 32; i < 127; i++)
                 {
-                    cache = item.Replace(Convert.ToChar(keyList[i]), Convert.ToChar(i));
+                    cacheDecrpt = cache.Replace(Convert.ToChar(keyList[i]), Convert.ToChar(i));
+                    cache = cacheDecrpt;
                 }
-                result.Add(cache);
+                    result.Add(cacheDecrpt);
             }
 
             return result;
