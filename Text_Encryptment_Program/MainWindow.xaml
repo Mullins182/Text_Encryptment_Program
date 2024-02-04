@@ -55,10 +55,15 @@
                  UseLayoutRounding="True" VerticalScrollBarVisibility="Auto" FontFamily="Century Gothic" FontSize="17" TextWrapping="Wrap" IsReadOnly="True"/>
 
         <StackPanel x:Name="Stack1" Orientation="Horizontal" Grid.Column="0" Grid.Row="1">
+            
             <Button x:Name="OpenFile" Content="Empty" MinWidth="150" Width="450" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="OpenFile_Click" Template="{StaticResource NoMouseOverButtonTemplate}"
                     MouseEnter="OpenFile_MouseEnter" MouseLeave="OpenFile_MouseLeave"/>
-            
+
+            <Button x:Name="ClearBox" Content="Empty" MinWidth="150" Width="200" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
+                    FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="ClearBox_Click" Template="{StaticResource NoMouseOverButtonTemplate}"
+                    MouseEnter="ClearBox_MouseEnter" MouseLeave="ClearBox_MouseLeave"/>
+
             <Button x:Name="Encrypt" Content="Empty" MinWidth="150" Width="200" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="Encrypt_Click" Template="{StaticResource NoMouseOverButtonTemplate}"
                     MouseEnter="Encrypt_MouseEnter" MouseLeave="Encrypt_MouseLeave"/>

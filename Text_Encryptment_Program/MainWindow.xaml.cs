@@ -31,6 +31,7 @@ namespace Text_Encryptment_Program
         List<string> EncryptedData      = new List<string>();
         List<string> DecryptedData      = new List<string>();
         List<string> TextData           = new List<string>();
+        List<string> TextData2          = new List<string>();
         List<int> usedRandoms           = new List<int>();
 
         Random generateRandoms          = new Random();                           // Neue Instanz der Random Klasse erstellen !
@@ -44,10 +45,11 @@ namespace Text_Encryptment_Program
             EncryptBoxLabelAnim.Tick        += EncryptBoxLabelAnim_Tick;
             DecryptBoxLabelAnim.Tick        += DecryptBoxLabelAnim_Tick;
 
-            OpenFile.Content                = "Open File For Text-Encryption";
+            OpenFile.Content                = "Open File to Add Text";
+            ClearBox.Content                = "Clear Textbox";
             Encrypt.Content                 = "Encrypt Text";
             Decrypt.Content                 = "Decrypt Text";
-            KeyTable.Content                = "Show Used Randoms AND Key Table";
+            KeyTable.Content                = "Show Used Randoms AND Key-Table";
         }
 
         private void DecryptBoxLabelAnim_Tick(object? sender, EventArgs e)
@@ -76,6 +78,12 @@ namespace Text_Encryptment_Program
 
         private void OpenFile_Click(object sender, RoutedEventArgs e)
         {
+            KeyDict.Clear();
+            EncryptedData.Clear();
+            //DecryptedData.Clear();
+            usedRandoms.Clear();
+            TextData.Clear();
+
             // Configure open file dialog box
             var dialog = new Microsoft.Win32.OpenFileDialog();
             dialog.FileName = "Select a txt file !"; // Default file name
@@ -96,6 +104,7 @@ namespace Text_Encryptment_Program
 
                 foreach (var item in TextData)
                 {
+                    TextData2.Add(item);
                     DecryptedText.AppendText($"\n{item}");
                 }
             }
@@ -103,7 +112,9 @@ namespace Text_Encryptment_Program
 
         private async void Encrypt_Click(object sender, RoutedEventArgs e)
         {
-            List<string> Cache      = TextData;
+            List<string> Cache = TextData2;
+
+            EncryptedText.Clear();
 
             bool usedNumberFound    = false;
 
@@ -114,7 +125,7 @@ namespace Text_Encryptment_Program
             int encryptChar         = 32;
             int rN                  = 0;
 
-            foreach (var item in TextData)
+            foreach (var item in Cache)
             {
                 EncryptedText.AppendText($"\n{item}");
             }
@@ -309,82 +320,6 @@ namespace Text_Encryptment_Program
             EncryptBox.Visibility = Visibility.Visible;
         }
 
-        //private async void EncryptionLogic(int encryptChar, List<string> Cache)
-        //{
-        //    List<string> EncrCache = Cache;
-            
-        //    int rN = 0;
-
-        //    bool integerRange1 = false;
-        //    bool integerRange2 = true;
-        //    bool integerRange3 = false;
-
-        //    for (int i = 22; i > 0; i--)
-        //    {
-        //        Jump2:
-
-        //        bool usedNumberFound = false;
-
-        //        if (integerRange1)
-        //        {
-        //            rN = generateRandoms.Next(5632, 5789);
-
-        //            integerRange1 = false;
-        //            integerRange2 = true;
-        //        }
-        //        else if (integerRange2)
-        //        {
-        //            rN = generateRandoms.Next(5792, 5873);
-
-        //            integerRange2 = false;
-        //            integerRange3 = true;
-        //        }
-        //        else if (integerRange3)
-        //        {
-        //            rN = generateRandoms.Next(5376, 5631);
-
-        //            integerRange3 = false;
-        //            integerRange1 = true;
-        //        }
-
-        //        foreach (var item in usedRandoms)
-        //        {
-        //            usedNumberFound = item.Equals(rN);
-
-        //            if (usedNumberFound)
-        //            {
-        //                goto Jump2;
-        //            }
-        //        }
-
-        //        EncryptedData = TextEncryption.EncryptText(EncrCache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
-        //        EncrCache = EncryptedData;
-
-        //            EncryptedText.Clear();
-
-        //            foreach (var item in EncryptedData)
-        //            {
-        //                EncryptedText.AppendText($"\n{item}");
-        //            }
-
-        //        await Task.Delay(250);
-        //    }
-
-        //    //Cache = EncryptedData;
-
-        //    usedRandoms.Add(rN);
-        //    KeyDict.Add(encryptChar, rN);
-
-        //    EncryptedData = TextEncryption.EncryptText(EncrCache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
-
-        //    EncryptedText.Clear();
-
-        //    foreach (var item in EncryptedData)
-        //    {
-        //        EncryptedText.AppendText($"\n{item}");
-        //    }
-        //}
-
         private void KeyTable_Click(object sender, RoutedEventArgs e)
         {
             DecryptedText.Clear();
@@ -504,6 +439,21 @@ namespace Text_Encryptment_Program
             OpenFile.Background = Brushes.Black;
             OpenFile.Foreground = Brushes.DarkSeaGreen;
         }
+        private void ClearBox_Click(object sender, RoutedEventArgs e)
+        {
+            DecryptedText.Clear();
+        }
+        private void ClearBox_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ClearBox.Background = Brushes.Green;
+            ClearBox.Foreground = Brushes.Black;
+        }
+
+        private void ClearBox_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ClearBox.Background = Brushes.Black;
+            ClearBox.Foreground = Brushes.DarkSeaGreen;
+        }
 
         private void Encrypt_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -516,5 +466,6 @@ namespace Text_Encryptment_Program
             Encrypt.Background = Brushes.Black;
             Encrypt.Foreground = Brushes.DarkSeaGreen;
         }
+
     }
 }
