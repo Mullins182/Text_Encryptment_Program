@@ -47,24 +47,24 @@ namespace Text_Encryptment_Program
             KeyTable.Content    = "Show Used Randoms AND Key Table";
         }
 
-        private void InfoBlink_Tick(object? sender, EventArgs e)
+        private async void InfoBlink_Tick(object? sender, EventArgs e)
         {
-            //StatusInfoLabel.Visibility = Visibility.Visible;
+            StatusInfoLabel.Visibility = Visibility.Visible;
 
-            //await Task.Delay(1000);
+            await Task.Delay(500);
 
-            //StatusInfoLabel.Visibility = Visibility.Hidden;
+            StatusInfoLabel.Visibility = Visibility.Hidden;
 
-            //await Task.Delay(1000);
+            await Task.Delay(500);
 
-            if (StatusInfoLabel.Visibility == Visibility.Visible)
-            {
-                StatusInfoLabel.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                StatusInfoLabel.Visibility = Visibility.Visible;
-            }
+            //if (StatusInfoLabel.Visibility == Visibility.Visible)
+            //{
+            //    StatusInfoLabel.Visibility = Visibility.Hidden;
+            //}
+            //else
+            //{
+            //    StatusInfoLabel.Visibility = Visibility.Visible;
+            //}
         }
 
         private void OpenFile_Click(object sender, RoutedEventArgs e)
@@ -103,8 +103,6 @@ namespace Text_Encryptment_Program
             int encryptChar         = 33;
             int rN                  = 0;
 
-            //EncryptedData = EncryptStart.EncryptText(TextData, rN, 130);
-
             foreach (var item in TextData)
             {
                 EncryptedText.AppendText($"\n{item}");
@@ -118,7 +116,7 @@ namespace Text_Encryptment_Program
 
             for (; encryptChar <= 126; encryptChar++)
             {
-                for (int i = 8; i >= 0; i--)
+                for (int i = 3; i >= 0; i--)
                 {
                     Jump:
 
@@ -151,7 +149,7 @@ namespace Text_Encryptment_Program
                             EncryptedText.AppendText($"\n{item}");
                         }
 
-                        await Task.Delay(15);
+                        await Task.Delay(100);
                     //}
                 }
 
@@ -198,9 +196,23 @@ namespace Text_Encryptment_Program
         {
             int rN = 0;
 
-            for (int i = 8; i >= 0; i--)
+            Jump2:
+
+            bool usedNumberFound = false;
+
+            for (int i = 3; i >= 0; i--)
             {
                 rN = generateRandoms.Next(4097, 4351);
+
+                foreach (var item in usedRandoms)
+                {
+                    usedNumberFound = item.Equals(rN);
+
+                    if (usedNumberFound)
+                    {
+                        goto Jump2;
+                    }
+                }
 
                 //if (rN == 252 || rN == 246 || rN == 220 || rN == 223 || rN == 228 || rN == 196 || rN == 214 || rN == 215)
                 //{
@@ -208,7 +220,7 @@ namespace Text_Encryptment_Program
                 //}
                 //else
                 //{
-                    EncryptedData = EncryptStart.EncryptText(Cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
+                EncryptedData = EncryptStart.EncryptText(Cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
 
                     EncryptedText.Clear();
 
@@ -217,7 +229,7 @@ namespace Text_Encryptment_Program
                         EncryptedText.AppendText($"\n{item}");
                     }
 
-                    await Task.Delay(15);
+                    await Task.Delay(100);
                 //}
 
             }
