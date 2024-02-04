@@ -86,7 +86,7 @@ namespace Text_Encryptment_Program
 
             await Task.Delay(5500);
 
-            for (; encryptChar <= 127; encryptChar++)
+            for (; encryptChar <= 126; encryptChar++)
             {
                 for (int i = 8; i >= 0; i--)
                 {
@@ -94,7 +94,7 @@ namespace Text_Encryptment_Program
 
                     usedNumberFound = false;
 
-                    rN = generateRandoms.Next(161, 256);
+                    rN = generateRandoms.Next(4097, 4351);
 
                     foreach (var item in usedRandoms)
                     {
@@ -133,8 +133,8 @@ namespace Text_Encryptment_Program
 
             usedNumberFound = false;
 
-            //encryptChar = 32;
-            //EncryptionLogic(encryptChar, Cache);
+            encryptChar = 32;
+            EncryptionLogic(encryptChar, Cache);
 
             //encryptChar = 246;
             //EncryptionLogic(encryptChar, Cache);
@@ -167,7 +167,7 @@ namespace Text_Encryptment_Program
 
             for (int i = 8; i >= 0; i--)
             {
-                rN = generateRandoms.Next(191, 256);
+                rN = generateRandoms.Next(4097, 4351);
 
                 //if (rN == 252 || rN == 246 || rN == 220 || rN == 223 || rN == 228 || rN == 196 || rN == 214 || rN == 215)
                 //{
@@ -213,7 +213,7 @@ namespace Text_Encryptment_Program
                 DecryptedText.AppendText($"\n\n{item}");
             }
 
-            DecryptedText.AppendText("\n\n________________________________________________________\n");
+            DecryptedText.AppendText("\n\n____________________________________________________________________________\n");
 
             foreach (var item in KeyDict)
             {
@@ -222,7 +222,7 @@ namespace Text_Encryptment_Program
                 DecryptedText.AppendText($"\n");
             }
 
-            DecryptedText.AppendText("\n\n________________________________________________________\n");
+            DecryptedText.AppendText("\n\n____________________________________________________________________________\n");
 
             DecryptedText.AppendText($"\nUsed Numbers Count:{usedRandoms.Count}\nKey Table Count: {KeyDict.Count}");
         }
@@ -233,7 +233,7 @@ namespace Text_Encryptment_Program
 
             DecryptedText.Clear();
 
-            DecryptedData = Decryption.DecryptText(EncryptedData, KeyDict, 33);
+            DecryptedData = Decryption.DecryptText(EncryptedData, KeyDict, 32);
 
             foreach (var item in DecryptedData)
             {

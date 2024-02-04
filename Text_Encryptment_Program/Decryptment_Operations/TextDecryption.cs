@@ -20,7 +20,7 @@ namespace Text_Encryptment_Program
                 string cacheDecrpt  = "";
                 string cache        = item;
 
-                for (int i = key; i <= 127; i++) // Complete decryption of first Line in the List
+                for (int i = key; i <= 126; i++) // Complete decryption of first Line in the List
                 {
                     cacheDecrpt = cache.Replace(Convert.ToChar(keyList[i]), Convert.ToChar(i)); // Decryption of one given char in the String (Actual line in the List)
                     cache = cacheDecrpt;    // Cache becomes new modified string, and is given to replace method in the next loop round !
