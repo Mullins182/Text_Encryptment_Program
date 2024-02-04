@@ -21,7 +21,8 @@ namespace Text_Encryptment_Program
     /// </summary>
     public partial class MainWindow : Window
     {
-        DispatcherTimer InfoBlink = new DispatcherTimer();
+        DispatcherTimer EncryptBoxLabelAnim = new DispatcherTimer(DispatcherPriority.Send);
+        DispatcherTimer DecryptBoxLabelAnim = new DispatcherTimer();
         
         TextEncryption EncryptStart = new TextEncryption();
         TextDecryption Decryption = new TextDecryption();
@@ -38,8 +39,10 @@ namespace Text_Encryptment_Program
         {
             InitializeComponent();
 
-            InfoBlink.Interval  = TimeSpan.FromMilliseconds(250);
-            InfoBlink.Tick      += InfoBlink_Tick;
+            EncryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
+            DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
+            EncryptBoxLabelAnim.Tick        += EncryptBoxLabelAnim_Tick;
+            DecryptBoxLabelAnim.Tick        += DecryptBoxLabelAnim_Tick;
 
             OpenFile.Content    = "Open File For Text-Encryption";
             Encrypt.Content     = "Encrypt Text";
@@ -47,23 +50,27 @@ namespace Text_Encryptment_Program
             KeyTable.Content    = "Show Used Randoms AND Key Table";
         }
 
-        private void InfoBlink_Tick(object? sender, EventArgs e)
+        private void DecryptBoxLabelAnim_Tick(object? sender, EventArgs e)
         {
-            //StatusInfoLabel.Visibility = Visibility.Visible;   // For use with async method
-
-            //await Task.Delay(500);
-
-            //StatusInfoLabel.Visibility = Visibility.Hidden;
-
-            //await Task.Delay(500);
-
-            if (StatusInfoLabel.Visibility == Visibility.Visible)
+            if(DecryptBox.Visibility == Visibility.Visible) 
             {
-                StatusInfoLabel.Visibility = Visibility.Hidden;
+                DecryptBox.Visibility = Visibility.Hidden;            
             }
             else
             {
-                StatusInfoLabel.Visibility = Visibility.Visible;
+                DecryptBox.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void EncryptBoxLabelAnim_Tick(object? sender, EventArgs e)
+        {
+            if (EncryptBox.Visibility == Visibility.Visible)
+            {
+                EncryptBox.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                EncryptBox.Visibility = Visibility.Visible;
             }
         }
 
@@ -112,13 +119,16 @@ namespace Text_Encryptment_Program
                 EncryptedText.AppendText($"\n{item}");
             }
 
-            StatusInfoLabel.Content = "Encrypting";
-            StatusInfoLabel.Visibility = Visibility.Visible;
-            InfoBlink.Start();
+            EncryptBox.Content = "Encrypting in Progress ...";
+            EncryptBox.Foreground = Brushes.YellowGreen;
 
-            await Task.Delay(5500);
+            EncryptBoxLabelAnim.Start();
 
-            for (; encryptChar <= 127; encryptChar++)
+            await Task.Delay(4000);
+
+            //EncryptBoxLabelAnim.Stop();
+
+            for (; encryptChar <= 126; encryptChar++)
             {
                 for (int i = 1; i > 0; i--)
                 {
@@ -180,42 +190,71 @@ namespace Text_Encryptment_Program
                 KeyDict.Add(encryptChar, rN);
 
                 Cache = EncryptedData;
-                await Task.Delay(100);
+                await Task.Delay(250);
             }
 
             usedNumberFound = false;
 
+            await Task.Delay(250);
+
             encryptChar = 246;
             EncryptionLogic(encryptChar, Cache);
+
+            await Task.Delay(250);
 
             encryptChar = 252;
             EncryptionLogic(encryptChar, Cache);
 
+            await Task.Delay(250);
+
             encryptChar = 220;
             EncryptionLogic(encryptChar, Cache);
+
+            await Task.Delay(250);
 
             encryptChar = 223;
             EncryptionLogic(encryptChar, Cache);
 
+            await Task.Delay(250);
+
             encryptChar = 228;
             EncryptionLogic(encryptChar, Cache);
+
+            await Task.Delay(250);
 
             encryptChar = 196;
             EncryptionLogic(encryptChar, Cache);
 
+            await Task.Delay(250);
+
             encryptChar = 214;
             EncryptionLogic(encryptChar, Cache);
+
+            await Task.Delay(250);
 
             encryptChar = 215;
             EncryptionLogic(encryptChar, Cache);
 
+            await Task.Delay(500);
+
             encryptChar = 32;
             EncryptionLogic(encryptChar, Cache);
 
-            await Task.Delay(2500);
+            await Task.Delay(500);
 
-            InfoBlink.Stop();
-            StatusInfoLabel.Visibility = Visibility.Collapsed;
+            await Task.Delay(8000);
+
+            EncryptBox.Content = "Encryption Successfully";
+            EncryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(150);
+
+            await Task.Delay(3500);
+
+            EncryptBoxLabelAnim.Stop();
+            EncryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(500);
+            EncryptBox.Foreground = Brushes.OrangeRed;
+            EncryptBox.Content = "Encrypted Text";
+            EncryptBox.Visibility = Visibility.Visible;
+
         }
 
         private async void EncryptionLogic(int encryptChar, List<string> Cache)
@@ -279,7 +318,7 @@ namespace Text_Encryptment_Program
                         EncryptedText.AppendText($"\n{item}");
                     }
 
-                await Task.Delay(80);
+                await Task.Delay(250);
                 //}
 
             }
@@ -324,9 +363,12 @@ namespace Text_Encryptment_Program
 
         private async void Decrypt_Click(object sender, RoutedEventArgs e)
         {
-            StatusInfoLabel.Content = "Decrypting";
-            StatusInfoLabel.Visibility = Visibility.Visible;
-            InfoBlink.Start();
+            DecryptedText.Clear();
+            DecryptBox.Content = "Decrypting in Progress ...";
+            DecryptBox.Foreground = Brushes.YellowGreen;
+            DecryptBoxLabelAnim.Start();
+
+            await Task.Delay(3000);
             
             List<string> DecryptedData = new List<string>();
 
@@ -335,7 +377,7 @@ namespace Text_Encryptment_Program
                 string cacheDecrpt  = "";
                 string cache        = item;
 
-                for (int i = 32; i <= 127; i++) // Complete decryption of first Line in the List EncryptedData
+                for (int i = 32; i <= 126; i++) // Complete decryption of first Line in the List EncryptedData
                 {
                     
                     cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, i);
@@ -378,11 +420,19 @@ namespace Text_Encryptment_Program
                     DecryptedText.AppendText($"\n{item2}");
                 }
 
-                await Task.Delay(250);
+                await Task.Delay(500);
             }
 
-            InfoBlink.Stop();
-            StatusInfoLabel.Visibility = Visibility.Collapsed;
+            DecryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(150);
+            DecryptBox.Content = "Decryption Successfully";
+
+            await Task.Delay(3500);
+
+            DecryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(500);
+            DecryptBox.Foreground = Brushes.OrangeRed;
+            DecryptBox.Content = "Decrypted Text";
+            DecryptBox.Visibility = Visibility.Visible;
+            DecryptBoxLabelAnim.Stop();
         }
     }
 }

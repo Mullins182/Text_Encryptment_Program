@@ -43,15 +43,11 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <Label Content="Decrypted Text" Grid.Column="0" Grid.Row="0" Height="auto" Width="auto" FontSize="30" FontFamily="Kristen ITC" FontWeight="ExtraLight"
+        <Label x:Name="DecryptBox" Content="Decrypted Text" Grid.Column="0" Grid.Row="0" Height="auto" Width="auto" FontSize="27" FontFamily="Kristen ITC" FontWeight="ExtraLight"
                HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="OrangeRed" Background="Transparent" Padding="0,1,0,0"/>
 
-        <Label Content="Encrypted Text" Grid.Column="1" Grid.Row="0" Height="auto" Width="auto" FontSize="30" FontFamily="Kristen ITC" FontWeight="ExtraLight"
+        <Label x:Name="EncryptBox" Content="Encrypted Text" Grid.Column="1" Grid.Row="0" Height="auto" Width="auto" FontSize="27" FontFamily="Kristen ITC" FontWeight="ExtraLight"
                HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="OrangeRed" Background="Transparent" Padding="0,1,0,0"/>
-
-        <Label x:Name="StatusInfoLabel" Grid.Column="0" Grid.Row="0" Height="auto" Width="auto" FontSize="30" FontFamily="Kristen ITC" FontWeight="Normal"
-               HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="YellowGreen" Background="Transparent" Padding="0,1,0,0" Grid.ColumnSpan="2"
-               Visibility="Collapsed"/>
 
         <TextBox x:Name="DecryptedText" Height="750" MinHeight="150" VerticalAlignment="Bottom" Background="Black" Foreground="DarkOrange" Grid.Column="0" Grid.Row="0" 
                  UseLayoutRounding="True" VerticalScrollBarVisibility="Auto" FontFamily="Century Gothic" FontSize="17" TextWrapping="Wrap" IsReadOnly="True"/>
