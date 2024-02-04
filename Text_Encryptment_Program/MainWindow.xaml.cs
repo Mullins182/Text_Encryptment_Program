@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Shell;
+using System.Windows.Threading;
 using Text_Encryptment_Program.Other_Methods;
 
 namespace Text_Encryptment_Program
@@ -20,6 +21,8 @@ namespace Text_Encryptment_Program
     /// </summary>
     public partial class MainWindow : Window
     {
+        DispatcherTimer InfoBlink = new DispatcherTimer();
+        
         TextEncryption EncryptStart = new TextEncryption();
         TextDecryption Decryption = new TextDecryption();
 
@@ -35,10 +38,33 @@ namespace Text_Encryptment_Program
         {
             InitializeComponent();
 
+            InfoBlink.Interval  = TimeSpan.FromMilliseconds(1000);
+            InfoBlink.Tick      += InfoBlink_Tick;
+
             OpenFile.Content    = "Open File For Text-Encryption";
             Encrypt.Content     = "Encrypt Text";
             Decrypt.Content     = "Decrypt Text";
             KeyTable.Content    = "Show Used Randoms AND Key Table";
+        }
+
+        private void InfoBlink_Tick(object? sender, EventArgs e)
+        {
+            //StatusInfoLabel.Visibility = Visibility.Visible;
+
+            //await Task.Delay(1000);
+
+            //StatusInfoLabel.Visibility = Visibility.Hidden;
+
+            //await Task.Delay(1000);
+
+            if (StatusInfoLabel.Visibility == Visibility.Visible)
+            {
+                StatusInfoLabel.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                StatusInfoLabel.Visibility = Visibility.Visible;
+            }
         }
 
         private void OpenFile_Click(object sender, RoutedEventArgs e)
@@ -83,6 +109,10 @@ namespace Text_Encryptment_Program
             {
                 EncryptedText.AppendText($"\n{item}");
             }
+
+            StatusInfoLabel.Content = "< Encrypting >";
+            StatusInfoLabel.Visibility = Visibility.Visible;
+            InfoBlink.Start();
 
             await Task.Delay(5500);
 
@@ -159,6 +189,9 @@ namespace Text_Encryptment_Program
 
             //encryptChar = 215;
             //EncryptionLogic(encryptChar, Cache);
+
+            StatusInfoLabel.Visibility = Visibility.Collapsed;
+            InfoBlink.Stop();
         }
 
         private async void EncryptionLogic(int encryptChar, List<string> Cache)
@@ -229,6 +262,10 @@ namespace Text_Encryptment_Program
 
         private void Decrypt_Click(object sender, RoutedEventArgs e)
         {
+            StatusInfoLabel.Content = "< Decrypting >";
+            StatusInfoLabel.Visibility = Visibility.Visible;
+            InfoBlink.Start();
+            
             List<string> DecryptedData = new List<string>();
 
             DecryptedText.Clear();
@@ -240,6 +277,9 @@ namespace Text_Encryptment_Program
 
                 DecryptedText.AppendText($"\n{item}");
             }
+
+            StatusInfoLabel.Visibility = Visibility.Collapsed;
+            InfoBlink.Stop();
         }
     }
 }
