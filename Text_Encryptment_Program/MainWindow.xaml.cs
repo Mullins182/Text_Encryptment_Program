@@ -27,13 +27,13 @@ namespace Text_Encryptment_Program
         //TextEncryption EncryptStart = new TextEncryption();
         //TextDecryption Decryption = new TextDecryption();
 
-        Dictionary<int, int> KeyDict = new Dictionary<int, int>();
-        List<string> EncryptedData = new List<string>();
-        List<string> DecryptedData = new List<string>();
-        List<string> TextData = new List<string>();
-        List<int> usedRandoms = new List<int>();
+        Dictionary<int, int> KeyDict    = new Dictionary<int, int>();
+        List<string> EncryptedData      = new List<string>();
+        List<string> DecryptedData      = new List<string>();
+        List<string> TextData           = new List<string>();
+        List<int> usedRandoms           = new List<int>();
 
-        Random generateRandoms = new Random();                                    // Neue Instanz der Random Klasse erstellen !
+        Random generateRandoms          = new Random();                           // Neue Instanz der Random Klasse erstellen !
                                                                                  // GenerateRandoms.Next() = Zufallszahl zwischen (x, y) erzeugen ! (x ist inklusiv, y ist exklusiv)
         public MainWindow()
         {
@@ -44,10 +44,10 @@ namespace Text_Encryptment_Program
             EncryptBoxLabelAnim.Tick        += EncryptBoxLabelAnim_Tick;
             DecryptBoxLabelAnim.Tick        += DecryptBoxLabelAnim_Tick;
 
-            OpenFile.Content    = "Open File For Text-Encryption";
-            Encrypt.Content     = "Encrypt Text";
-            Decrypt.Content     = "Decrypt Text";
-            KeyTable.Content    = "Show Used Randoms AND Key Table";
+            OpenFile.Content                = "Open File For Text-Encryption";
+            Encrypt.Content                 = "Encrypt Text";
+            Decrypt.Content                 = "Decrypt Text";
+            KeyTable.Content                = "Show Used Randoms AND Key Table";
         }
 
         private void DecryptBoxLabelAnim_Tick(object? sender, EventArgs e)
@@ -130,7 +130,7 @@ namespace Text_Encryptment_Program
 
             for (; encryptChar <= 126; encryptChar++)
             {
-                for (int i = 8; i > 0; i--)
+                for (int i = 4; i > 0; i--)
                 {
                     Jump:
 
@@ -191,7 +191,7 @@ namespace Text_Encryptment_Program
 
             for (; encryptChar <= 255; encryptChar++)
             {
-                for (int i = 8; i > 0; i--)
+                for (int i = 4; i > 0; i--)
                 {
                     Jump2:
 
@@ -416,8 +416,6 @@ namespace Text_Encryptment_Program
             DecryptBoxLabelAnim.Start();
 
             await Task.Delay(3000);
-            
-            List<string> DecryptedData = new List<string>();
 
             foreach (var item in EncryptedData)
             {
@@ -455,6 +453,68 @@ namespace Text_Encryptment_Program
             DecryptBox.Content = "Decrypted Text";
             DecryptBox.Visibility = Visibility.Visible;
             DecryptBoxLabelAnim.Stop();
+        }
+
+        private void Quit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void KeyTable_MouseEnter(object sender, MouseEventArgs e)
+        {
+            KeyTable.Background = Brushes.Green;
+            KeyTable.Foreground = Brushes.Black;
+        }
+        private void KeyTable_MouseLeave(object sender, MouseEventArgs e)
+        {
+            KeyTable.Background = Brushes.Black;
+            KeyTable.Foreground = Brushes.DarkSeaGreen;
+        }
+        private void Decrypt_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Decrypt.Background = Brushes.Green;
+            Decrypt.Foreground = Brushes.Black;
+        }
+
+        private void Decrypt_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Decrypt.Background = Brushes.Black;
+            Decrypt.Foreground = Brushes.DarkSeaGreen;
+        }
+
+        private void Quit_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Quit.Background = Brushes.Green;
+            Quit.Foreground = Brushes.Black;
+        }
+        private void Quit_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Quit.Background = Brushes.Black;
+            Quit.Foreground = Brushes.OrangeRed;
+        }
+
+        private void OpenFile_MouseEnter(object sender, MouseEventArgs e)
+        {
+            OpenFile.Background = Brushes.Green;
+            OpenFile.Foreground = Brushes.Black;
+        }
+
+        private void OpenFile_MouseLeave(object sender, MouseEventArgs e)
+        {
+            OpenFile.Background = Brushes.Black;
+            OpenFile.Foreground = Brushes.DarkSeaGreen;
+        }
+
+        private void Encrypt_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Encrypt.Background = Brushes.Green;
+            Encrypt.Foreground = Brushes.Black;
+        }
+
+        private void Encrypt_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Encrypt.Background = Brushes.Black;
+            Encrypt.Foreground = Brushes.DarkSeaGreen;
         }
     }
 }
