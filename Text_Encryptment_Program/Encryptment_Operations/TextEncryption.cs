@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace Text_Encryptment_Program
 {
-    public class TextEncryption                     // Hiermit wird der Text einer Textdatei verschlüsselt !
+    public static class TextEncryption                     // Hiermit wird der Text einer Textdatei verschlüsselt !
     {
-        public TextEncryption() { }
-
-        public List<string> EncryptText(List<string> decrText, int randomNumber, int encryptionChar) 
+        public static List<string> EncryptText(List<string> decrText, int randomNumber, int encryptionChar) 
         {
             List<string> encrText = new List<string>();
                         

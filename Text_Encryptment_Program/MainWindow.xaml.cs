@@ -22,10 +22,10 @@ namespace Text_Encryptment_Program
     public partial class MainWindow : Window
     {
         DispatcherTimer EncryptBoxLabelAnim = new DispatcherTimer(DispatcherPriority.Send);
-        DispatcherTimer DecryptBoxLabelAnim = new DispatcherTimer();
+        DispatcherTimer DecryptBoxLabelAnim = new DispatcherTimer(DispatcherPriority.Send);
         
-        TextEncryption EncryptStart = new TextEncryption();
-        TextDecryption Decryption = new TextDecryption();
+        //TextEncryption EncryptStart = new TextEncryption();
+        //TextDecryption Decryption = new TextDecryption();
 
         Dictionary<int, int> KeyDict = new Dictionary<int, int>();
         List<string> EncryptedData = new List<string>();
@@ -111,7 +111,7 @@ namespace Text_Encryptment_Program
             bool integerRange2      = false;
             bool integerRange3      = false;
 
-            int encryptChar         = 33;
+            int encryptChar         = 32;
             int rN                  = 0;
 
             foreach (var item in TextData)
@@ -130,7 +130,7 @@ namespace Text_Encryptment_Program
 
             for (; encryptChar <= 126; encryptChar++)
             {
-                for (int i = 1; i > 0; i--)
+                for (int i = 8; i > 0; i--)
                 {
                     Jump:
 
@@ -168,81 +168,134 @@ namespace Text_Encryptment_Program
                         }
                     }
 
-                    //if (rN == 252 || rN == 246 || rN == 220 || rN == 223 || rN == 228 || rN == 196 || rN == 214 || rN == 215)
-                    //{
-                    //    goto Jump;
-                    //}
-                    //else
-                    //{
-                        EncryptedData = EncryptStart.EncryptText(Cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
 
-                        EncryptedText.Clear();
+                    EncryptedData = TextEncryption.EncryptText(Cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
+                    
+                    EncryptedText.Clear();
 
-                        foreach (var item in EncryptedData)
-                        {
-                            EncryptedText.AppendText($"\n{item}");
-                        }
+                    foreach (var item in EncryptedData)
+                    {
+                        EncryptedText.AppendText($"\n{item}");
+                    }
 
-                    //}
+                    await Task.Delay(6);
                 }
 
                 usedRandoms.Add(rN);
                 KeyDict.Add(encryptChar, rN);
 
                 Cache = EncryptedData;
-                await Task.Delay(250);
             }
 
-            usedNumberFound = false;
+            encryptChar = 161;
 
-            await Task.Delay(250);
+            for (; encryptChar <= 255; encryptChar++)
+            {
+                for (int i = 8; i > 0; i--)
+                {
+                    Jump2:
 
-            encryptChar = 246;
-            EncryptionLogic(encryptChar, Cache);
+                    usedNumberFound = false;
 
-            await Task.Delay(250);
+                    if (integerRange1)
+                    {
+                        rN = generateRandoms.Next(5632, 5789);
 
-            encryptChar = 252;
-            EncryptionLogic(encryptChar, Cache);
+                        integerRange1 = false;
+                        integerRange2 = true;
+                    }
+                    else if (integerRange2)
+                    {
+                        rN = generateRandoms.Next(5792, 5873);
 
-            await Task.Delay(250);
+                        integerRange2 = false;
+                        integerRange3 = true;
+                    }
+                    else if (integerRange3)
+                    {
+                        rN = generateRandoms.Next(5376, 5631);
 
-            encryptChar = 220;
-            EncryptionLogic(encryptChar, Cache);
+                        integerRange3 = false;
+                        integerRange1 = true;
+                    }
 
-            await Task.Delay(250);
+                    foreach (var item in usedRandoms)
+                    {
+                        usedNumberFound = item.Equals(rN);
 
-            encryptChar = 223;
-            EncryptionLogic(encryptChar, Cache);
+                        if (usedNumberFound)
+                        {
+                            goto Jump2;
+                        }
+                    }
 
-            await Task.Delay(250);
 
-            encryptChar = 228;
-            EncryptionLogic(encryptChar, Cache);
+                    EncryptedData = TextEncryption.EncryptText(Cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
 
-            await Task.Delay(250);
+                    EncryptedText.Clear();
 
-            encryptChar = 196;
-            EncryptionLogic(encryptChar, Cache);
+                    foreach (var item in EncryptedData)
+                    {
+                        EncryptedText.AppendText($"\n{item}");
+                    }
 
-            await Task.Delay(250);
+                    await Task.Delay(6);
 
-            encryptChar = 214;
-            EncryptionLogic(encryptChar, Cache);
+                }
 
-            await Task.Delay(250);
+                usedRandoms.Add(rN);
+                KeyDict.Add(encryptChar, rN);
 
-            encryptChar = 215;
-            EncryptionLogic(encryptChar, Cache);
+                Cache = EncryptedData;
+            }
 
-            await Task.Delay(500);
 
-            encryptChar = 32;
-            EncryptionLogic(encryptChar, Cache);
+            //encryptChar = 246;
+            //EncryptionLogic(encryptChar, Cache);
 
-            await Task.Delay(500);
+            //await Task.Delay(250);
 
-            await Task.Delay(8000);
+            //encryptChar = 252;
+            //EncryptionLogic(encryptChar, Cache);
+
+            //await Task.Delay(250);
+
+            //encryptChar = 220;
+            //EncryptionLogic(encryptChar, Cache);
+
+            //await Task.Delay(250);
+
+            //encryptChar = 223;
+            //EncryptionLogic(encryptChar, Cache);
+
+            //await Task.Delay(250);
+
+            //encryptChar = 228;
+            //EncryptionLogic(encryptChar, Cache);
+
+            //await Task.Delay(250);
+
+            //encryptChar = 196;
+            //EncryptionLogic(encryptChar, Cache);
+
+            //await Task.Delay(250);
+
+            //encryptChar = 214;
+            //EncryptionLogic(encryptChar, Cache);
+
+            //await Task.Delay(250);
+
+            //encryptChar = 215;
+            //EncryptionLogic(encryptChar, Cache);
+
+            //await Task.Delay(500);
+
+            //encryptChar = 32;
+            //EncryptionLogic(encryptChar, Cache);
+
+            //await Task.Delay(500);
+
+            //await Task.Delay(8000);
 
             EncryptBox.Content = "Encryption Successfully";
             EncryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(150);
@@ -254,89 +307,83 @@ namespace Text_Encryptment_Program
             EncryptBox.Foreground = Brushes.OrangeRed;
             EncryptBox.Content = "Encrypted Text";
             EncryptBox.Visibility = Visibility.Visible;
-
         }
 
-        private async void EncryptionLogic(int encryptChar, List<string> Cache)
-        {
-            int rN = 0;
+        //private async void EncryptionLogic(int encryptChar, List<string> Cache)
+        //{
+        //    List<string> EncrCache = Cache;
+            
+        //    int rN = 0;
 
-            bool integerRange1 = false;
-            bool integerRange2 = true;
-            bool integerRange3 = false;
+        //    bool integerRange1 = false;
+        //    bool integerRange2 = true;
+        //    bool integerRange3 = false;
 
-            for (int i = 22; i >= 0; i--)
-            {
-                Jump2:
+        //    for (int i = 22; i > 0; i--)
+        //    {
+        //        Jump2:
 
-                bool usedNumberFound = false;
+        //        bool usedNumberFound = false;
 
-                if (integerRange1)
-                {
-                    rN = generateRandoms.Next(5632, 5789);
+        //        if (integerRange1)
+        //        {
+        //            rN = generateRandoms.Next(5632, 5789);
 
-                    integerRange1 = false;
-                    integerRange2 = true;
-                }
-                else if (integerRange2)
-                {
-                    rN = generateRandoms.Next(5792, 5873);
+        //            integerRange1 = false;
+        //            integerRange2 = true;
+        //        }
+        //        else if (integerRange2)
+        //        {
+        //            rN = generateRandoms.Next(5792, 5873);
 
-                    integerRange2 = false;
-                    integerRange3 = true;
-                }
-                else if (integerRange3)
-                {
-                    rN = generateRandoms.Next(5376, 5631);
+        //            integerRange2 = false;
+        //            integerRange3 = true;
+        //        }
+        //        else if (integerRange3)
+        //        {
+        //            rN = generateRandoms.Next(5376, 5631);
 
-                    integerRange3 = false;
-                    integerRange1 = true;
-                }
+        //            integerRange3 = false;
+        //            integerRange1 = true;
+        //        }
 
-                foreach (var item in usedRandoms)
-                {
-                    usedNumberFound = item.Equals(rN);
+        //        foreach (var item in usedRandoms)
+        //        {
+        //            usedNumberFound = item.Equals(rN);
 
-                    if (usedNumberFound)
-                    {
-                        goto Jump2;
-                    }
-                }
+        //            if (usedNumberFound)
+        //            {
+        //                goto Jump2;
+        //            }
+        //        }
 
-                //if (rN == 252 || rN == 246 || rN == 220 || rN == 223 || rN == 228 || rN == 196 || rN == 214 || rN == 215)
-                //{
-                //    i++;
-                //}
-                //else
-                //{
-                EncryptedData = EncryptStart.EncryptText(Cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
+        //        EncryptedData = TextEncryption.EncryptText(EncrCache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
+        //        EncrCache = EncryptedData;
 
-                    EncryptedText.Clear();
+        //            EncryptedText.Clear();
 
-                    foreach (var item in EncryptedData)
-                    {
-                        EncryptedText.AppendText($"\n{item}");
-                    }
+        //            foreach (var item in EncryptedData)
+        //            {
+        //                EncryptedText.AppendText($"\n{item}");
+        //            }
 
-                await Task.Delay(250);
-                //}
+        //        await Task.Delay(250);
+        //    }
 
-            }
+        //    //Cache = EncryptedData;
 
-            Cache = EncryptedData;
+        //    usedRandoms.Add(rN);
+        //    KeyDict.Add(encryptChar, rN);
 
-            usedRandoms.Add(rN);
-            KeyDict.Add(encryptChar, rN);
+        //    EncryptedData = TextEncryption.EncryptText(EncrCache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
 
-            EncryptedData = EncryptStart.EncryptText(Cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
+        //    EncryptedText.Clear();
 
-            EncryptedText.Clear();
-
-            foreach (var item in EncryptedData)
-            {
-                EncryptedText.AppendText($"\n{item}");
-            }
-        }
+        //    foreach (var item in EncryptedData)
+        //    {
+        //        EncryptedText.AppendText($"\n{item}");
+        //    }
+        //}
 
         private void KeyTable_Click(object sender, RoutedEventArgs e)
         {
@@ -377,7 +424,7 @@ namespace Text_Encryptment_Program
                 string cacheDecrpt  = "";
                 string cache        = item;
 
-                for (int i = 32; i <= 126; i++) // Complete decryption of first Line in the List EncryptedData
+                for (int i = 32; i <= 255; i++) // Complete decryption of first Line in the List EncryptedData
                 {
                     
                     cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, i);
@@ -385,31 +432,6 @@ namespace Text_Encryptment_Program
                     
                     //await Task.Delay(1);
                 }
-
-                cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, 246);
-                cache = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
-
-                cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, 252);
-                cache = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
-                
-                cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, 220);
-                cache = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
-
-                cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, 223);
-                cache = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
-
-                cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, 228);
-                cache = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
-
-                cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, 196);
-                cache = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
-
-                cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, 214);
-                cache = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
-
-                cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, 215);
-                cache = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
-
 
                 DecryptedData.Add(cacheDecrpt); // The complete decrypted Line from the list is added to the list !
 
