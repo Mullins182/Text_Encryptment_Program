@@ -114,7 +114,7 @@ namespace Text_Encryptment_Program
 
             await Task.Delay(5500);
 
-            for (; encryptChar <= 126; encryptChar++)
+            for (; encryptChar <= 255; encryptChar++)
             {
                 for (int i = 3; i >= 0; i--)
                 {
@@ -164,29 +164,29 @@ namespace Text_Encryptment_Program
             encryptChar = 32;
             EncryptionLogic(encryptChar, Cache);
 
-            encryptChar = 246;
-            EncryptionLogic(encryptChar, Cache);
+            //encryptChar = 246;
+            //EncryptionLogic(encryptChar, Cache);
 
-            encryptChar = 252;
-            EncryptionLogic(encryptChar, Cache);
+            //encryptChar = 252;
+            //EncryptionLogic(encryptChar, Cache);
 
-            encryptChar = 220;
-            EncryptionLogic(encryptChar, Cache);
+            //encryptChar = 220;
+            //EncryptionLogic(encryptChar, Cache);
 
-            encryptChar = 223;
-            EncryptionLogic(encryptChar, Cache);
+            //encryptChar = 223;
+            //EncryptionLogic(encryptChar, Cache);
 
-            encryptChar = 228;
-            EncryptionLogic(encryptChar, Cache);
+            //encryptChar = 228;
+            //EncryptionLogic(encryptChar, Cache);
 
-            encryptChar = 196;
-            EncryptionLogic(encryptChar, Cache);
+            //encryptChar = 196;
+            //EncryptionLogic(encryptChar, Cache);
 
-            encryptChar = 214;
-            EncryptionLogic(encryptChar, Cache);
+            //encryptChar = 214;
+            //EncryptionLogic(encryptChar, Cache);
 
-            encryptChar = 215;
-            EncryptionLogic(encryptChar, Cache);
+            //encryptChar = 215;
+            //EncryptionLogic(encryptChar, Cache);
 
             StatusInfoLabel.Visibility = Visibility.Collapsed;
             InfoBlink.Stop();
@@ -196,12 +196,13 @@ namespace Text_Encryptment_Program
         {
             int rN = 0;
 
-            Jump2:
 
-            bool usedNumberFound = false;
 
-            for (int i = 3; i >= 0; i--)
+            for (int i = 5; i >= 0; i--)
             {
+                Jump2:
+
+                bool usedNumberFound = false;
                 rN = generateRandoms.Next(4097, 4351);
 
                 foreach (var item in usedRandoms)
@@ -285,7 +286,7 @@ namespace Text_Encryptment_Program
                 string cacheDecrpt  = "";
                 string cache        = item;
 
-                for (int i = 32; i <= 126; i++) // Complete decryption of first Line in the List
+                for (int i = 32; i <= 255; i++) // Complete decryption of first Line in the List
                 {
                     
                     cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, i);
