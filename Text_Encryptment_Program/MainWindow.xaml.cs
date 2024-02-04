@@ -38,7 +38,7 @@ namespace Text_Encryptment_Program
         {
             InitializeComponent();
 
-            InfoBlink.Interval  = TimeSpan.FromMilliseconds(1000);
+            InfoBlink.Interval  = TimeSpan.FromMilliseconds(250);
             InfoBlink.Tick      += InfoBlink_Tick;
 
             OpenFile.Content    = "Open File For Text-Encryption";
@@ -47,24 +47,24 @@ namespace Text_Encryptment_Program
             KeyTable.Content    = "Show Used Randoms AND Key Table";
         }
 
-        private async void InfoBlink_Tick(object? sender, EventArgs e)
+        private void InfoBlink_Tick(object? sender, EventArgs e)
         {
-            StatusInfoLabel.Visibility = Visibility.Visible;
+            //StatusInfoLabel.Visibility = Visibility.Visible;   // For use with async method
 
-            await Task.Delay(500);
+            //await Task.Delay(500);
 
-            StatusInfoLabel.Visibility = Visibility.Hidden;
+            //StatusInfoLabel.Visibility = Visibility.Hidden;
 
-            await Task.Delay(500);
+            //await Task.Delay(500);
 
-            //if (StatusInfoLabel.Visibility == Visibility.Visible)
-            //{
-            //    StatusInfoLabel.Visibility = Visibility.Hidden;
-            //}
-            //else
-            //{
-            //    StatusInfoLabel.Visibility = Visibility.Visible;
-            //}
+            if (StatusInfoLabel.Visibility == Visibility.Visible)
+            {
+                StatusInfoLabel.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                StatusInfoLabel.Visibility = Visibility.Visible;
+            }
         }
 
         private void OpenFile_Click(object sender, RoutedEventArgs e)
@@ -100,6 +100,10 @@ namespace Text_Encryptment_Program
 
             bool usedNumberFound    = false;
 
+            bool integerRange1      = true;
+            bool integerRange2      = false;
+            bool integerRange3      = false;
+
             int encryptChar         = 33;
             int rN                  = 0;
 
@@ -114,15 +118,35 @@ namespace Text_Encryptment_Program
 
             await Task.Delay(5500);
 
-            for (; encryptChar <= 255; encryptChar++)
+            for (; encryptChar <= 127; encryptChar++)
             {
-                for (int i = 3; i >= 0; i--)
+                for (int i = 1; i > 0; i--)
                 {
                     Jump:
 
                     usedNumberFound = false;
 
-                    rN = generateRandoms.Next(4097, 4351);
+                    if(integerRange1)
+                    {
+                        rN = generateRandoms.Next(5632, 5789);
+
+                        integerRange1 = false;
+                        integerRange2 = true;
+                    }
+                    else if (integerRange2) 
+                    {
+                        rN = generateRandoms.Next(5792, 5873);
+
+                        integerRange2 = false;
+                        integerRange3 = true;
+                    }
+                    else if (integerRange3)
+                    {
+                        rN = generateRandoms.Next(5376, 5631);
+
+                        integerRange3 = false;
+                        integerRange1 = true;
+                    }
 
                     foreach (var item in usedRandoms)
                     {
@@ -149,7 +173,6 @@ namespace Text_Encryptment_Program
                             EncryptedText.AppendText($"\n{item}");
                         }
 
-                        await Task.Delay(100);
                     //}
                 }
 
@@ -157,53 +180,79 @@ namespace Text_Encryptment_Program
                 KeyDict.Add(encryptChar, rN);
 
                 Cache = EncryptedData;
+                await Task.Delay(100);
             }
 
             usedNumberFound = false;
 
+            encryptChar = 246;
+            EncryptionLogic(encryptChar, Cache);
+
+            encryptChar = 252;
+            EncryptionLogic(encryptChar, Cache);
+
+            encryptChar = 220;
+            EncryptionLogic(encryptChar, Cache);
+
+            encryptChar = 223;
+            EncryptionLogic(encryptChar, Cache);
+
+            encryptChar = 228;
+            EncryptionLogic(encryptChar, Cache);
+
+            encryptChar = 196;
+            EncryptionLogic(encryptChar, Cache);
+
+            encryptChar = 214;
+            EncryptionLogic(encryptChar, Cache);
+
+            encryptChar = 215;
+            EncryptionLogic(encryptChar, Cache);
+
             encryptChar = 32;
             EncryptionLogic(encryptChar, Cache);
 
-            //encryptChar = 246;
-            //EncryptionLogic(encryptChar, Cache);
+            await Task.Delay(2500);
 
-            //encryptChar = 252;
-            //EncryptionLogic(encryptChar, Cache);
-
-            //encryptChar = 220;
-            //EncryptionLogic(encryptChar, Cache);
-
-            //encryptChar = 223;
-            //EncryptionLogic(encryptChar, Cache);
-
-            //encryptChar = 228;
-            //EncryptionLogic(encryptChar, Cache);
-
-            //encryptChar = 196;
-            //EncryptionLogic(encryptChar, Cache);
-
-            //encryptChar = 214;
-            //EncryptionLogic(encryptChar, Cache);
-
-            //encryptChar = 215;
-            //EncryptionLogic(encryptChar, Cache);
-
-            StatusInfoLabel.Visibility = Visibility.Collapsed;
             InfoBlink.Stop();
+            StatusInfoLabel.Visibility = Visibility.Collapsed;
         }
 
         private async void EncryptionLogic(int encryptChar, List<string> Cache)
         {
             int rN = 0;
 
+            bool integerRange1 = false;
+            bool integerRange2 = true;
+            bool integerRange3 = false;
 
-
-            for (int i = 5; i >= 0; i--)
+            for (int i = 22; i >= 0; i--)
             {
                 Jump2:
 
                 bool usedNumberFound = false;
-                rN = generateRandoms.Next(4097, 4351);
+
+                if (integerRange1)
+                {
+                    rN = generateRandoms.Next(5632, 5789);
+
+                    integerRange1 = false;
+                    integerRange2 = true;
+                }
+                else if (integerRange2)
+                {
+                    rN = generateRandoms.Next(5792, 5873);
+
+                    integerRange2 = false;
+                    integerRange3 = true;
+                }
+                else if (integerRange3)
+                {
+                    rN = generateRandoms.Next(5376, 5631);
+
+                    integerRange3 = false;
+                    integerRange1 = true;
+                }
 
                 foreach (var item in usedRandoms)
                 {
@@ -230,7 +279,7 @@ namespace Text_Encryptment_Program
                         EncryptedText.AppendText($"\n{item}");
                     }
 
-                    await Task.Delay(100);
+                await Task.Delay(80);
                 //}
 
             }
@@ -286,15 +335,40 @@ namespace Text_Encryptment_Program
                 string cacheDecrpt  = "";
                 string cache        = item;
 
-                for (int i = 32; i <= 255; i++) // Complete decryption of first Line in the List
+                for (int i = 32; i <= 127; i++) // Complete decryption of first Line in the List EncryptedData
                 {
                     
                     cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, i);
-                    cache       = cacheDecrpt;    // Cache becomes new modified string, and is given to replace method in the next loop round !
+                    cache       = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
                     
                     //await Task.Delay(1);
                 }
+
+                cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, 246);
+                cache = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
+
+                cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, 252);
+                cache = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
                 
+                cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, 220);
+                cache = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
+
+                cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, 223);
+                cache = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
+
+                cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, 228);
+                cache = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
+
+                cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, 196);
+                cache = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
+
+                cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, 214);
+                cache = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
+
+                cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, 215);
+                cache = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
+
+
                 DecryptedData.Add(cacheDecrpt); // The complete decrypted Line from the list is added to the list !
 
                 DecryptedText.Clear();
