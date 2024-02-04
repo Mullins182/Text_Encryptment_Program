@@ -108,7 +108,7 @@ namespace Text_Encryptment_Program
                 EncryptedText.AppendText($"\n{item}");
             }
 
-            StatusInfoLabel.Content = "< Encrypting >";
+            StatusInfoLabel.Content = "Encrypting";
             StatusInfoLabel.Visibility = Visibility.Visible;
             InfoBlink.Start();
 
@@ -164,29 +164,29 @@ namespace Text_Encryptment_Program
             encryptChar = 32;
             EncryptionLogic(encryptChar, Cache);
 
-            //encryptChar = 246;
-            //EncryptionLogic(encryptChar, Cache);
+            encryptChar = 246;
+            EncryptionLogic(encryptChar, Cache);
 
-            //encryptChar = 252;
-            //EncryptionLogic(encryptChar, Cache);
+            encryptChar = 252;
+            EncryptionLogic(encryptChar, Cache);
 
-            //encryptChar = 220;
-            //EncryptionLogic(encryptChar, Cache);
+            encryptChar = 220;
+            EncryptionLogic(encryptChar, Cache);
 
-            //encryptChar = 223;
-            //EncryptionLogic(encryptChar, Cache);
+            encryptChar = 223;
+            EncryptionLogic(encryptChar, Cache);
 
-            //encryptChar = 228;
-            //EncryptionLogic(encryptChar, Cache);
+            encryptChar = 228;
+            EncryptionLogic(encryptChar, Cache);
 
-            //encryptChar = 196;
-            //EncryptionLogic(encryptChar, Cache);
+            encryptChar = 196;
+            EncryptionLogic(encryptChar, Cache);
 
-            //encryptChar = 214;
-            //EncryptionLogic(encryptChar, Cache);
+            encryptChar = 214;
+            EncryptionLogic(encryptChar, Cache);
 
-            //encryptChar = 215;
-            //EncryptionLogic(encryptChar, Cache);
+            encryptChar = 215;
+            EncryptionLogic(encryptChar, Cache);
 
             StatusInfoLabel.Visibility = Visibility.Collapsed;
             InfoBlink.Stop();
@@ -272,26 +272,42 @@ namespace Text_Encryptment_Program
             DecryptedText.AppendText($"\nUsed Numbers Count:{usedRandoms.Count}\nKey Table Count: {KeyDict.Count}");
         }
 
-        private void Decrypt_Click(object sender, RoutedEventArgs e)
+        private async void Decrypt_Click(object sender, RoutedEventArgs e)
         {
-            StatusInfoLabel.Content = "< Decrypting >";
+            StatusInfoLabel.Content = "Decrypting";
             StatusInfoLabel.Visibility = Visibility.Visible;
             InfoBlink.Start();
             
             List<string> DecryptedData = new List<string>();
 
-            DecryptedText.Clear();
-
-            DecryptedData = Decryption.DecryptText(EncryptedData, KeyDict, 32);
-
-            foreach (var item in DecryptedData)
+            foreach (var item in EncryptedData)
             {
+                string cacheDecrpt  = "";
+                string cache        = item;
 
-                DecryptedText.AppendText($"\n{item}");
+                for (int i = 32; i <= 126; i++) // Complete decryption of first Line in the List
+                {
+                    
+                    cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, i);
+                    cache       = cacheDecrpt;    // Cache becomes new modified string, and is given to replace method in the next loop round !
+                    
+                    //await Task.Delay(1);
+                }
+                
+                DecryptedData.Add(cacheDecrpt); // The complete decrypted Line from the list is added to the list !
+
+                DecryptedText.Clear();
+
+                foreach (var item2 in DecryptedData)
+                {
+                    DecryptedText.AppendText($"\n{item2}");
+                }
+
+                await Task.Delay(250);
             }
 
-            StatusInfoLabel.Visibility = Visibility.Collapsed;
             InfoBlink.Stop();
+            StatusInfoLabel.Visibility = Visibility.Collapsed;
         }
     }
 }
