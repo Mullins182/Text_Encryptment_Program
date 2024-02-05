@@ -46,7 +46,7 @@ namespace Text_Encryptment_Program
             DecryptBoxLabelAnim.Tick        += DecryptBoxLabelAnim_Tick;
 
             OpenFile.Content                = "Open File to Add Text";
-            ClearBox.Content                = "Clear Textbox";
+            ClearBox.Content                = "Clear Textboxes";
             Encrypt.Content                 = "Encrypt Text";
             Decrypt.Content                 = "Decrypt Text";
             KeyTable.Content                = "Show Used Randoms AND Key-Table";
@@ -442,6 +442,9 @@ namespace Text_Encryptment_Program
         private void ClearBox_Click(object sender, RoutedEventArgs e)
         {
             DecryptedText.Clear();
+            EncryptedText.Clear();
+            TextData.Clear();
+            TextData2.Clear();
         }
         private void ClearBox_MouseEnter(object sender, MouseEventArgs e)
         {
