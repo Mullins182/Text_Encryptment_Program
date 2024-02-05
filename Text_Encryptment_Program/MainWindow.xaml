@@ -6,6 +6,32 @@
         xmlns:local="clr-namespace:Text_Encryptment_Program"
         mc:Ignorable="d"
         Title="Text-Encryption / Decryption Program" Height="900" Width="1750" Background="#330000" HorizontalAlignment="Center" VerticalAlignment="Center" WindowStartupLocation="CenterScreen">
+    
+    <!--Control Template Override für Buttons um Highlighting bei Mouseover zu verhindern !-->
+    <Window.Resources>
+        <ControlTemplate x:Key="NoMouseOverButtonTemplate"
+                 TargetType="Button">
+            <Border Background="{TemplateBinding Background}"
+          BorderBrush="{TemplateBinding BorderBrush}"
+          BorderThickness="{TemplateBinding BorderThickness}">
+                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"  
+                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+            </Border>
+
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled"  
+             Value="False">
+                    <Setter Property="Background"  
+              Value="{x:Static SystemColors.ControlLightBrush}" />
+                    <Setter Property="Foreground"  
+              Value="{x:Static SystemColors.GrayTextBrush}" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
+
+    <!--Control Templates Override ENDE !-->
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -13,23 +39,51 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
+            <RowDefinition Height="12*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <TextBox x:Name="DecryptedText" Height="auto" MinHeight="150" Background="Black" Foreground="DarkOrange" Grid.Column="0" Grid.Row="0" 
+        <Label x:Name="DecryptBox" Content="Decrypted Text" Grid.Column="0" Grid.Row="0" Height="auto" Width="auto" FontSize="26" FontFamily="Kristen ITC" FontWeight="ExtraLight"
+               HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="OrangeRed" Background="Transparent" Padding="0,1,0,0"/>
+
+        <Label x:Name="EncryptBox" Content="Encrypted Text" Grid.Column="1" Grid.Row="0" Height="auto" Width="auto" FontSize="26" FontFamily="Kristen ITC" FontWeight="ExtraLight"
+               HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="OrangeRed" Background="Transparent" Padding="0,1,0,0"/>
+
+        <TextBox x:Name="DecryptedText" Height="750" MinHeight="150" VerticalAlignment="Bottom" Background="Black" Foreground="DarkOrange" Grid.Column="0" Grid.Row="0" 
                  UseLayoutRounding="True" VerticalScrollBarVisibility="Auto" FontFamily="Century Gothic" FontSize="17" TextWrapping="Wrap" IsReadOnly="True"/>
-        <TextBox x:Name="EncryptedText" Height="auto" MinHeight="150" Background="Black" Foreground="DarkOrange" Grid.Column="1" Grid.Row="0"
+        <TextBox x:Name="EncryptedText" Height="750" MinHeight="150" VerticalAlignment="Bottom" Background="Black" Foreground="DarkOrange" Grid.Column="1" Grid.Row="0"
                  UseLayoutRounding="True" VerticalScrollBarVisibility="Auto" FontFamily="Century Gothic" FontSize="17" TextWrapping="Wrap" IsReadOnly="True"/>
 
         <StackPanel x:Name="Stack1" Orientation="Horizontal" Grid.Column="0" Grid.Row="1">
-            <Button x:Name="OpenFile" MinWidth="150" Width="auto" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
-                    FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="OpenFile_Click"/>
-            <Button x:Name="Encrypt" MinWidth="150" Width="auto" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
-                    FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="Encrypt_Click"/>
+            
+            <Button x:Name="OpenFile" Content="Empty" MinWidth="150" Width="450" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
+                    FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="OpenFile_Click" Template="{StaticResource NoMouseOverButtonTemplate}"
+                    MouseEnter="OpenFile_MouseEnter" MouseLeave="OpenFile_MouseLeave"/>
+
+            <Button x:Name="ClearBox" Content="Empty" MinWidth="150" Width="200" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
+                    FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="ClearBox_Click" Template="{StaticResource NoMouseOverButtonTemplate}"
+                    MouseEnter="ClearBox_MouseEnter" MouseLeave="ClearBox_MouseLeave"/>
+
+            <Button x:Name="Encrypt" Content="Empty" MinWidth="150" Width="200" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
+                    FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="Encrypt_Click" Template="{StaticResource NoMouseOverButtonTemplate}"
+                    MouseEnter="Encrypt_MouseEnter" MouseLeave="Encrypt_MouseLeave"/>
 
         </StackPanel>
-        <StackPanel x:Name="Stack2" Orientation="Horizontal" Grid.Column="1" Grid.Row="1"/>
+        <StackPanel x:Name="Stack2" Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
+            
+            <Button x:Name="KeyTable" Content="Empty" MinWidth="150" Width="450" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
+                    FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Template="{StaticResource NoMouseOverButtonTemplate}" Click="KeyTable_Click"
+                    MouseEnter="KeyTable_MouseEnter" MouseLeave="KeyTable_MouseLeave"/>
+
+            <Button x:Name="Decrypt" Content="Empty" MinWidth="150" Width="200" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
+                    FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Template="{StaticResource NoMouseOverButtonTemplate}" Click="Decrypt_Click"
+                    MouseEnter="Decrypt_MouseEnter" MouseLeave="Decrypt_MouseLeave"/>
+
+            <Button x:Name="Quit" Content="Quit Program" MinWidth="150" Width="200" Height="50" Padding="10,10,10,10" Foreground="OrangeRed" Background="Black" 
+                    FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Template="{StaticResource NoMouseOverButtonTemplate}" Click="Quit_Click"
+                    MouseEnter="Quit_MouseEnter" MouseLeave="Quit_MouseLeave"/>
+
+        </StackPanel>
 
     </Grid>
 </Window>
