@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Windows;
@@ -23,14 +24,14 @@ namespace Text_Encryptment_Program
     {
         DispatcherTimer EncryptBoxLabelAnim = new DispatcherTimer(DispatcherPriority.Send);
         DispatcherTimer DecryptBoxLabelAnim = new DispatcherTimer(DispatcherPriority.Send);
-        
-        //TextEncryption EncryptStart = new TextEncryption();
-        //TextDecryption Decryption = new TextDecryption();
 
         Dictionary<int, int> KeyDict    = new Dictionary<int, int>();
         List<string> EncryptedData      = new List<string>();
         List<string> DecryptedData      = new List<string>();
         List<string> TextData           = new List<string>();
+        List<string> textCache          = new List<string>();
+
+        bool showKeyTable = false;
 
         Random generateRandoms          = new Random();                           // Neue Instanz der Random Klasse erstellen !
                                                                                  // GenerateRandoms.Next() = Zufallszahl zwischen (x, y) erzeugen ! (x ist inklusiv, y ist exklusiv)
@@ -75,6 +76,26 @@ namespace Text_Encryptment_Program
             }
         }
 
+        private void DisableAllButtons()
+        {
+            Encrypt.IsEnabled       = false;
+            Decrypt.IsEnabled       = false;
+            KeyTable.IsEnabled      = false;
+            OpenFile.IsEnabled      = false;
+            ClearBox.IsEnabled      = false;
+            ManualText.IsEnabled    = false;
+        }
+
+        private void EnableAllButtons()
+        {
+            Encrypt.IsEnabled       = true;
+            Decrypt.IsEnabled       = true;
+            KeyTable.IsEnabled      = true;
+            OpenFile.IsEnabled      = true;
+            ClearBox.IsEnabled      = true;
+            ManualText.IsEnabled    = true;
+        }
+
         private void OpenFile_Click(object sender, RoutedEventArgs e)
         {
             TextData.Clear();
@@ -107,16 +128,21 @@ namespace Text_Encryptment_Program
 
         private async void Encrypt_Click(object sender, RoutedEventArgs e)
         {
+            DisableAllButtons();
 
-            bool usedNumberFound = false;
+            bool usedNumberFound    = false;
+            bool integerRange1      = true;
+            bool integerRange2      = false;
+            bool integerRange3      = false;
+            int encryptChar         = 33;
+            int rN                  = 0;
 
-            bool integerRange1 = true;
-            bool integerRange2 = false;
-            bool integerRange3 = false;
+            EncryptBox.Content      = "Encrypting in Progress ...";
+            Encrypt.Content         = "ENCRYPTING ...";
+            Encrypt.BorderBrush     = Brushes.GreenYellow;
+            EncryptBox.Foreground   = Brushes.YellowGreen;
 
-            int encryptChar = 33;
-            int rN = 0;
-
+            EncryptBoxLabelAnim.Start();
 
             EncryptedText.Clear();
             DecryptedData.Clear();
@@ -129,18 +155,11 @@ namespace Text_Encryptment_Program
                 EncryptedText.AppendText($"{item}");
             }
 
-            EncryptBox.Content      = "Encrypting in Progress ...";
-            Encrypt.Content         = "ENCRYPTING ...";
-            Encrypt.BorderBrush     = Brushes.GreenYellow;
-            EncryptBox.Foreground   = Brushes.YellowGreen;
-
-            EncryptBoxLabelAnim.Start();
-
             await Task.Delay(4000);
 
             for (; encryptChar <= 126; encryptChar++)
             {
-                for (int i = 7; i > 0; i--)
+                for (int i = 5; i > 0; i--)
                 {
                     Jump:
 
@@ -188,7 +207,7 @@ namespace Text_Encryptment_Program
                         EncryptedText.AppendText($"{item}");
                     }
 
-                    await Task.Delay(3);
+                    await Task.Delay(75);
                 }
 
                 KeyDict.Add(encryptChar, rN);
@@ -205,7 +224,7 @@ namespace Text_Encryptment_Program
 
             for (; encryptChar <= 255; encryptChar++)
             {
-                for (int i = 7; i > 0; i--)
+                for (int i = 5; i > 0; i--)
                 {
                     Jump2:
 
@@ -253,7 +272,7 @@ namespace Text_Encryptment_Program
                         EncryptedText.AppendText($"{item}");
                     }
 
-                    await Task.Delay(3);
+                    await Task.Delay(75);
 
                 }
 
@@ -267,43 +286,70 @@ namespace Text_Encryptment_Program
                 }
             }
 
-            EncryptBox.Content = "Successfully Encrypted";
-            Encrypt.BorderBrush = Brushes.OrangeRed;
-            Encrypt.Content = "Start Encrypting";
+            EncryptBox.Content              = "Successfully Encrypted";
+            Encrypt.BorderBrush             = Brushes.OrangeRed;
+            Encrypt.Content                 = "Start Encrypting";
 
-            EncryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(150);
+            EncryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(150);
+
+            EnableAllButtons();
 
             await Task.Delay(3500);
 
             EncryptBoxLabelAnim.Stop();
-            EncryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(500);
-            EncryptBox.Foreground = Brushes.OrangeRed;
-            EncryptBox.Content = "Encrypted Text";
-            EncryptBox.Visibility = Visibility.Visible;
+            EncryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
+            EncryptBox.Foreground           = Brushes.OrangeRed;
+            EncryptBox.Content              = "Encrypted Text";
+            EncryptBox.Visibility           = Visibility.Visible;
         }
 
         private void KeyTable_Click(object sender, RoutedEventArgs e)       // Hier noch Daten in Liste sichern und beim erneuten Click wieder in Box laden !
         {
-            //KeyTable.BorderBrush is  ? Brushes.GreenYellow : Brushes.OrangeRed;
 
-            DecryptedText.Clear();
-
-            DecryptedText.AppendText("\n_________________________\n");
-
-            DecryptedText.AppendText($"\nKey Table Count: {KeyDict.Count}");
-
-            DecryptedText.AppendText("\n_________________________\n\n");
-
-            foreach (var item in KeyDict)
+            if (!showKeyTable) 
             {
-                DecryptedText.AppendText($"\nKey:   {item.Key}");
-                DecryptedText.AppendText($"\nValue: {item.Value}");
-                DecryptedText.AppendText($"\n");
+                showKeyTable = true;
+
+                KeyTable.BorderBrush = Brushes.Green;
+
+                //KeyTable.BorderBrush is  ? Brushes.GreenYellow : Brushes.OrangeRed;
+
+                textCache.Add(DecryptedText.Text);
+
+                DecryptedText.Clear();
+
+                DecryptedText.AppendText("\n_________________________\n");
+
+                DecryptedText.AppendText($"\nKey Table Count: {KeyDict.Count}");
+
+                DecryptedText.AppendText("\n_________________________\n\n");
+
+                foreach (var item in KeyDict)
+                {
+                    DecryptedText.AppendText($"\nKey:   {item.Key}");
+                    DecryptedText.AppendText($"\nValue: {item.Value}");
+                    DecryptedText.AppendText($"\n");
+                }
+            }
+            else
+            {
+                showKeyTable = false;
+
+                KeyTable.BorderBrush = Brushes.OrangeRed;
+
+                DecryptedText.Clear();
+
+                foreach (var item in textCache)
+                {
+                    DecryptedText.Text = $"{item}";
+                }
             }
         }
 
         private async void Decrypt_Click(object sender, RoutedEventArgs e)
         {
+            DisableAllButtons();
+            
             DecryptedText.Clear();
             EncryptedData.Clear();
             DecryptedData.Clear();
@@ -349,6 +395,8 @@ namespace Text_Encryptment_Program
 
             Decrypt.BorderBrush             = Brushes.OrangeRed;
             Decrypt.Content                 = "Start Decrypting";
+
+            EnableAllButtons();
 
             await Task.Delay(3500);
 
