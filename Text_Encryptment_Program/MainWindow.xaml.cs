@@ -45,11 +45,12 @@ namespace Text_Encryptment_Program
             EncryptBoxLabelAnim.Tick        += EncryptBoxLabelAnim_Tick;
             DecryptBoxLabelAnim.Tick        += DecryptBoxLabelAnim_Tick;
 
-            OpenFile.Content                = "Open File to Add Text";
+            OpenFile.Content                = "Add Text From File";
             ClearBox.Content                = "Clear Textboxes";
-            Encrypt.Content                 = "Encrypt Text";
-            Decrypt.Content                 = "Decrypt Text";
+            Encrypt.Content                 = "Start Encrypting";
+            Decrypt.Content                 = "Start Decrypting";
             KeyTable.Content                = "Show Used Randoms AND Key-Table";
+            ManualText.Content              = "Edit Text";
         }
 
         private void DecryptBoxLabelAnim_Tick(object? sender, EventArgs e)
@@ -112,20 +113,34 @@ namespace Text_Encryptment_Program
 
         private async void Encrypt_Click(object sender, RoutedEventArgs e)
         {
-            List<string> Cache = TextData2;
+
+            bool usedNumberFound = false;
+
+            bool integerRange1 = true;
+            bool integerRange2 = false;
+            bool integerRange3 = false;
+
+            int encryptChar = 32;
+            int rN = 0;
+
+            List<string> cache = new List<string>();
+
+            string? textBoxText = "";
+
+            foreach (var item in DecryptedText.Text)
+            {
+                textBoxText = textBoxText + item;
+            }
+            
+            cache.Add(textBoxText);
+
+            //List<string> cache = TextData2;
 
             EncryptedText.Clear();
+            KeyDict.Clear();
+            usedRandoms.Clear();
 
-            bool usedNumberFound    = false;
-
-            bool integerRange1      = true;
-            bool integerRange2      = false;
-            bool integerRange3      = false;
-
-            int encryptChar         = 32;
-            int rN                  = 0;
-
-            foreach (var item in Cache)
+            foreach (var item in cache)
             {
                 EncryptedText.AppendText($"\n{item}");
             }
@@ -180,7 +195,7 @@ namespace Text_Encryptment_Program
                     }
 
 
-                    EncryptedData = TextEncryption.EncryptText(Cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
+                    EncryptedData = TextEncryption.EncryptText(cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
                     
                     EncryptedText.Clear();
 
@@ -195,7 +210,7 @@ namespace Text_Encryptment_Program
                 usedRandoms.Add(rN);
                 KeyDict.Add(encryptChar, rN);
 
-                Cache = EncryptedData;
+                cache = EncryptedData;
             }
 
             encryptChar = 161;
@@ -241,7 +256,7 @@ namespace Text_Encryptment_Program
                     }
 
 
-                    EncryptedData = TextEncryption.EncryptText(Cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
+                    EncryptedData = TextEncryption.EncryptText(cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
 
                     EncryptedText.Clear();
 
@@ -257,7 +272,7 @@ namespace Text_Encryptment_Program
                 usedRandoms.Add(rN);
                 KeyDict.Add(encryptChar, rN);
 
-                Cache = EncryptedData;
+                cache = EncryptedData;
             }
 
 
@@ -346,6 +361,9 @@ namespace Text_Encryptment_Program
         private async void Decrypt_Click(object sender, RoutedEventArgs e)
         {
             DecryptedText.Clear();
+            EncryptedData.Clear();
+            DecryptedData.Clear();
+
             DecryptBox.Content = "Decrypting in Progress ...";
             DecryptBox.Foreground = Brushes.YellowGreen;
             DecryptBoxLabelAnim.Start();
@@ -470,5 +488,30 @@ namespace Text_Encryptment_Program
             Encrypt.Foreground = Brushes.DarkSeaGreen;
         }
 
+        private void ManualText_Click(object sender, RoutedEventArgs e)
+        {
+            if(DecryptedText.IsReadOnly) 
+            {
+                DecryptedText.IsReadOnly = false;
+                ManualText.BorderBrush = Brushes.GreenYellow;
+            }
+            else
+            {
+                DecryptedText.IsReadOnly = true;
+                ManualText.BorderBrush = Brushes.Red;
+            }
+        }
+
+        private void ManualText_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ManualText.Background = Brushes.Green;
+            ManualText.Foreground = Brushes.Black;
+        }
+
+        private void ManualText_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ManualText.Background = Brushes.Black;
+            ManualText.Foreground = Brushes.DarkSeaGreen;
+        }
     }
 }
