@@ -31,7 +31,6 @@ namespace Text_Encryptment_Program
         List<string> EncryptedData      = new List<string>();
         List<string> DecryptedData      = new List<string>();
         List<string> TextData           = new List<string>();
-        List<int> usedRandoms           = new List<int>();
 
         Random generateRandoms          = new Random();                           // Neue Instanz der Random Klasse erstellen !
                                                                                  // GenerateRandoms.Next() = Zufallszahl zwischen (x, y) erzeugen ! (x ist inklusiv, y ist exklusiv)
@@ -115,14 +114,13 @@ namespace Text_Encryptment_Program
             bool integerRange2 = false;
             bool integerRange3 = false;
 
-            int encryptChar = 32;
+            int encryptChar = 33;
             int rN = 0;
 
 
             EncryptedText.Clear();
             DecryptedData.Clear();
             KeyDict.Clear();
-            usedRandoms.Clear();
 
             DecryptedData.Add(DecryptedText.Text);
 
@@ -142,7 +140,7 @@ namespace Text_Encryptment_Program
 
             for (; encryptChar <= 126; encryptChar++)
             {
-                for (int i = 4; i > 0; i--)
+                for (int i = 7; i > 0; i--)
                 {
                     Jump:
 
@@ -170,7 +168,7 @@ namespace Text_Encryptment_Program
                         integerRange1 = true;
                     }
 
-                    foreach (var item in usedRandoms)
+                    foreach (var item in KeyDict.Values)
                     {
                         usedNumberFound = item.Equals(rN);
 
@@ -190,10 +188,9 @@ namespace Text_Encryptment_Program
                         EncryptedText.AppendText($"{item}");
                     }
 
-                    await Task.Delay(6);
+                    await Task.Delay(3);
                 }
 
-                usedRandoms.Add(rN);
                 KeyDict.Add(encryptChar, rN);
 
                 DecryptedData.Clear();
@@ -208,7 +205,7 @@ namespace Text_Encryptment_Program
 
             for (; encryptChar <= 255; encryptChar++)
             {
-                for (int i = 4; i > 0; i--)
+                for (int i = 7; i > 0; i--)
                 {
                     Jump2:
 
@@ -236,7 +233,7 @@ namespace Text_Encryptment_Program
                         integerRange1 = true;
                     }
 
-                    foreach (var item in usedRandoms)
+                    foreach (var item in KeyDict.Values)
                     {
                         usedNumberFound = item.Equals(rN);
 
@@ -256,11 +253,10 @@ namespace Text_Encryptment_Program
                         EncryptedText.AppendText($"{item}");
                     }
 
-                    await Task.Delay(6);
+                    await Task.Delay(3);
 
                 }
 
-                usedRandoms.Add(rN);
                 KeyDict.Add(encryptChar, rN);
 
                 DecryptedData.Clear();
@@ -292,12 +288,11 @@ namespace Text_Encryptment_Program
 
             DecryptedText.Clear();
 
-            foreach (var item in usedRandoms)
-            {
-                DecryptedText.AppendText($"\n\n{item}");
-            }
+            DecryptedText.AppendText("\n_________________________\n");
 
-            DecryptedText.AppendText("\n\n____________________________________________________________________________\n");
+            DecryptedText.AppendText($"\nKey Table Count: {KeyDict.Count}");
+
+            DecryptedText.AppendText("\n_________________________\n\n");
 
             foreach (var item in KeyDict)
             {
@@ -305,10 +300,6 @@ namespace Text_Encryptment_Program
                 DecryptedText.AppendText($"\nValue: {item.Value}");
                 DecryptedText.AppendText($"\n");
             }
-
-            DecryptedText.AppendText("\n\n____________________________________________________________________________\n");
-
-            DecryptedText.AppendText($"\nUsed Numbers Count:{usedRandoms.Count}\nKey Table Count: {KeyDict.Count}");
         }
 
         private async void Decrypt_Click(object sender, RoutedEventArgs e)
@@ -335,10 +326,10 @@ namespace Text_Encryptment_Program
                 string cacheDecrpt  = "";
                 string cache        = item;
 
-                for (int i = 32; i <= 255; i++) // Complete decryption of first Line in the List EncryptedData
+                for (int i = 33; i <= 255; i++) // Complete decryption of first Line in the List EncryptedData
                 {                    
-                    cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, i);
-                    cache       = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
+                    cacheDecrpt     = TextDecryption.DecryptText(cache, KeyDict, i);
+                    cache           = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
                 }
 
                 DecryptedData.Add(cacheDecrpt); // The complete decrypted Line from the list is added to the list !
@@ -353,7 +344,7 @@ namespace Text_Encryptment_Program
                 await Task.Delay(500);
             }
 
-            DecryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(150);
+            DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(150);
             DecryptBox.Content              = "Successfully Decrypted";
 
             Decrypt.BorderBrush             = Brushes.OrangeRed;
@@ -450,12 +441,12 @@ namespace Text_Encryptment_Program
             if(DecryptedText.IsReadOnly) 
             {
                 DecryptedText.IsReadOnly = false;
-                ManualText.BorderBrush = Brushes.GreenYellow;
+                ManualText.BorderBrush = Brushes.Green;
             }
             else
             {
                 DecryptedText.IsReadOnly = true;
-                ManualText.BorderBrush = Brushes.Red;
+                ManualText.BorderBrush = Brushes.OrangeRed;
             }
         }
 
