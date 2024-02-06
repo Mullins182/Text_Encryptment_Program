@@ -148,18 +148,21 @@ namespace Text_Encryptment_Program
             DecryptedData.Clear();
             KeyDict.Clear();
 
-            DecryptedData.Add(DecryptedText.Text);
+            foreach (var item in DecryptedText.Text)                // DecryptedData wird mit Chars gefüllt !
+            {
+                DecryptedData.Add(Convert.ToString(item));
+            }
 
             foreach (var item in DecryptedData)
             {
                 EncryptedText.AppendText($"{item}");
             }
 
-            await Task.Delay(4000);
+            await Task.Delay(3200);
 
             for (; encryptChar <= 126; encryptChar++)
             {
-                for (int i = 5; i > 0; i--)
+                for (int i = 8; i > 0; i--)
                 {
                     Jump:
 
@@ -197,7 +200,6 @@ namespace Text_Encryptment_Program
                         }
                     }
 
-
                     EncryptedData = TextEncryption.EncryptText(DecryptedData, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
                     
                     EncryptedText.Clear();
@@ -207,7 +209,7 @@ namespace Text_Encryptment_Program
                         EncryptedText.AppendText($"{item}");
                     }
 
-                    await Task.Delay(75);
+                    await Task.Delay(85);
                 }
 
                 KeyDict.Add(encryptChar, rN);
@@ -224,7 +226,7 @@ namespace Text_Encryptment_Program
 
             for (; encryptChar <= 255; encryptChar++)
             {
-                for (int i = 5; i > 0; i--)
+                for (int i = 8; i > 0; i--)
                 {
                     Jump2:
 
@@ -272,7 +274,7 @@ namespace Text_Encryptment_Program
                         EncryptedText.AppendText($"{item}");
                     }
 
-                    await Task.Delay(75);
+                    await Task.Delay(85);
 
                 }
 
@@ -292,8 +294,6 @@ namespace Text_Encryptment_Program
 
             EncryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(150);
 
-            EnableAllButtons();
-
             await Task.Delay(3500);
 
             EncryptBoxLabelAnim.Stop();
@@ -301,6 +301,8 @@ namespace Text_Encryptment_Program
             EncryptBox.Foreground           = Brushes.OrangeRed;
             EncryptBox.Content              = "Encrypted Text";
             EncryptBox.Visibility           = Visibility.Visible;
+
+            EnableAllButtons();
         }
 
         private void KeyTable_Click(object sender, RoutedEventArgs e)       // Hier noch Daten in Liste sichern und beim erneuten Click wieder in Box laden !
@@ -396,8 +398,6 @@ namespace Text_Encryptment_Program
             Decrypt.BorderBrush             = Brushes.OrangeRed;
             Decrypt.Content                 = "Start Decrypting";
 
-            EnableAllButtons();
-
             await Task.Delay(3500);
 
             DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
@@ -405,6 +405,8 @@ namespace Text_Encryptment_Program
             DecryptBox.Content              = "Decrypted Text";
             DecryptBox.Visibility           = Visibility.Visible;
             DecryptBoxLabelAnim.Stop();
+
+            EnableAllButtons();
         }
 
         private void Quit_Click(object sender, RoutedEventArgs e)
