@@ -101,13 +101,13 @@ namespace Text_Encryptment_Program
                 // Open document
                 string filename = dialog.FileName;
 
-                TextData = LoadContentIntoDecryptedText.ReadFileData(filename);
+                DecryptedData = LoadContentIntoDecryptedText.ReadFileData(filename);
 
-                foreach (var item in TextData)
-                {
-                    TextData2.Add(item);
-                    DecryptedText.AppendText($"\n{item}");
-                }
+                //foreach (var item in TextData)
+                //{
+                //    TextData2.Add(item);
+                //    DecryptedText.AppendText($"\n{item}");
+                //}
             }
         }
 
@@ -123,26 +123,17 @@ namespace Text_Encryptment_Program
             int encryptChar = 32;
             int rN = 0;
 
-            List<string> cache = new List<string>();
-
-            string? textBoxText = "";
-
-            foreach (var item in DecryptedText.Text)
-            {
-                textBoxText = textBoxText + item;
-            }
-            
-            cache.Add(textBoxText);
-
-            //List<string> cache = TextData2;
 
             EncryptedText.Clear();
+            DecryptedData.Clear();
             KeyDict.Clear();
             usedRandoms.Clear();
 
-            foreach (var item in cache)
+            DecryptedData.Add(DecryptedText.Text);
+
+            foreach (var item in DecryptedData)
             {
-                EncryptedText.AppendText($"\n{item}");
+                EncryptedText.AppendText($"{item}");
             }
 
             EncryptBox.Content = "Encrypting in Progress ...";
@@ -151,8 +142,6 @@ namespace Text_Encryptment_Program
             EncryptBoxLabelAnim.Start();
 
             await Task.Delay(4000);
-
-            //EncryptBoxLabelAnim.Stop();
 
             for (; encryptChar <= 126; encryptChar++)
             {
@@ -195,13 +184,13 @@ namespace Text_Encryptment_Program
                     }
 
 
-                    EncryptedData = TextEncryption.EncryptText(cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
+                    EncryptedData = TextEncryption.EncryptText(DecryptedData, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
                     
                     EncryptedText.Clear();
 
                     foreach (var item in EncryptedData)
                     {
-                        EncryptedText.AppendText($"\n{item}");
+                        EncryptedText.AppendText($"{item}");
                     }
 
                     await Task.Delay(6);
@@ -210,7 +199,12 @@ namespace Text_Encryptment_Program
                 usedRandoms.Add(rN);
                 KeyDict.Add(encryptChar, rN);
 
-                cache = EncryptedData;
+                DecryptedData.Clear();
+
+                foreach( var item in EncryptedData)
+                {
+                    DecryptedData.Add(item);
+                }                
             }
 
             encryptChar = 161;
@@ -256,13 +250,13 @@ namespace Text_Encryptment_Program
                     }
 
 
-                    EncryptedData = TextEncryption.EncryptText(cache, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
+                    EncryptedData = TextEncryption.EncryptText(DecryptedData, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
 
                     EncryptedText.Clear();
 
                     foreach (var item in EncryptedData)
                     {
-                        EncryptedText.AppendText($"\n{item}");
+                        EncryptedText.AppendText($"{item}");
                     }
 
                     await Task.Delay(6);
@@ -272,56 +266,13 @@ namespace Text_Encryptment_Program
                 usedRandoms.Add(rN);
                 KeyDict.Add(encryptChar, rN);
 
-                cache = EncryptedData;
+                DecryptedData.Clear();
+
+                foreach (var item in EncryptedData)
+                {
+                    DecryptedData.Add(item);
+                }
             }
-
-
-            //encryptChar = 246;
-            //EncryptionLogic(encryptChar, Cache);
-
-            //await Task.Delay(250);
-
-            //encryptChar = 252;
-            //EncryptionLogic(encryptChar, Cache);
-
-            //await Task.Delay(250);
-
-            //encryptChar = 220;
-            //EncryptionLogic(encryptChar, Cache);
-
-            //await Task.Delay(250);
-
-            //encryptChar = 223;
-            //EncryptionLogic(encryptChar, Cache);
-
-            //await Task.Delay(250);
-
-            //encryptChar = 228;
-            //EncryptionLogic(encryptChar, Cache);
-
-            //await Task.Delay(250);
-
-            //encryptChar = 196;
-            //EncryptionLogic(encryptChar, Cache);
-
-            //await Task.Delay(250);
-
-            //encryptChar = 214;
-            //EncryptionLogic(encryptChar, Cache);
-
-            //await Task.Delay(250);
-
-            //encryptChar = 215;
-            //EncryptionLogic(encryptChar, Cache);
-
-            //await Task.Delay(500);
-
-            //encryptChar = 32;
-            //EncryptionLogic(encryptChar, Cache);
-
-            //await Task.Delay(500);
-
-            //await Task.Delay(8000);
 
             EncryptBox.Content = "Encryption Successfully";
             EncryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(150);
@@ -368,6 +319,10 @@ namespace Text_Encryptment_Program
             DecryptBox.Foreground = Brushes.YellowGreen;
             DecryptBoxLabelAnim.Start();
 
+            //List<string> Test = new List<string>();
+
+            EncryptedData.Add(EncryptedText.Text);
+
             await Task.Delay(3000);
 
             foreach (var item in EncryptedData)
@@ -376,12 +331,9 @@ namespace Text_Encryptment_Program
                 string cache        = item;
 
                 for (int i = 32; i <= 255; i++) // Complete decryption of first Line in the List EncryptedData
-                {
-                    
+                {                    
                     cacheDecrpt = TextDecryption.DecryptText(cache, KeyDict, i);
                     cache       = cacheDecrpt;    // Cache becomes new modified string, and is given to decrypt method in the next loop round !
-                    
-                    //await Task.Delay(1);
                 }
 
                 DecryptedData.Add(cacheDecrpt); // The complete decrypted Line from the list is added to the list !
@@ -390,7 +342,7 @@ namespace Text_Encryptment_Program
 
                 foreach (var item2 in DecryptedData)
                 {
-                    DecryptedText.AppendText($"\n{item2}");
+                    DecryptedText.AppendText($"{item2}");
                 }
 
                 await Task.Delay(500);
@@ -401,10 +353,10 @@ namespace Text_Encryptment_Program
 
             await Task.Delay(3500);
 
-            DecryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(500);
-            DecryptBox.Foreground = Brushes.OrangeRed;
-            DecryptBox.Content = "Decrypted Text";
-            DecryptBox.Visibility = Visibility.Visible;
+            DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
+            DecryptBox.Foreground           = Brushes.OrangeRed;
+            DecryptBox.Content              = "Decrypted Text";
+            DecryptBox.Visibility           = Visibility.Visible;
             DecryptBoxLabelAnim.Stop();
         }
 
