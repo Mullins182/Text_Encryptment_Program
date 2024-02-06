@@ -31,7 +31,6 @@ namespace Text_Encryptment_Program
         List<string> EncryptedData      = new List<string>();
         List<string> DecryptedData      = new List<string>();
         List<string> TextData           = new List<string>();
-        List<string> TextData2          = new List<string>();
         List<int> usedRandoms           = new List<int>();
 
         Random generateRandoms          = new Random();                           // Neue Instanz der Random Klasse erstellen !
@@ -46,7 +45,7 @@ namespace Text_Encryptment_Program
             DecryptBoxLabelAnim.Tick        += DecryptBoxLabelAnim_Tick;
 
             OpenFile.Content                = "Add Text From File";
-            ClearBox.Content                = "Clear Textboxes";
+            ClearBox.Content                = "Clear Box";
             Encrypt.Content                 = "Start Encrypting";
             Decrypt.Content                 = "Start Decrypting";
             KeyTable.Content                = "Show Used Randoms AND Key-Table";
@@ -79,17 +78,13 @@ namespace Text_Encryptment_Program
 
         private void OpenFile_Click(object sender, RoutedEventArgs e)
         {
-            KeyDict.Clear();
-            EncryptedData.Clear();
-            //DecryptedData.Clear();
-            usedRandoms.Clear();
             TextData.Clear();
 
             // Configure open file dialog box
-            var dialog = new Microsoft.Win32.OpenFileDialog();
-            dialog.FileName = "Select a txt file !"; // Default file name
-            dialog.DefaultExt = ".txt"; // Default file extension
-            dialog.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
+            var dialog              = new Microsoft.Win32.OpenFileDialog();
+            dialog.FileName         = "Select a txt file !"; // Default file name
+            dialog.DefaultExt       = ".txt"; // Default file extension
+            dialog.Filter           = "Text documents (.txt)|*.txt"; // Filter files by extension
             dialog.InitialDirectory = Environment.CurrentDirectory; // Sets the initial Dir for File Dialog Box to actual working Directory !
 
             // Show open file dialog box
@@ -103,11 +98,11 @@ namespace Text_Encryptment_Program
 
                 DecryptedData = LoadContentIntoDecryptedText.ReadFileData(filename);
 
-                //foreach (var item in TextData)
-                //{
-                //    TextData2.Add(item);
-                //    DecryptedText.AppendText($"\n{item}");
-                //}
+                foreach (var item in DecryptedData)
+                {
+                    TextData.Add(item);
+                    DecryptedText.AppendText($"\n{item}");
+                }
             }
         }
 
@@ -136,8 +131,10 @@ namespace Text_Encryptment_Program
                 EncryptedText.AppendText($"{item}");
             }
 
-            EncryptBox.Content = "Encrypting in Progress ...";
-            EncryptBox.Foreground = Brushes.YellowGreen;
+            EncryptBox.Content      = "Encrypting in Progress ...";
+            Encrypt.Content         = "ENCRYPTING ...";
+            Encrypt.BorderBrush     = Brushes.GreenYellow;
+            EncryptBox.Foreground   = Brushes.YellowGreen;
 
             EncryptBoxLabelAnim.Start();
 
@@ -274,7 +271,10 @@ namespace Text_Encryptment_Program
                 }
             }
 
-            EncryptBox.Content = "Encryption Successfully";
+            EncryptBox.Content = "Successfully Encrypted";
+            Encrypt.BorderBrush = Brushes.OrangeRed;
+            Encrypt.Content = "Start Encrypting";
+
             EncryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(150);
 
             await Task.Delay(3500);
@@ -286,8 +286,10 @@ namespace Text_Encryptment_Program
             EncryptBox.Visibility = Visibility.Visible;
         }
 
-        private void KeyTable_Click(object sender, RoutedEventArgs e)
+        private void KeyTable_Click(object sender, RoutedEventArgs e)       // Hier noch Daten in Liste sichern und beim erneuten Click wieder in Box laden !
         {
+            //KeyTable.BorderBrush is  ? Brushes.GreenYellow : Brushes.OrangeRed;
+
             DecryptedText.Clear();
 
             foreach (var item in usedRandoms)
@@ -315,9 +317,12 @@ namespace Text_Encryptment_Program
             EncryptedData.Clear();
             DecryptedData.Clear();
 
-            DecryptBox.Content = "Decrypting in Progress ...";
-            DecryptBox.Foreground = Brushes.YellowGreen;
             DecryptBoxLabelAnim.Start();
+
+            DecryptBox.Content      = "Decrypting in Progress ...";
+            Decrypt.Content         = "DECRYPTING ...";
+            Decrypt.BorderBrush     = Brushes.GreenYellow;
+            DecryptBox.Foreground   = Brushes.YellowGreen;
 
             //List<string> Test = new List<string>();
 
@@ -349,7 +354,10 @@ namespace Text_Encryptment_Program
             }
 
             DecryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(150);
-            DecryptBox.Content = "Decryption Successfully";
+            DecryptBox.Content              = "Successfully Decrypted";
+
+            Decrypt.BorderBrush             = Brushes.OrangeRed;
+            Decrypt.Content                 = "Start Decrypting";
 
             await Task.Delay(3500);
 
@@ -412,9 +420,6 @@ namespace Text_Encryptment_Program
         private void ClearBox_Click(object sender, RoutedEventArgs e)
         {
             DecryptedText.Clear();
-            EncryptedText.Clear();
-            TextData.Clear();
-            TextData2.Clear();
         }
         private void ClearBox_MouseEnter(object sender, MouseEventArgs e)
         {

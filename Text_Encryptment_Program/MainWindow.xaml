@@ -39,7 +39,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="14*"/>
+            <RowDefinition Height="13*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
@@ -60,19 +60,19 @@
             
             <Button x:Name="OpenFile" Content="Empty" MinWidth="150" Width="250" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="OpenFile_Click" Template="{StaticResource NoMouseOverButtonTemplate}"
-                    MouseEnter="OpenFile_MouseEnter" MouseLeave="OpenFile_MouseLeave" BorderBrush="Red" BorderThickness="1" Margin="1,0,1,0"/>
+                    MouseEnter="OpenFile_MouseEnter" MouseLeave="OpenFile_MouseLeave" BorderBrush="OrangeRed" BorderThickness="1" Margin="1,0,1,0"/>
 
             <Button x:Name="ManualText" Content="Empty" MinWidth="150" Width="100" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Template="{StaticResource NoMouseOverButtonTemplate}"
-                    BorderBrush="Red" BorderThickness="1" Margin="1,0,1,0" Click="ManualText_Click" MouseEnter="ManualText_MouseEnter" MouseLeave="ManualText_MouseLeave"/>
+                    BorderBrush="OrangeRed" BorderThickness="1" Margin="1,0,1,0" Click="ManualText_Click" MouseEnter="ManualText_MouseEnter" MouseLeave="ManualText_MouseLeave"/>
 
             <Button x:Name="ClearBox" Content="Empty" MinWidth="150" Width="200" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="ClearBox_Click" Template="{StaticResource NoMouseOverButtonTemplate}"
-                    MouseEnter="ClearBox_MouseEnter" MouseLeave="ClearBox_MouseLeave" BorderBrush="Red" BorderThickness="1" Margin="1,0,1,0"/>
+                    MouseEnter="ClearBox_MouseEnter" MouseLeave="ClearBox_MouseLeave" BorderBrush="OrangeRed" BorderThickness="1" Margin="1,0,1,0"/>
 
             <Button x:Name="Encrypt" Content="Empty" MinWidth="150" Width="215" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="Encrypt_Click" Template="{StaticResource NoMouseOverButtonTemplate}"
-                    MouseEnter="Encrypt_MouseEnter" MouseLeave="Encrypt_MouseLeave" BorderBrush="Red" BorderThickness="1" Margin="1,0,1,0"/>
+                    MouseEnter="Encrypt_MouseEnter" MouseLeave="Encrypt_MouseLeave" BorderBrush="OrangeRed" BorderThickness="1" Margin="1,0,1,0"/>
 
         </StackPanel>
         
@@ -80,15 +80,15 @@
 
             <Button x:Name="Decrypt" Content="Empty" MinWidth="150" Width="200" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Template="{StaticResource NoMouseOverButtonTemplate}" Click="Decrypt_Click"
-                    MouseEnter="Decrypt_MouseEnter" MouseLeave="Decrypt_MouseLeave" BorderBrush="Red" BorderThickness="1" Margin="1,0,1,0"/>
+                    MouseEnter="Decrypt_MouseEnter" MouseLeave="Decrypt_MouseLeave" BorderBrush="OrangeRed" BorderThickness="1" Margin="1,0,1,0"/>
             
             <Button x:Name="KeyTable" Content="Empty" MinWidth="150" Width="400" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Template="{StaticResource NoMouseOverButtonTemplate}" Click="KeyTable_Click"
-                    MouseEnter="KeyTable_MouseEnter" MouseLeave="KeyTable_MouseLeave" BorderBrush="Red" BorderThickness="1" Margin="1,0,1,0"/>
+                    MouseEnter="KeyTable_MouseEnter" MouseLeave="KeyTable_MouseLeave" BorderBrush="OrangeRed" BorderThickness="1" Margin="1,0,1,0"/>
 
             <Button x:Name="Quit" Content="Quit Program" MinWidth="150" Width="210" Height="50" Padding="10,10,10,10" Foreground="OrangeRed" Background="Black" 
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Template="{StaticResource NoMouseOverButtonTemplate}" Click="Quit_Click"
-                    MouseEnter="Quit_MouseEnter" MouseLeave="Quit_MouseLeave" BorderBrush="Red" BorderThickness="1" Margin="1,0,1,0"/>
+                    MouseEnter="Quit_MouseEnter" MouseLeave="Quit_MouseLeave" BorderBrush="OrangeRed" BorderThickness="1" Margin="1,0,1,0"/>
 
         </StackPanel>
 
