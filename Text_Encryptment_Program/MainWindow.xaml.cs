@@ -28,6 +28,7 @@ namespace Text_Encryptment_Program
         Dictionary<int, int> KeyDict    = new Dictionary<int, int>();
         List<string> EncryptedData      = new List<string>();
         List<string> DecryptedData      = new List<string>();
+        List<char> encryptionCache      = new List<char>();
         List<string> TextData           = new List<string>();
         List<string> textCache          = new List<string>();
 
@@ -160,13 +161,24 @@ namespace Text_Encryptment_Program
 
             await Task.Delay(3200);
 
+            int charCounter = 0;
+                        
             for (; encryptChar <= 126; encryptChar++)
             {
-                for (int i = 8; i > 0; i--)
+
+                foreach (var item in encryptionCache)
+                {
+                    if(encryptChar == Convert.ToInt64(Convert.ToChar(item)))
+                    {
+                        charCounter++;
+                    }
+                }
+
+                for (int i = 1 + charCounter; i > 0; i--)
                 {
                     Jump:
 
-                    usedNumberFound = false;
+                    usedNumberFound   = false;
 
                     if(integerRange1)
                     {
@@ -198,7 +210,7 @@ namespace Text_Encryptment_Program
                         {
                             goto Jump;
                         }
-                    }
+                    }                                        
 
                     EncryptedData = TextEncryption.EncryptText(DecryptedData, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
                     
@@ -209,14 +221,14 @@ namespace Text_Encryptment_Program
                         EncryptedText.AppendText($"{item}");
                     }
 
-                    await Task.Delay(85);
+                    await Task.Delay(10);
                 }
 
                 KeyDict.Add(encryptChar, rN);
 
                 DecryptedData.Clear();
 
-                foreach( var item in EncryptedData)
+                foreach(var item in EncryptedData)
                 {
                     DecryptedData.Add(item);
                 }                
@@ -226,7 +238,16 @@ namespace Text_Encryptment_Program
 
             for (; encryptChar <= 255; encryptChar++)
             {
-                for (int i = 8; i > 0; i--)
+
+                foreach (var item in EncryptedData)
+                {
+                    if (encryptChar == Convert.ToInt64(Convert.ToChar(item)))
+                    {
+                        charCounter++;
+                    }
+                }
+
+                for (int i = 0 + charCounter; i > 0; i--)
                 {
                     Jump2:
 
@@ -274,7 +295,7 @@ namespace Text_Encryptment_Program
                         EncryptedText.AppendText($"{item}");
                     }
 
-                    await Task.Delay(85);
+                    await Task.Delay(10);
 
                 }
 
