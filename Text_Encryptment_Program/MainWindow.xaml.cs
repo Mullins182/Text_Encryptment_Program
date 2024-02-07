@@ -152,6 +152,7 @@ namespace Text_Encryptment_Program
             foreach (var item in DecryptedText.Text)                // DecryptedData wird mit Chars gefüllt !
             {
                 DecryptedData.Add(Convert.ToString(item));
+                encryptionCache.Add(item);
             }
 
             foreach (var item in DecryptedData)
@@ -160,11 +161,10 @@ namespace Text_Encryptment_Program
             }
 
             await Task.Delay(3200);
-
-            int charCounter = 0;
-                        
+                                    
             for (; encryptChar <= 126; encryptChar++)
             {
+                int charCounter = 0;
 
                 foreach (var item in encryptionCache)
                 {
@@ -238,8 +238,9 @@ namespace Text_Encryptment_Program
 
             for (; encryptChar <= 255; encryptChar++)
             {
+                int charCounter = 0;
 
-                foreach (var item in EncryptedData)
+                foreach (var item in encryptionCache)
                 {
                     if (encryptChar == Convert.ToInt64(Convert.ToChar(item)))
                     {
@@ -247,7 +248,7 @@ namespace Text_Encryptment_Program
                     }
                 }
 
-                for (int i = 0 + charCounter; i > 0; i--)
+                for (int i = 1 + charCounter; i > 0; i--)
                 {
                     Jump2:
 
