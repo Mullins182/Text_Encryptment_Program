@@ -26,9 +26,8 @@ namespace Text_Encryptment_Program
         DispatcherTimer DecryptBoxLabelAnim = new DispatcherTimer(DispatcherPriority.Send);
 
         Dictionary<int, int> KeyDict    = new Dictionary<int, int>();
-        List<string> EncryptedData      = new List<string>();
-        List<string> DecryptedData      = new List<string>();
-        List<char> encryptionCache      = new List<char>();
+        List<char> EncryptedData        = new List<char>();
+        List<char> DecryptedData        = new List<char>();
         List<string> TextData           = new List<string>();
         List<string> textCache          = new List<string>();
 
@@ -99,13 +98,12 @@ namespace Text_Encryptment_Program
 
         private void OpenFile_Click(object sender, RoutedEventArgs e)
         {
-            TextData.Clear();
 
             // Configure open file dialog box
-            var dialog              = new Microsoft.Win32.OpenFileDialog();
-            dialog.FileName         = "Select a txt file !"; // Default file name
-            dialog.DefaultExt       = ".txt"; // Default file extension
-            dialog.Filter           = "Text documents (.txt)|*.txt"; // Filter files by extension
+            var dialog = new Microsoft.Win32.OpenFileDialog();
+            dialog.FileName = "Select a txt file !"; // Default file name
+            dialog.DefaultExt = ".txt"; // Default file extension
+            dialog.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
             dialog.InitialDirectory = Environment.CurrentDirectory; // Sets the initial Dir for File Dialog Box to actual working Directory !
 
             // Show open file dialog box
@@ -117,11 +115,10 @@ namespace Text_Encryptment_Program
                 // Open document
                 string filename = dialog.FileName;
 
-                DecryptedData = LoadContentIntoDecryptedText.ReadFileData(filename);
+                TextData = LoadContentIntoDecryptedText.ReadFileData(filename);
 
-                foreach (var item in DecryptedData)
+                foreach (var item in TextData)
                 {
-                    TextData.Add(item);
                     DecryptedText.AppendText($"\n{item}");
                 }
             }
@@ -135,7 +132,6 @@ namespace Text_Encryptment_Program
             bool integerRange1      = true;
             bool integerRange2      = false;
             bool integerRange3      = false;
-            int encryptChar         = 33;
             int rN                  = 0;
 
             EncryptBox.Content      = "Encrypting in Progress ...";
@@ -149,10 +145,9 @@ namespace Text_Encryptment_Program
             DecryptedData.Clear();
             KeyDict.Clear();
 
-            foreach (var item in DecryptedText.Text)                // DecryptedData wird mit Chars gefüllt !
+            foreach (var item in DecryptedText.Text)                // DecryptedData wird mit Chars aus der Decrypted Text Box beschrieben !
             {
-                DecryptedData.Add(Convert.ToString(item));
-                encryptionCache.Add(item);
+                DecryptedData.Add(item);
             }
 
             foreach (var item in DecryptedData)
@@ -162,19 +157,10 @@ namespace Text_Encryptment_Program
 
             await Task.Delay(3200);
                                     
-            for (; encryptChar <= 126; encryptChar++)
+            for (int charPos = 0 ; charPos <= DecryptedData.Count - 1; charPos++)
             {
-                int charCounter = 0;
 
-                foreach (var item in encryptionCache)
-                {
-                    if(encryptChar == Convert.ToInt64(Convert.ToChar(item)))
-                    {
-                        charCounter++;
-                    }
-                }
-
-                for (int i = 1 + charCounter; i > 0; i--)
+                for (int n = 20; n > 0; n--)
                 {
                     Jump:
 
@@ -212,7 +198,7 @@ namespace Text_Encryptment_Program
                         }
                     }                                        
 
-                    EncryptedData = TextEncryption.EncryptText(DecryptedData, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
+                    EncryptedData = TextEncryption.EncryptText(DecryptedData, rN, charPos); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
                     
                     EncryptedText.Clear();
 
@@ -224,7 +210,7 @@ namespace Text_Encryptment_Program
                     await Task.Delay(10);
                 }
 
-                KeyDict.Add(encryptChar, rN);
+                KeyDict.Add(charPos, rN);
 
                 DecryptedData.Clear();
 
@@ -234,81 +220,69 @@ namespace Text_Encryptment_Program
                 }                
             }
 
-            encryptChar = 161;
+            //for (int charPos = 161; charPos <= DecryptedData.Count - 1; charPos++)
+            //{
 
-            for (; encryptChar <= 255; encryptChar++)
-            {
-                int charCounter = 0;
+            //    for (int n = 20; n > 0; n--)
+            //    {
+            //        Jump2:
 
-                foreach (var item in encryptionCache)
-                {
-                    if (encryptChar == Convert.ToInt64(Convert.ToChar(item)))
-                    {
-                        charCounter++;
-                    }
-                }
+            //        usedNumberFound = false;
 
-                for (int i = 1 + charCounter; i > 0; i--)
-                {
-                    Jump2:
+            //        if (integerRange1)
+            //        {
+            //            rN = generateRandoms.Next(5632, 5789);
 
-                    usedNumberFound = false;
+            //            integerRange1 = false;
+            //            integerRange2 = true;
+            //        }
+            //        else if (integerRange2)
+            //        {
+            //            rN = generateRandoms.Next(5792, 5873);
 
-                    if (integerRange1)
-                    {
-                        rN = generateRandoms.Next(5632, 5789);
+            //            integerRange2 = false;
+            //            integerRange3 = true;
+            //        }
+            //        else if (integerRange3)
+            //        {
+            //            rN = generateRandoms.Next(5376, 5631);
 
-                        integerRange1 = false;
-                        integerRange2 = true;
-                    }
-                    else if (integerRange2)
-                    {
-                        rN = generateRandoms.Next(5792, 5873);
+            //            integerRange3 = false;
+            //            integerRange1 = true;
+            //        }
 
-                        integerRange2 = false;
-                        integerRange3 = true;
-                    }
-                    else if (integerRange3)
-                    {
-                        rN = generateRandoms.Next(5376, 5631);
+            //        foreach (var item in KeyDict.Values)
+            //        {
+            //            usedNumberFound = item.Equals(rN);
 
-                        integerRange3 = false;
-                        integerRange1 = true;
-                    }
-
-                    foreach (var item in KeyDict.Values)
-                    {
-                        usedNumberFound = item.Equals(rN);
-
-                        if (usedNumberFound)
-                        {
-                            goto Jump2;
-                        }
-                    }
+            //            if (usedNumberFound)
+            //            {
+            //                goto Jump2;
+            //            }
+            //        }
 
 
-                    EncryptedData = TextEncryption.EncryptText(DecryptedData, rN, encryptChar); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
+            //        EncryptedData = TextEncryption.EncryptText(DecryptedData, rN, charPos); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
 
-                    EncryptedText.Clear();
+            //        EncryptedText.Clear();
 
-                    foreach (var item in EncryptedData)
-                    {
-                        EncryptedText.AppendText($"{item}");
-                    }
+            //        foreach (var item in EncryptedData)
+            //        {
+            //            EncryptedText.AppendText($"{item}");
+            //        }
 
-                    await Task.Delay(10);
+            //        await Task.Delay(10);
+            //    }
 
-                }
+            //    KeyDict.Add(encryptChar, rN);
 
-                KeyDict.Add(encryptChar, rN);
+            //    DecryptedData.Clear();
 
-                DecryptedData.Clear();
-
-                foreach (var item in EncryptedData)
-                {
-                    DecryptedData.Add(item);
-                }
-            }
+            //    foreach (var item in EncryptedData)
+            //    {
+            //        DecryptedData.Add(item);
+            //    }
+            //}
 
             EncryptBox.Content              = "Successfully Encrypted";
             Encrypt.BorderBrush             = Brushes.OrangeRed;
@@ -387,14 +361,17 @@ namespace Text_Encryptment_Program
 
             //List<string> Test = new List<string>();
 
-            EncryptedData.Add(EncryptedText.Text);
+            foreach (var item in EncryptedText.Text)
+            {
+                EncryptedData.Add(item);                
+            }
 
             await Task.Delay(3000);
 
             foreach (var item in EncryptedData)
             {
-                string cacheDecrpt  = "";
-                string cache        = item;
+                char cacheDecrpt  = 'X';
+                char cache        = item;
 
                 for (int i = 33; i <= 255; i++) // Complete decryption of first Line in the List EncryptedData
                 {                    
