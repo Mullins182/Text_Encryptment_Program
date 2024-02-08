@@ -11,10 +11,24 @@ namespace Text_Encryptment_Program
     {
         public static List<char> EncryptText(List<char> decrText, int randomNumber, int charPos) 
         {
+            List<char> result = new List<char>();
 
-            decrText[charPos] = Convert.ToChar(randomNumber);
+            foreach (var item in decrText)
+            {
+                result.Add(item);
+            }
 
-            return decrText;
+            if (Convert.ToInt32(result[charPos]) == 10 || Convert.ToInt32(result[charPos]) == 13 || Convert.ToInt32(result[charPos]) == 9)
+            {
+
+            }
+            else
+            {
+                result[charPos] = Convert.ToChar(randomNumber);
+            }
+
+
+            return result;
         }
     }
 }
