@@ -31,6 +31,8 @@ namespace Text_Encryptment_Program
         List<char> DecryptedData            = new List<char>();
         List<string> TextData               = new List<string>();
         List<string> textCache              = new List<string>();
+        List<string> output                 = new List<string>();
+
 
         bool showKeyTable                   = false;
 
@@ -190,12 +192,26 @@ namespace Text_Encryptment_Program
 
             EncryptedData = TextEncryption.EncryptText(DecryptedData, EncrKeyTable); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
 
-                    
-            EncryptedText.Clear();
+            string cache = "";
 
-            foreach (var item in EncryptedData)
+            for (int i = 0; i < DecryptedData.Count; i++)
             {
-                 EncryptedText.AppendText($"{item}");
+
+                DecryptedData[i] = EncryptedData[i];
+
+                cache = "";
+
+                foreach (var item in DecryptedData)
+                {
+                    cache += item;
+                }
+
+                if(i % 6 == 0)
+                {
+                    EncryptedText.Text = cache;
+                }
+
+                await Task.Delay(1);
             }
 
             EncryptBox.Content              = "Successfully Encrypted";
