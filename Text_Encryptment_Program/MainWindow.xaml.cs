@@ -34,7 +34,7 @@ namespace Text_Encryptment_Program
 
         bool showKeyTable                   = false;
 
-        Random generateRandoms              = new Random();                           // Neue Instanz der Random Klasse erstellen !
+        Random generateRandoms              = new Random();                       // Neue Instanz der Random Klasse erstellen !
                                                                                  // GenerateRandoms.Next() = Zufallszahl zwischen (x, y) erzeugen ! (x ist inklusiv, y ist exklusiv)
         public MainWindow()
         {
@@ -129,6 +129,7 @@ namespace Text_Encryptment_Program
         {
             DisableAllButtons();
 
+
             bool usedNumberFound    = false;
             bool integerRange1      = true;
             bool integerRange2      = false;
@@ -207,7 +208,7 @@ namespace Text_Encryptment_Program
                         EncryptedText.AppendText($"{item}");
                     }
 
-                    await Task.Delay(30);
+                    await Task.Delay(70);
                 }
 
                 DecrKeyDict.Add(charPos, DecryptedData[charPos]);
