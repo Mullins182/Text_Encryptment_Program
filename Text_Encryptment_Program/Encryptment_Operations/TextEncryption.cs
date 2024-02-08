@@ -9,24 +9,21 @@ namespace Text_Encryptment_Program
 {
     public static class TextEncryption                     // Hiermit wird der Text der Decrypted Text Box verschlüsselt !
     {
-        public static List<char> EncryptText(List<char> decrText, int randomNumber, int charPos) 
+        public static List<char> EncryptText(List<char> decrText, Dictionary<int, int> keyTable) 
         {
             List<char> result = new List<char>();
+
+            int Pos = 0;
 
             foreach (var item in decrText)
             {
                 result.Add(item);
             }
 
-            if (Convert.ToInt32(result[charPos]) == 10 || Convert.ToInt32(result[charPos]) == 13 || Convert.ToInt32(result[charPos]) == 9)
+            foreach (var item in keyTable)
             {
-
+                result[Pos++] = (char)item.Value;
             }
-            else
-            {
-                result[charPos] = Convert.ToChar(randomNumber);
-            }
-
 
             return result;
         }

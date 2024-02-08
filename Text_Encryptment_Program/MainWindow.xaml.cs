@@ -25,8 +25,8 @@ namespace Text_Encryptment_Program
         DispatcherTimer EncryptBoxLabelAnim = new DispatcherTimer(DispatcherPriority.Send);
         DispatcherTimer DecryptBoxLabelAnim = new DispatcherTimer(DispatcherPriority.Send);
 
-        Dictionary<int, int> EncrKeyDict    = new Dictionary<int, int>();
-        Dictionary<int, int> DecrKeyDict    = new Dictionary<int, int>();
+        Dictionary<int, int> EncrKeyTable   = new Dictionary<int, int>();
+        Dictionary<int, int> DecrKeyTable   = new Dictionary<int, int>();
         List<char> EncryptedData            = new List<char>();
         List<char> DecryptedData            = new List<char>();
         List<string> TextData               = new List<string>();
@@ -130,7 +130,6 @@ namespace Text_Encryptment_Program
             DisableAllButtons();
 
 
-            bool usedNumberFound    = false;
             bool integerRange1      = true;
             bool integerRange2      = false;
             bool integerRange3      = false;
@@ -145,8 +144,8 @@ namespace Text_Encryptment_Program
 
             EncryptedText.Clear();
             DecryptedData.Clear();
-            EncrKeyDict.Clear();
-            DecrKeyDict.Clear();
+            EncrKeyTable.Clear();
+            DecrKeyTable.Clear();
 
             foreach (var item in DecryptedText.Text)                // DecryptedData wird mit Chars aus der Decrypted Text Box beschrieben !
             {
@@ -158,68 +157,45 @@ namespace Text_Encryptment_Program
                 EncryptedText.AppendText($"{item}");
             }
 
-            await Task.Delay(3200);
-                                    
-            for (int charPos = 0 ; charPos < DecryptedData.Count; charPos++)
+            for (int i = 0; i < DecryptedData.Count; i++) 
             {
-
-                for (int n = 1; n > 0; n--)
+                
+                if (integerRange1)
                 {
-                    Jump:
+                    rN = generateRandoms.Next(5632, 5789);
 
-                    if(integerRange1)
-                    {
-                        rN = generateRandoms.Next(5632, 5789);
+                    integerRange1 = false;
+                    integerRange2 = true;
+                }
+                else if (integerRange2)
+                {
+                    rN = generateRandoms.Next(5792, 5873);
 
-                        integerRange1 = false;
-                        integerRange2 = true;
-                    }
-                    else if (integerRange2) 
-                    {
-                        rN = generateRandoms.Next(5792, 5873);
+                    integerRange2 = false;
+                    integerRange3 = true;
+                }
+                else if (integerRange3)
+                {
+                    rN = generateRandoms.Next(5376, 5631);
 
-                        integerRange2 = false;
-                        integerRange3 = true;
-                    }
-                    else if (integerRange3)
-                    {
-                        rN = generateRandoms.Next(5376, 5631);
-
-                        integerRange3 = false;
-                        integerRange1 = true;
-                    }
-
-                    foreach (var item in EncrKeyDict.Values)
-                    {
-                        usedNumberFound = item.Equals(rN);
-
-                        if(usedNumberFound)
-                        {
-                            goto Jump;
-                        }
-                    }                                        
-
-                    EncryptedData = TextEncryption.EncryptText(DecryptedData, rN, charPos); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
-                    
-                    EncryptedText.Clear();
-
-                    foreach (var item in EncryptedData)
-                    {
-                        EncryptedText.AppendText($"{item}");
-                    }
-
-                    await Task.Delay(70);
+                    integerRange3 = false;
+                    integerRange1 = true;
                 }
 
-                DecrKeyDict.Add(charPos, DecryptedData[charPos]);
-                EncrKeyDict.Add(charPos, rN);
+                EncrKeyTable.Add(i, rN);
+                DecrKeyTable.Add(i, DecryptedData[i]);
+            }
 
-                DecryptedData.Clear();
+            await Task.Delay(3200);
 
-                foreach(var item in EncryptedData)
-                {
-                    DecryptedData.Add(item);
-                }                
+            EncryptedData = TextEncryption.EncryptText(DecryptedData, EncrKeyTable); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
+
+                    
+            EncryptedText.Clear();
+
+            foreach (var item in EncryptedData)
+            {
+                 EncryptedText.AppendText($"{item}");
             }
 
             EncryptBox.Content              = "Successfully Encrypted";
@@ -256,15 +232,17 @@ namespace Text_Encryptment_Program
 
                 DecryptedText.AppendText("\n_____________________________________\n");
 
-                DecryptedText.AppendText($"\nEncrypted Key Count: {EncrKeyDict.Count}");
-                DecryptedText.AppendText($"\nDecrypted Key Count: {DecrKeyDict.Count}");
+                DecryptedText.AppendText($"\nEncrypt Key Count: {EncrKeyTable.Count}\nDecryp Key Count: {DecrKeyTable.Count}");
 
                 DecryptedText.AppendText("\n_____________________________________\n\n");
 
-                foreach (var item in EncrKeyDict)
+                foreach (var item in EncrKeyTable)
                 {
-                    DecryptedText.AppendText($"\nEncrypt Key:\t{item.Key}\t\tDecrypt Key:\t{item.Key}");
-                    DecryptedText.AppendText($"\nEncrypt Value:\t{item.Value}\t\tDecrypt Value:\t{DecrKeyDict[item.Key]}");
+                    DecryptedText.AppendText($"\nChar Pos (Key):\t{item.Key}");
+                    DecryptedText.AppendText($"\n\nDecrypted Value:\t{DecrKeyTable[item.Key]}");
+                    DecryptedText.AppendText($"\nEncrypted Value:\t{item.Value}");
+                    DecryptedText.AppendText($"\n");
+                    DecryptedText.AppendText($"---------------------------------------------");
                     DecryptedText.AppendText($"\n");
                 }
             }
@@ -311,7 +289,7 @@ namespace Text_Encryptment_Program
             {
                 char cacheDecrpt    = 'X';
 
-                cacheDecrpt         = TextDecryption.DecryptText(item, DecrKeyDict);
+                cacheDecrpt         = TextDecryption.DecryptText(item, EncrKeyTable);
 
                 DecryptedData.Add(cacheDecrpt); // The complete decrypted Line from the list is added to the list !
 
