@@ -27,6 +27,7 @@ namespace Text_Encryptment_Program
 
         Dictionary<int, int> EncrKeyTable   = new Dictionary<int, int>();
         Dictionary<int, int> DecrKeyTable   = new Dictionary<int, int>();
+
         List<char> EncryptedData            = new List<char>();
         List<char> DecryptedData            = new List<char>();
         List<string> TextData               = new List<string>();
@@ -192,24 +193,43 @@ namespace Text_Encryptment_Program
 
             EncryptedData = TextEncryption.EncryptText(DecryptedData, EncrKeyTable); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
 
-            string cache = "";
+            EncryptedText.Clear();
 
-            for (int i = 0; i < DecryptedData.Count; i++)
+            for (int i = 0; i < EncryptedData.Count; i++)
             {
 
-                DecryptedData[i] = EncryptedData[i];
+                //buffer = "";
 
-                cache = "";
+                //buffer += EncryptedData[i];
 
-                foreach (var item in DecryptedData)
-                {
-                    cache += item;
-                }
+                //if (i % 6 == 0)
+                //{
+                //    for (int n = i; n < DecryptedData.Count; n++)
+                //    {
+                //        if (n == i)
+                //        {
 
-                if(i % 6 == 0)
-                {
-                    EncryptedText.Text = cache;
-                }
+                //        }
+                //        else
+                //        {
+                //            buffer += DecryptedData[n];
+                //        }
+                //    }
+
+                //    EncryptedText.Text = buffer;
+                //}
+                EncryptedText.AppendText(EncryptedData[i].ToString());
+
+                //foreach (var item in EncryptedData)
+                //{
+                //    //buffer += item.ToString();
+
+                //    //if (i % 10 == 0)
+                //    //{
+                //    //    EncryptedText.AppendText(buffer);
+                //    //}
+
+                //}
 
                 await Task.Delay(1);
             }
@@ -301,13 +321,16 @@ namespace Text_Encryptment_Program
 
             await Task.Delay(3000);
 
+            int index = 0;
+
             foreach (var item in EncryptedData)
             {
-                char cacheDecrpt    = 'X';
 
-                cacheDecrpt         = TextDecryption.DecryptText(item, EncrKeyTable);
+                char cache      = TextDecryption.DecryptText(item, DecrKeyTable, EncrKeyTable, index);
 
-                DecryptedData.Add(cacheDecrpt); // The complete decrypted Line from the list is added to the list !
+                index++;
+
+                DecryptedData.Add(cache);
 
                 DecryptedText.Clear();
 
@@ -316,7 +339,7 @@ namespace Text_Encryptment_Program
                     DecryptedText.AppendText($"{item2}");
                 }
 
-                await Task.Delay(500);
+                await Task.Delay(15);
             }
 
             DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(150);

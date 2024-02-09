@@ -10,18 +10,18 @@ namespace Text_Encryptment_Program
 {
     public static class TextDecryption                         // Hiermit wird der Text einer Textdatei entschlüsselt !
     {
-        public static char DecryptText(char encryptedChar, Dictionary<int, int> keyList) 
+        public static char DecryptText(char encryptedChar, Dictionary<int, int> DecrKeyTable, Dictionary<int, int> EncrKeyTable, int index) 
         {
             char result;
 
-            if (keyList.ContainsValue((int)encryptedChar))
-            {
-                result = (char)keyList[encryptedChar];
+            //if (EncrKeyTable[index] == ((int)encryptedChar))
+            //{
+                result = Convert.ToChar(DecrKeyTable[index]);
 
                 return result;
-            }
+            //}
 
-            return encryptedChar;
+            //return encryptedChar;
         }
     }
 }
