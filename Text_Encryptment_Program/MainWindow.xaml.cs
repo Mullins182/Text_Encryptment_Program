@@ -193,46 +193,19 @@ namespace Text_Encryptment_Program
 
             EncryptedData = TextEncryption.EncryptText(DecryptedData, EncrKeyTable); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
 
-            EncryptedText.Clear();
+            //EncryptedText.Clear();
+
+            char x = ' ';
+            char y = ' ';
+            char z = ' ';
 
             for (int i = 0; i < EncryptedData.Count; i++)
             {
 
-                //buffer = "";
-
-                //buffer += EncryptedData[i];
-
-                //if (i % 6 == 0)
-                //{
-                //    for (int n = i; n < DecryptedData.Count; n++)
-                //    {
-                //        if (n == i)
-                //        {
-
-                //        }
-                //        else
-                //        {
-                //            buffer += DecryptedData[n];
-                //        }
-                //    }
-
-                //    EncryptedText.Text = buffer;
-                //}
-                EncryptedText.AppendText(EncryptedData[i].ToString());
-
-                //foreach (var item in EncryptedData)
-                //{
-                //    //buffer += item.ToString();
-
-                //    //if (i % 10 == 0)
-                //    //{
-                //    //    EncryptedText.AppendText(buffer);
-                //    //}
-
-                //}
-
-                await Task.Delay(1);
             }
+
+
+            await Task.Delay(25);
 
             EncryptBox.Content              = "Successfully Encrypted";
             Encrypt.BorderBrush             = Brushes.OrangeRed;
