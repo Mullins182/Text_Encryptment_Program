@@ -196,7 +196,7 @@ namespace Text_Encryptment_Program
 
             for (int i = 0; i < DecryptedData.Count; i++)
             {
-
+                
                 DecryptedData[i] = EncryptedData[i];
 
                 cache = "";
