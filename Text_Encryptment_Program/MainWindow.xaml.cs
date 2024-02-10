@@ -27,6 +27,7 @@ namespace Text_Encryptment_Program
 
         Dictionary<int, int> EncrKeyTable   = new Dictionary<int, int>();
         Dictionary<int, int> DecrKeyTable   = new Dictionary<int, int>();
+
         List<char> EncryptedData            = new List<char>();
         List<char> DecryptedData            = new List<char>();
         List<string> TextData               = new List<string>();
@@ -192,11 +193,21 @@ namespace Text_Encryptment_Program
 
             EncryptedData = TextEncryption.EncryptText(DecryptedData, EncrKeyTable); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
 
+            //EncryptedText.Clear();
+
+            char x = ' ';
+            char y = ' ';
+            char z = ' ';
+
             string cache = "";
 
+            for (int i = 0; i < EncryptedData.Count; i++)
+            {
+
+            }
             for (int i = 0; i < DecryptedData.Count; i++)
             {
-                
+
                 DecryptedData[i] = EncryptedData[i];
 
                 cache = "";
@@ -205,14 +216,10 @@ namespace Text_Encryptment_Program
                 {
                     cache += item;
                 }
-
-                if(i % 6 == 0)
-                {
-                    EncryptedText.Text = cache;
-                }
-
-                await Task.Delay(1);
             }
+
+
+            await Task.Delay(25);
 
             EncryptBox.Content              = "Successfully Encrypted";
             Encrypt.BorderBrush             = Brushes.OrangeRed;
@@ -232,7 +239,7 @@ namespace Text_Encryptment_Program
         }
 
         private void KeyTable_Click(object sender, RoutedEventArgs e)       // Hier noch Daten in Liste sichern und beim erneuten Click wieder in Box laden !
-        {
+            {
 
             if (!showKeyTable) 
             {
@@ -301,13 +308,16 @@ namespace Text_Encryptment_Program
 
             await Task.Delay(3000);
 
+            int index = 0;
+
             foreach (var item in EncryptedData)
             {
-                char cacheDecrpt    = 'X';
 
-                cacheDecrpt         = TextDecryption.DecryptText(item, EncrKeyTable);
+                char cache      = TextDecryption.DecryptText(item, DecrKeyTable, EncrKeyTable, index);
 
-                DecryptedData.Add(cacheDecrpt); // The complete decrypted Line from the list is added to the list !
+                index++;
+
+                DecryptedData.Add(cache);
 
                 DecryptedText.Clear();
 
@@ -316,7 +326,7 @@ namespace Text_Encryptment_Program
                     DecryptedText.AppendText($"{item2}");
                 }
 
-                await Task.Delay(500);
+                await Task.Delay(15);
             }
 
             DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(150);
