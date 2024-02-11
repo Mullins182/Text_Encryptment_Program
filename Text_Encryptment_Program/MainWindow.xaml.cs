@@ -151,13 +151,20 @@ namespace Text_Encryptment_Program
 
             foreach (var item in DecryptedText.Text)                // DecryptedData wird mit Chars aus der Decrypted Text Box beschrieben !
             {
-                DecryptedData.Add(item);
+                //if ((int)item == 10 || (int)item == 13)
+                //{
+
+                //}
+                //else
+                //{
+                    DecryptedData.Add(item);
+                //}
             }
 
-            foreach (var item in DecryptedData)
-            {
-                EncryptedText.AppendText($"{item}");
-            }
+            //foreach (var item in DecryptedData)
+            //{
+            //    EncryptedText.AppendText($"{item}");
+            //}
 
             for (int i = 0; i < DecryptedData.Count; i++) 
             {
@@ -193,13 +200,15 @@ namespace Text_Encryptment_Program
 
             EncryptedData = TextEncryption.EncryptText(DecryptedData, EncrKeyTable);
 
-            int Pos = 0;
+            //int Pos = 0;
 
             foreach (var item in EncryptedData)
             {
-                EncryptedText.Text = EncryptedText.Text.Replace((char)DecrKeyTable.ElementAt(Pos++).Value, item);
+                //EncryptedText.Text = EncryptedText.Text.Replace((char)DecrKeyTable.ElementAt(Pos++).Value, item);
 
-                await Task.Delay(10);
+                EncryptedText.AppendText($"{item}");
+
+                await Task.Delay(5);
             }
 
 
@@ -281,38 +290,36 @@ namespace Text_Encryptment_Program
             Decrypt.BorderBrush     = Brushes.GreenYellow;
             DecryptBox.Foreground   = Brushes.YellowGreen;
 
-            //List<string> Test = new List<string>();
+            //int Pos = 0;
 
             foreach (var item in EncryptedText.Text)
             {
-                EncryptedData.Add(item);                
+                EncryptedData.Add(item);
             }
+
+            //foreach (var item in EncryptedData)
+            //{
+            //    DecryptedText.AppendText($"{item}");
+            //}
 
             await Task.Delay(3000);
 
             int index = 0;
-            char cache = ' ';
 
             foreach (var item in EncryptedData)
             {
+                DecryptedData.Add(TextDecryption.DecryptText(item, DecrKeyTable, EncrKeyTable, index++));
+            }
 
-                cache      = TextDecryption.DecryptText(item, DecrKeyTable, EncrKeyTable, index);
+            foreach (var item in DecryptedData)
+            {
+                //DecryptedText.Text = DecryptedText.Text.Replace((char)EncrKeyTable.ElementAt(Pos).Value, item);
 
-                index++;
+                //Pos++;
 
-                DecryptedData.Add(cache);
+                DecryptedText.AppendText($"{item}");
 
-                if(DecryptedData.Count % 250 == 0 || DecryptedData.Count == EncryptedData.Count)
-                {
-                    DecryptedText.Clear();
-
-                    foreach (var item2 in DecryptedData)
-                    {
-                        DecryptedText.AppendText($"{item2}");
-                    }
-                }                
-
-                await Task.Delay(3);
+                await Task.Delay(5);
             }
 
             DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(150);
