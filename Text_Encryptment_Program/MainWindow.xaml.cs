@@ -192,33 +192,52 @@ namespace Text_Encryptment_Program
 
             EncryptedData = TextEncryption.EncryptText(DecryptedData, EncrKeyTable); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
 
-            //EncryptedText.Clear();
-
-            char x = ' ';
-            char y = ' ';
-            char z = ' ';
+            EncryptedText.Clear();
 
             string cache = "";
 
-            for (int i = 0; i < EncryptedData.Count; i++)
+            //List<string> cache = new List<string>();
+
+            //int a;
+            //int b;
+            //int c;
+            //int d;
+            //int f;
+            //int g;
+
+            //for (int i = 0; i < 1; i++) 
+            //{
+            //    a = generateRandoms.Next(5376, 5631);
+            //    b = generateRandoms.Next(5792, 5873);
+            //    c = generateRandoms.Next(5632, 5789);
+            //    d = generateRandoms.Next(5376, 5631);
+            //    f = generateRandoms.Next(5792, 5873);
+            //    g = generateRandoms.Next(5632, 5789);
+
+            //    cache.Add($"{(char)a}{(char)b}{(char)c}{(char)d}{(char)f}{(char)g}");
+
+            int counter = 0;
+
+            foreach (var item in EncryptedData)
             {
+                
+                cache += item;
 
-            }
-            for (int i = 0; i < DecryptedData.Count; i++)
-            {
-
-                DecryptedData[i] = EncryptedData[i];
-
-                cache = "";
-
-                foreach (var item in DecryptedData)
+                if(counter % 100 == 0)
                 {
-                    cache += item;
+                    EncryptedText.Clear();
+
+                    EncryptedText.AppendText(cache);
+
+                    await Task.Delay(75);
                 }
+
+                counter++;
             }
 
 
-            await Task.Delay(25);
+            //}
+
 
             EncryptBox.Content              = "Successfully Encrypted";
             Encrypt.BorderBrush             = Brushes.OrangeRed;
