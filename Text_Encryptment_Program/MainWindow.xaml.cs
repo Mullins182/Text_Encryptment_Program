@@ -188,55 +188,19 @@ namespace Text_Encryptment_Program
                 DecrKeyTable.Add(i, DecryptedData[i]);
             }
 
+
             await Task.Delay(3200);
 
-            EncryptedData = TextEncryption.EncryptText(DecryptedData, EncrKeyTable); // EncryptText(LISTE MIT ROHDATEN, RANDOM NUMBER, DEZIMALWERT UTF-16 TABELLE DES CHARS DER VERSCHL. WIRD)
+            EncryptedData = TextEncryption.EncryptText(DecryptedData, EncrKeyTable);
 
-            EncryptedText.Clear();
-
-            string cache = "";
-
-            //List<string> cache = new List<string>();
-
-            //int a;
-            //int b;
-            //int c;
-            //int d;
-            //int f;
-            //int g;
-
-            //for (int i = 0; i < 1; i++) 
-            //{
-            //    a = generateRandoms.Next(5376, 5631);
-            //    b = generateRandoms.Next(5792, 5873);
-            //    c = generateRandoms.Next(5632, 5789);
-            //    d = generateRandoms.Next(5376, 5631);
-            //    f = generateRandoms.Next(5792, 5873);
-            //    g = generateRandoms.Next(5632, 5789);
-
-            //    cache.Add($"{(char)a}{(char)b}{(char)c}{(char)d}{(char)f}{(char)g}");
-
-            int counter = 0;
+            int Pos = 0;
 
             foreach (var item in EncryptedData)
             {
-                
-                cache += item;
+                EncryptedText.Text = EncryptedText.Text.Replace((char)DecrKeyTable.ElementAt(Pos++).Value, item);
 
-                if(counter % 100 == 0)
-                {
-                    EncryptedText.Clear();
-
-                    EncryptedText.AppendText(cache);
-
-                    await Task.Delay(75);
-                }
-
-                counter++;
+                await Task.Delay(10);
             }
-
-
-            //}
 
 
             EncryptBox.Content              = "Successfully Encrypted";
@@ -327,24 +291,28 @@ namespace Text_Encryptment_Program
             await Task.Delay(3000);
 
             int index = 0;
+            char cache = ' ';
 
             foreach (var item in EncryptedData)
             {
 
-                char cache      = TextDecryption.DecryptText(item, DecrKeyTable, EncrKeyTable, index);
+                cache      = TextDecryption.DecryptText(item, DecrKeyTable, EncrKeyTable, index);
 
                 index++;
 
                 DecryptedData.Add(cache);
 
-                DecryptedText.Clear();
-
-                foreach (var item2 in DecryptedData)
+                if(DecryptedData.Count % 250 == 0 || DecryptedData.Count == EncryptedData.Count)
                 {
-                    DecryptedText.AppendText($"{item2}");
-                }
+                    DecryptedText.Clear();
 
-                await Task.Delay(15);
+                    foreach (var item2 in DecryptedData)
+                    {
+                        DecryptedText.AppendText($"{item2}");
+                    }
+                }                
+
+                await Task.Delay(3);
             }
 
             DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(150);
