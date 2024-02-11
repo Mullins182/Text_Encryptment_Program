@@ -132,7 +132,6 @@ namespace Text_Encryptment_Program
         {
             DisableAllButtons();
 
-
             bool integerRange1      = true;
             bool integerRange2      = false;
             bool integerRange3      = false;
