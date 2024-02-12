@@ -151,20 +151,8 @@ namespace Text_Encryptment_Program
 
             foreach (var item in DecryptedText.Text)                // DecryptedData wird mit Chars aus der Decrypted Text Box beschrieben !
             {
-                //if ((int)item == 10 || (int)item == 13)
-                //{
-
-                //}
-                //else
-                //{
-                    DecryptedData.Add(item);
-                //}
+                DecryptedData.Add(item);
             }
-
-            //foreach (var item in DecryptedData)
-            //{
-            //    EncryptedText.AppendText($"{item}");
-            //}
 
             for (int i = 0; i < DecryptedData.Count; i++) 
             {
@@ -199,12 +187,8 @@ namespace Text_Encryptment_Program
 
             EncryptedData = TextEncryption.EncryptText(DecryptedData, EncrKeyTable);
 
-            //int Pos = 0;
-
             foreach (var item in EncryptedData)
             {
-                //EncryptedText.Text = EncryptedText.Text.Replace((char)DecrKeyTable.ElementAt(Pos++).Value, item);
-
                 EncryptedText.AppendText($"{item}");
                 EncryptedText.ScrollToEnd();
 
