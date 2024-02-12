@@ -8,20 +8,15 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Text_Encryptment_Program
 {
-    public static class TextDecryption                         // Hiermit wird der Text einer Textdatei entschlüsselt !
+    public static class TextDecryption                         // Hiermit wird Text Char-weise mithilfe eines Keytable entschlüsselt !
     {
-        public static char DecryptText(char encryptedChar, Dictionary<int, int> DecrKeyTable, Dictionary<int, int> EncrKeyTable, int index) 
+        public static char DecryptText(Dictionary<int, int> DecrKeyTable, int index) 
         {
             char result;
 
-            //if (EncrKeyTable[index] == ((int)encryptedChar))
-            //{
-                result = Convert.ToChar(DecrKeyTable[index]);
+            result = Convert.ToChar(DecrKeyTable[index]);
 
-                return result;
-            //}
-
-            //return encryptedChar;
+            return result;
         }
     }
 }
