@@ -195,7 +195,6 @@ namespace Text_Encryptment_Program
                 DecrKeyTable.Add(i, DecryptedData[i]);
             }
 
-
             await Task.Delay(3200);
 
             EncryptedData = TextEncryption.EncryptText(DecryptedData, EncrKeyTable);
@@ -207,10 +206,22 @@ namespace Text_Encryptment_Program
                 //EncryptedText.Text = EncryptedText.Text.Replace((char)DecrKeyTable.ElementAt(Pos++).Value, item);
 
                 EncryptedText.AppendText($"{item}");
+                EncryptedText.ScrollToEnd();
 
                 await Task.Delay(5);
             }
 
+            EncryptedText.AppendText($"{(char)7348}{(char)7348}{(char)7348}");
+            EncryptedText.ScrollToEnd();
+
+            foreach (var item in DecrKeyTable)
+            {
+                EncryptedText.AppendText($"{item.Key},{item.Value};");
+                EncryptedText.ScrollToEnd();
+            }
+
+            EncryptedText.AppendText($"{(char)7347}{(char)7347}{(char)7347}");
+            EncryptedText.ScrollToEnd();
 
             EncryptBox.Content              = "Successfully Encrypted";
             Encrypt.BorderBrush             = Brushes.OrangeRed;
@@ -282,6 +293,8 @@ namespace Text_Encryptment_Program
             DecryptedText.Clear();
             EncryptedData.Clear();
             DecryptedData.Clear();
+            DecrKeyTable.Clear();
+            EncrKeyTable.Clear();
 
             DecryptBoxLabelAnim.Start();
 
@@ -290,10 +303,46 @@ namespace Text_Encryptment_Program
             Decrypt.BorderBrush     = Brushes.GreenYellow;
             DecryptBox.Foreground   = Brushes.YellowGreen;
 
-            //int Pos = 0;
+            bool keyAdd         = true;
+            int keyCharsFound   = 0;
+            string key          = "";
+            string value        = "";
 
             foreach (var item in EncryptedText.Text)
             {
+                if(keyCharsFound == 3)
+                {
+                    if (item == ',')
+                    {
+                        keyAdd = false;
+
+                        continue;
+                    }
+                    else if (item == ';')
+                    {
+                        keyAdd = true;
+                        DecrKeyTable.Add(Convert.ToInt32(key), Convert.ToInt32(value));
+
+                        continue;
+                    }
+
+                    if(keyAdd)
+                    {
+                        key = Convert.ToString(item);
+                    }
+                    else if(!keyAdd)
+                    {
+                        value = Convert.ToString(item);
+                    }
+
+                }
+
+                if((int)item == 7348)
+                {
+                    keyCharsFound++;
+                }
+
+
                 EncryptedData.Add(item);
             }
 
