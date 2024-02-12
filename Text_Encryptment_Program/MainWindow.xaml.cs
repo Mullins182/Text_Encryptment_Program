@@ -216,12 +216,12 @@ namespace Text_Encryptment_Program
 
             foreach (var item in DecrKeyTable)
             {
-                EncryptedText.AppendText($"{item.Key},{item.Value};");
+                EncryptedText.AppendText($"{item.Key},{(double)item.Value * 3};");
                 EncryptedText.ScrollToEnd();
             }
 
-            EncryptedText.AppendText($"{(char)7347}{(char)7347}{(char)7347}");
-            EncryptedText.ScrollToEnd();
+            //EncryptedText.AppendText($"{(char)7347}{(char)7347}{(char)7347}");
+            //EncryptedText.ScrollToEnd();
 
             EncryptBox.Content              = "Successfully Encrypted";
             Encrypt.BorderBrush             = Brushes.OrangeRed;
@@ -307,6 +307,8 @@ namespace Text_Encryptment_Program
             int keyCharsFound   = 0;
             string key          = "";
             string value        = "";
+            int key_Dec         = 0;
+            int value_Dec       = 0;
 
             foreach (var item in EncryptedText.Text)
             {
@@ -320,36 +322,40 @@ namespace Text_Encryptment_Program
                     }
                     else if (item == ';')
                     {
-                        keyAdd = true;
-                        DecrKeyTable.Add(Convert.ToInt32(key), Convert.ToInt32(value));
+                        keyAdd  = true;
+
+                        key_Dec = Convert.ToInt32(key);
+                        value_Dec = Convert.ToInt32(value) / 3;
+
+                        DecrKeyTable.Add(key_Dec, value_Dec);
+
+                        key     = "";
+                        value   = "";
 
                         continue;
                     }
 
                     if(keyAdd)
                     {
-                        key = Convert.ToString(item);
+                        key     += item.ToString();
                     }
                     else if(!keyAdd)
                     {
-                        value = Convert.ToString(item);
+                        value   += item.ToString();
                     }
-
                 }
-
-                if((int)item == 7348)
+                else
                 {
-                    keyCharsFound++;
+                    if((int)item == 7348)
+                    {
+                        keyCharsFound++;
+                    }
+                    else
+                    {
+                        EncryptedData.Add(item);
+                    }
                 }
-
-
-                EncryptedData.Add(item);
             }
-
-            //foreach (var item in EncryptedData)
-            //{
-            //    DecryptedText.AppendText($"{item}");
-            //}
 
             await Task.Delay(3000);
 
@@ -362,11 +368,8 @@ namespace Text_Encryptment_Program
 
             foreach (var item in DecryptedData)
             {
-                //DecryptedText.Text = DecryptedText.Text.Replace((char)EncrKeyTable.ElementAt(Pos).Value, item);
-
-                //Pos++;
-
                 DecryptedText.AppendText($"{item}");
+                DecryptedText.ScrollToEnd();
 
                 await Task.Delay(5);
             }
