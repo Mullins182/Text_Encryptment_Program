@@ -363,7 +363,7 @@ namespace Text_Encryptment_Program
 
             foreach (var item in EncryptedData)
             {
-                DecryptedData.Add(TextDecryption.DecryptText(item, DecrKeyTable, EncrKeyTable, index++));
+                DecryptedData.Add(TextDecryption.DecryptText(DecrKeyTable, index++));
             }
 
             foreach (var item in DecryptedData)
