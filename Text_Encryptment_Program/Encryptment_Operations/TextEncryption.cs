@@ -7,18 +7,25 @@ using System.Threading.Tasks;
 
 namespace Text_Encryptment_Program
 {
-    public static class TextEncryption                     // Hiermit wird der Text einer Textdatei verschlüsselt !
+    public static class TextEncryption                     // Hiermit wird der Text der Decrypted Text Box verschlüsselt !
     {
-        public static List<string> EncryptText(List<string> decrText, int randomNumber, int encryptionChar) 
+        public static List<char> EncryptText(List<char> decrText, Dictionary<int, int> keyTable) 
         {
-            List<string> encrText = new List<string>();
-                        
+            List<char> result = new List<char>();
+
+            int Pos = 0;
+
             foreach (var item in decrText)
             {
-                encrText.Add(item.Replace(Convert.ToChar(encryptionChar), Convert.ToChar(randomNumber)));
+                result.Add(item);
             }
 
-            return encrText;
+            foreach (var item in keyTable)
+            {
+                result[Pos++] = (char)item.Value;
+            }
+
+            return result;
         }
     }
 }
