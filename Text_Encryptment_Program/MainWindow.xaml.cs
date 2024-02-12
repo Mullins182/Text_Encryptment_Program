@@ -32,8 +32,6 @@ namespace Text_Encryptment_Program
         List<char> DecryptedData            = new List<char>();
         List<string> TextData               = new List<string>();
         List<string> textCache              = new List<string>();
-        List<string> output                 = new List<string>();
-
 
         bool showKeyTable                   = false;
 
@@ -52,7 +50,7 @@ namespace Text_Encryptment_Program
             ClearBox.Content                = "Clear Box";
             Encrypt.Content                 = "Start Encrypting";
             Decrypt.Content                 = "Start Decrypting";
-            KeyTable.Content                = "Show Used Randoms AND Key-Table";
+            KeyTable.Content                = "Show Key-Tables";
             ManualText.Content              = "Edit Text";
         }
 
@@ -149,6 +147,8 @@ namespace Text_Encryptment_Program
             EncrKeyTable.Clear();
             DecrKeyTable.Clear();
 
+            await Task.Delay(2000);
+
             foreach (var item in DecryptedText.Text)                // DecryptedData wird mit Chars aus der Decrypted Text Box beschrieben !
             {
                 DecryptedData.Add(item);
@@ -183,7 +183,7 @@ namespace Text_Encryptment_Program
                 DecrKeyTable.Add(i, DecryptedData[i]);
             }
 
-            await Task.Delay(3200);
+            await Task.Delay(2000);
 
             EncryptedData = TextEncryption.EncryptText(DecryptedData, EncrKeyTable);
 
@@ -195,17 +195,20 @@ namespace Text_Encryptment_Program
                 await Task.Delay(5);
             }
 
-            EncryptedText.AppendText($"{(char)7348}{(char)7348}{(char)7348}");
-            EncryptedText.ScrollToEnd();
-
-            foreach (var item in DecrKeyTable)
+            if  (DecrKeyTable.Count > 0)
             {
-                EncryptedText.AppendText($"{item.Key},{(double)item.Value * 3};");
+                EncryptedText.AppendText($"{(char)7348}{(char)7348}{(char)7348}");
                 EncryptedText.ScrollToEnd();
-            }
 
-            //EncryptedText.AppendText($"{(char)7347}{(char)7347}{(char)7347}");
-            //EncryptedText.ScrollToEnd();
+                foreach (var item in DecrKeyTable)
+                {
+                    EncryptedText.AppendText($"{item.Key},{(double)item.Value * 3};");
+                    EncryptedText.ScrollToEnd();
+                }
+
+                //EncryptedText.AppendText($"{(char)7347}{(char)7347}{(char)7347}");
+                //EncryptedText.ScrollToEnd();
+            }
 
             EncryptBox.Content              = "Successfully Encrypted";
             Encrypt.BorderBrush             = Brushes.OrangeRed;
@@ -225,7 +228,7 @@ namespace Text_Encryptment_Program
         }
 
         private void KeyTable_Click(object sender, RoutedEventArgs e)       // Hier noch Daten in Liste sichern und beim erneuten Click wieder in Box laden !
-            {
+        {
 
             if (!showKeyTable) 
             {
@@ -233,7 +236,7 @@ namespace Text_Encryptment_Program
 
                 KeyTable.BorderBrush = Brushes.Green;
 
-                //KeyTable.BorderBrush is  ? Brushes.GreenYellow : Brushes.OrangeRed;
+                //KeyTable.BorderBrush is  ? Brushes.GreenYellow : Brushes.OrangeRed;   // Test vereinfachte if-abfrage
 
                 textCache.Add(DecryptedText.Text);
 
@@ -267,6 +270,8 @@ namespace Text_Encryptment_Program
                 {
                     DecryptedText.Text = $"{item}";
                 }
+
+                textCache.Clear();
             }
         }
 
@@ -286,6 +291,8 @@ namespace Text_Encryptment_Program
             Decrypt.Content         = "DECRYPTING ...";
             Decrypt.BorderBrush     = Brushes.GreenYellow;
             DecryptBox.Foreground   = Brushes.YellowGreen;
+
+            await Task.Delay(2000);
 
             bool keyAdd         = true;
             int keyCharsFound   = 0;
@@ -341,7 +348,7 @@ namespace Text_Encryptment_Program
                 }
             }
 
-            await Task.Delay(3000);
+            await Task.Delay(2000);
 
             int index = 0;
 
