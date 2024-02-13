@@ -47,7 +47,8 @@ namespace Text_Encryptment_Program
             DecryptBoxLabelAnim.Tick        += DecryptBoxLabelAnim_Tick;
 
             OpenFile.Content                = "Add Text From File";
-            ClearBox.Content                = "Clear Box";
+            ClearBox.Content                = "Clear Text-Box";
+            ClearEncrBox.Content            = "Clear Text-Box";
             Encrypt.Content                 = "Start Encrypting";
             Decrypt.Content                 = "Start Decrypting";
             KeyTable.Content                = "Show Key-Tables";
@@ -483,6 +484,47 @@ namespace Text_Encryptment_Program
         {
             ManualText.Background = Brushes.Black;
             ManualText.Foreground = Brushes.DarkSeaGreen;
+        }
+
+        private void ClearEncrBox_Click(object sender, RoutedEventArgs e)
+        {
+            EncryptedText.Clear();
+        }
+
+        private void ClearEncrBox_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ClearEncrBox.Background = Brushes.Green;
+            ClearEncrBox.Foreground = Brushes.Black;
+        }
+
+        private void ClearEncrBox_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ClearEncrBox.Background = Brushes.Black;
+            ClearEncrBox.Foreground = Brushes.DarkSeaGreen;
+        }
+
+        private void Options_Click(object sender, RoutedEventArgs e)
+        {
+            if(optionsCanvas.Visibility == Visibility.Visible) 
+            {
+                optionsCanvas.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                optionsCanvas.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void Options_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Options.Background = Brushes.Green;
+            Options.Foreground = Brushes.Black;
+        }
+
+        private void Options_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Options.Background = Brushes.Black;
+            Options.Foreground = Brushes.DarkSeaGreen;
         }
     }
 }
