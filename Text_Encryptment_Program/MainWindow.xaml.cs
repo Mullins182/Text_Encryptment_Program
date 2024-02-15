@@ -34,6 +34,7 @@ namespace Text_Encryptment_Program
         List<string> textCache              = new List<string>();
 
         bool showKeyTable                   = false;
+        bool fastMode                       = false;
 
         Random generateRandoms              = new Random();                       // Neue Instanz der Random Klasse erstellen !
                                                                                  // GenerateRandoms.Next() = Zufallszahl zwischen (x, y) erzeugen ! (x ist inklusiv, y ist exklusiv)
@@ -193,7 +194,10 @@ namespace Text_Encryptment_Program
                 EncryptedText.AppendText($"{item}");
                 EncryptedText.ScrollToEnd();
 
-                await Task.Delay(5);
+                if(!fastMode)
+                {
+                    await Task.Delay(5);
+                }
             }
 
             if  (DecrKeyTable.Count > 0)
@@ -314,15 +318,15 @@ namespace Text_Encryptment_Program
                     }
                     else if (item == ';')
                     {
-                        keyAdd  = true;
+                        keyAdd      = true;
 
-                        key_Dec = Convert.ToInt32(key);
-                        value_Dec = Convert.ToInt32(value) / 3;
+                        key_Dec     = Convert.ToInt32(key);
+                        value_Dec   = Convert.ToInt32(value) / 3;
 
                         DecrKeyTable.Add(key_Dec, value_Dec);
 
-                        key     = "";
-                        value   = "";
+                        key         = "";
+                        value       = "";
 
                         continue;
                     }
@@ -363,7 +367,10 @@ namespace Text_Encryptment_Program
                 DecryptedText.AppendText($"{item}");
                 DecryptedText.ScrollToEnd();
 
-                await Task.Delay(5);
+                if(!fastMode)
+                {
+                    await Task.Delay(5);
+                }
             }
 
             DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(150);
@@ -525,6 +532,16 @@ namespace Text_Encryptment_Program
         {
             Options.Background = Brushes.Black;
             Options.Foreground = Brushes.DarkSeaGreen;
+        }
+
+        private void FastEncrDecrOnOff_Checked(object sender, RoutedEventArgs e)
+        {
+            fastMode = true;
+        }
+
+        private void FastEncrDecrOnOff_Unchecked(object sender, RoutedEventArgs e)
+        {
+            fastMode = false;
         }
     }
 }

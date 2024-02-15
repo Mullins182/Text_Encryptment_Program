@@ -49,9 +49,12 @@
         <Label x:Name="EncryptBox" Content="Encrypted Text" Grid.Column="1" Grid.Row="0" Height="auto" Width="auto" FontSize="26" FontFamily="Arial Black" FontWeight="ExtraLight"
                HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="OrangeRed" Background="Transparent" Padding="0,10,0,0"/>
 
-        <Canvas  x:Name="optionsCanvas" Width="400" Height="300" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Background="DarkRed" Panel.ZIndex="1"
-                 Visibility="Collapsed" VerticalAlignment="Bottom" Margin="0,0,0,10">
-            <RibbonCheckBox x:Name="FastEncryDecrOnOff"/>
+        <Canvas  x:Name="optionsCanvas" Width="400" Height="300" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Background="Black" Panel.ZIndex="1"
+                 Visibility="Collapsed" VerticalAlignment="Bottom" Margin="0,0,0,13">
+            <RibbonCheckBox x:Name="FastEncrDecrOnOff" Height="auto" Width="auto" Label="Fast Encryption/Decryption On/Off" Foreground="Red"
+                            FontFamily="Arial" FontSize="18" FontWeight="Medium" Margin="15,15,0,10" HorizontalAlignment="Left" VerticalAlignment="Top"
+                            HorizontalContentAlignment="Left" VerticalContentAlignment="Top" IsChecked="False" CheckedBorderBrush="GreenYellow"
+                            Checked="FastEncrDecrOnOff_Checked" Unchecked="FastEncrDecrOnOff_Unchecked"/>
         </Canvas>
 
         <TextBox x:Name="DecryptedText" Height="750" MinHeight="150" VerticalAlignment="Bottom" Background="Black" Foreground="DarkOrange" Grid.Column="0" Grid.Row="0" 
