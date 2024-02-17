@@ -64,7 +64,7 @@
                  UseLayoutRounding="True" VerticalScrollBarVisibility="Auto" FontFamily="Century Gothic" FontSize="17" TextWrapping="Wrap" IsReadOnly="True"
                  Padding="4,10,4,10"/>
 
-        <StackPanel x:Name="Stack1" Orientation="Horizontal" Grid.Column="0" Grid.Row="1">
+        <StackPanel x:Name="Stack1" Orientation="Horizontal" Grid.Column="0" Grid.Row="1" Visibility="Hidden">
             
             <Button x:Name="OpenFile" Content="Empty" MinWidth="150" Width="250" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="OpenFile_Click" Template="{StaticResource NoMouseOverButtonTemplate}"
@@ -89,7 +89,7 @@
                     BorderBrush="OrangeRed" BorderThickness="1" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,0" VerticalAlignment="Center"
                     HorizontalAlignment="Center" Click="Options_Click" MouseEnter="Options_MouseEnter" MouseLeave="Options_MouseLeave"/>
 
-        <StackPanel x:Name="Stack2" Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
+        <StackPanel x:Name="Stack2" Orientation="Horizontal" Grid.Column="1" Grid.Row="1" Visibility="Hidden">
 
             <Button x:Name="Decrypt" Content="Empty" MinWidth="150" Width="200" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Template="{StaticResource NoMouseOverButtonTemplate}" Click="Decrypt_Click"

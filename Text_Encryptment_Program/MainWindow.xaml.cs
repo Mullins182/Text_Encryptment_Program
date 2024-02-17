@@ -36,24 +36,74 @@ namespace Text_Encryptment_Program
         bool showKeyTable                   = false;
         bool fastMode                       = false;
 
+        ulong access_code                     = 52565854;
+        ulong access_code_input               = 0;
+
+        AccessWindow UserAccess             = new AccessWindow();
+
         Random generateRandoms              = new Random();                       // Neue Instanz der Random Klasse erstellen !
-                                                                                 // GenerateRandoms.Next() = Zufallszahl zwischen (x, y) erzeugen ! (x ist inklusiv, y ist exklusiv)
+                                                                                  // GenerateRandoms.Next() = Zufallszahl zwischen (x, y) erzeugen ! (x ist inklusiv, y ist exklusiv)
+
         public MainWindow()
         {
             InitializeComponent();
 
-            EncryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
-            DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
-            EncryptBoxLabelAnim.Tick        += EncryptBoxLabelAnim_Tick;
-            DecryptBoxLabelAnim.Tick        += DecryptBoxLabelAnim_Tick;
+            AuthorizeAccess();
+        }
 
-            OpenFile.Content                = "Add Text From File";
-            ClearBox.Content                = "Clear Text-Box";
-            ClearEncrBox.Content            = "Clear Text-Box";
-            Encrypt.Content                 = "Start Encrypting";
-            Decrypt.Content                 = "Start Decrypting";
-            KeyTable.Content                = "Show Key-Tables";
-            ManualText.Content              = "Edit Text";
+        private async void AuthorizeAccess()
+        {
+            DecryptBox.Content = "ACCESS DENIED";
+            EncryptBox.Content = "ACCESS DENIED";
+
+            await Task.Delay(1000);
+
+            UserAccess.Show();
+            UserAccess.Focus();
+            UserAccess.Topmost = true;
+
+            do
+            {
+                await Task.Delay(500);
+
+                access_code_input = UserAccess.accessCode;
+
+                if (!UserAccess.IsLoaded)
+                {
+                    this.Close();
+                }
+            }
+            while (access_code_input != access_code);
+
+            UserAccess.CodeBox.Foreground = Brushes.YellowGreen;
+
+            await Task.Delay(1500);
+
+            UserAccess.CodeBox.Text = "CODE ACCEPTED !!!";
+
+            await Task.Delay(3500);
+
+            UserAccess.Close();
+
+            await Task.Delay(1000);
+
+            EncryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(500);
+            DecryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(500);
+            EncryptBoxLabelAnim.Tick    += EncryptBoxLabelAnim_Tick;
+            DecryptBoxLabelAnim.Tick    += DecryptBoxLabelAnim_Tick;
+
+            Stack1.Visibility           = Visibility.Visible;
+            Stack2.Visibility           = Visibility.Visible;
+
+            DecryptBox.Content          = "Decrypted Text";
+            EncryptBox.Content          = "Encrypted Text";
+            OpenFile.Content            = "Add Text From File";
+            ClearBox.Content            = "Clear Text-Box";
+            ClearEncrBox.Content        = "Clear Text-Box";
+            Encrypt.Content             = "Start Encrypting";
+            Decrypt.Content             = "Start Decrypting";
+            KeyTable.Content            = "Show Key-Tables";
+            ManualText.Content          = "Edit Text";
         }
 
         private void DecryptBoxLabelAnim_Tick(object? sender, EventArgs e)
