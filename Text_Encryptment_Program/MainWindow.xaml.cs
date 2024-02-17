@@ -32,28 +32,78 @@ namespace Text_Encryptment_Program
         List<char> DecryptedData            = new List<char>();
         List<string> TextData               = new List<string>();
         List<string> textCache              = new List<string>();
-        List<string> output                 = new List<string>();
-
 
         bool showKeyTable                   = false;
+        bool fastMode                       = false;
+
+        ulong access_code                     = 52565854;
+        ulong access_code_input               = 0;
+
+        AccessWindow UserAccess             = new AccessWindow();
 
         Random generateRandoms              = new Random();                       // Neue Instanz der Random Klasse erstellen !
-                                                                                 // GenerateRandoms.Next() = Zufallszahl zwischen (x, y) erzeugen ! (x ist inklusiv, y ist exklusiv)
+                                                                                  // GenerateRandoms.Next() = Zufallszahl zwischen (x, y) erzeugen ! (x ist inklusiv, y ist exklusiv)
+
         public MainWindow()
         {
             InitializeComponent();
 
-            EncryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
-            DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
-            EncryptBoxLabelAnim.Tick        += EncryptBoxLabelAnim_Tick;
-            DecryptBoxLabelAnim.Tick        += DecryptBoxLabelAnim_Tick;
+            AuthorizeAccess();
+        }
 
-            OpenFile.Content                = "Add Text From File";
-            ClearBox.Content                = "Clear Box";
-            Encrypt.Content                 = "Start Encrypting";
-            Decrypt.Content                 = "Start Decrypting";
-            KeyTable.Content                = "Show Used Randoms AND Key-Table";
-            ManualText.Content              = "Edit Text";
+        private async void AuthorizeAccess()
+        {
+            DecryptBox.Content = "ACCESS DENIED";
+            EncryptBox.Content = "ACCESS DENIED";
+
+            await Task.Delay(1000);
+
+            UserAccess.Show();
+            UserAccess.Focus();
+            UserAccess.Topmost = true;
+
+            do
+            {
+                await Task.Delay(500);
+
+                access_code_input = UserAccess.accessCode;
+
+                if (!UserAccess.IsLoaded)
+                {
+                    this.Close();
+                }
+            }
+            while (access_code_input != access_code);
+
+            UserAccess.CodeBox.Foreground = Brushes.YellowGreen;
+
+            await Task.Delay(1500);
+
+            UserAccess.CodeBox.Text = "CODE ACCEPTED !!!";
+
+            await Task.Delay(3500);
+
+            UserAccess.Close();
+
+            await Task.Delay(1000);
+
+            EncryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(500);
+            DecryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(500);
+            EncryptBoxLabelAnim.Tick    += EncryptBoxLabelAnim_Tick;
+            DecryptBoxLabelAnim.Tick    += DecryptBoxLabelAnim_Tick;
+
+            Stack1.Visibility           = Visibility.Visible;
+            Stack2.Visibility           = Visibility.Visible;
+
+            DecryptBox.Content          = "Decrypted Text";
+            EncryptBox.Content          = "Encrypted Text";
+            OpenFile.Content            = "Add Text From File";
+            ClearBox.Content            = "Clear Text-Box";
+            ClearEncrBox.Content        = "Clear Text-Box";
+            Encrypt.Content             = "Start Encrypting";
+            Decrypt.Content             = "Start Decrypting";
+            KeyTable.Content            = "Show Key-Tables";
+            ManualText.Content          = "Edit Text";
         }
 
         private void DecryptBoxLabelAnim_Tick(object? sender, EventArgs e)
@@ -149,22 +199,12 @@ namespace Text_Encryptment_Program
             EncrKeyTable.Clear();
             DecrKeyTable.Clear();
 
+            await Task.Delay(2000);
+
             foreach (var item in DecryptedText.Text)                // DecryptedData wird mit Chars aus der Decrypted Text Box beschrieben !
             {
-                //if ((int)item == 10 || (int)item == 13)
-                //{
-
-                //}
-                //else
-                //{
-                    DecryptedData.Add(item);
-                //}
+                DecryptedData.Add(item);
             }
-
-            //foreach (var item in DecryptedData)
-            //{
-            //    EncryptedText.AppendText($"{item}");
-            //}
 
             for (int i = 0; i < DecryptedData.Count; i++) 
             {
@@ -195,33 +235,35 @@ namespace Text_Encryptment_Program
                 DecrKeyTable.Add(i, DecryptedData[i]);
             }
 
-            await Task.Delay(3200);
+            await Task.Delay(2000);
 
             EncryptedData = TextEncryption.EncryptText(DecryptedData, EncrKeyTable);
 
-            //int Pos = 0;
-
             foreach (var item in EncryptedData)
             {
-                //EncryptedText.Text = EncryptedText.Text.Replace((char)DecrKeyTable.ElementAt(Pos++).Value, item);
-
                 EncryptedText.AppendText($"{item}");
                 EncryptedText.ScrollToEnd();
 
-                await Task.Delay(5);
+                if(!fastMode)
+                {
+                    await Task.Delay(5);
+                }
             }
 
-            EncryptedText.AppendText($"{(char)7348}{(char)7348}{(char)7348}");
-            EncryptedText.ScrollToEnd();
-
-            foreach (var item in DecrKeyTable)
+            if  (DecrKeyTable.Count > 0)
             {
-                EncryptedText.AppendText($"{item.Key},{(double)item.Value * 3};");
+                EncryptedText.AppendText($"{(char)7348}{(char)7348}{(char)7348}");
                 EncryptedText.ScrollToEnd();
-            }
 
-            //EncryptedText.AppendText($"{(char)7347}{(char)7347}{(char)7347}");
-            //EncryptedText.ScrollToEnd();
+                foreach (var item in DecrKeyTable)
+                {
+                    EncryptedText.AppendText($"{item.Key},{(double)item.Value * 3};");
+                    EncryptedText.ScrollToEnd();
+                }
+
+                //EncryptedText.AppendText($"{(char)7347}{(char)7347}{(char)7347}");
+                //EncryptedText.ScrollToEnd();
+            }
 
             EncryptBox.Content              = "Successfully Encrypted";
             Encrypt.BorderBrush             = Brushes.OrangeRed;
@@ -241,7 +283,7 @@ namespace Text_Encryptment_Program
         }
 
         private void KeyTable_Click(object sender, RoutedEventArgs e)       // Hier noch Daten in Liste sichern und beim erneuten Click wieder in Box laden !
-            {
+        {
 
             if (!showKeyTable) 
             {
@@ -249,7 +291,7 @@ namespace Text_Encryptment_Program
 
                 KeyTable.BorderBrush = Brushes.Green;
 
-                //KeyTable.BorderBrush is  ? Brushes.GreenYellow : Brushes.OrangeRed;
+                //KeyTable.BorderBrush is  ? Brushes.GreenYellow : Brushes.OrangeRed;   // Test vereinfachte if-abfrage
 
                 textCache.Add(DecryptedText.Text);
 
@@ -283,6 +325,8 @@ namespace Text_Encryptment_Program
                 {
                     DecryptedText.Text = $"{item}";
                 }
+
+                textCache.Clear();
             }
         }
 
@@ -303,6 +347,8 @@ namespace Text_Encryptment_Program
             Decrypt.BorderBrush     = Brushes.GreenYellow;
             DecryptBox.Foreground   = Brushes.YellowGreen;
 
+            await Task.Delay(2000);
+
             bool keyAdd         = true;
             int keyCharsFound   = 0;
             string key          = "";
@@ -322,15 +368,15 @@ namespace Text_Encryptment_Program
                     }
                     else if (item == ';')
                     {
-                        keyAdd  = true;
+                        keyAdd      = true;
 
-                        key_Dec = Convert.ToInt32(key);
-                        value_Dec = Convert.ToInt32(value) / 3;
+                        key_Dec     = Convert.ToInt32(key);
+                        value_Dec   = Convert.ToInt32(value) / 3;
 
                         DecrKeyTable.Add(key_Dec, value_Dec);
 
-                        key     = "";
-                        value   = "";
+                        key         = "";
+                        value       = "";
 
                         continue;
                     }
@@ -357,7 +403,7 @@ namespace Text_Encryptment_Program
                 }
             }
 
-            await Task.Delay(3000);
+            await Task.Delay(2000);
 
             int index = 0;
 
@@ -371,7 +417,10 @@ namespace Text_Encryptment_Program
                 DecryptedText.AppendText($"{item}");
                 DecryptedText.ScrollToEnd();
 
-                await Task.Delay(5);
+                if(!fastMode)
+                {
+                    await Task.Delay(5);
+                }
             }
 
             DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(150);
@@ -492,6 +541,57 @@ namespace Text_Encryptment_Program
         {
             ManualText.Background = Brushes.Black;
             ManualText.Foreground = Brushes.DarkSeaGreen;
+        }
+
+        private void ClearEncrBox_Click(object sender, RoutedEventArgs e)
+        {
+            EncryptedText.Clear();
+        }
+
+        private void ClearEncrBox_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ClearEncrBox.Background = Brushes.Green;
+            ClearEncrBox.Foreground = Brushes.Black;
+        }
+
+        private void ClearEncrBox_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ClearEncrBox.Background = Brushes.Black;
+            ClearEncrBox.Foreground = Brushes.DarkSeaGreen;
+        }
+
+        private void Options_Click(object sender, RoutedEventArgs e)
+        {
+            if(optionsCanvas.Visibility == Visibility.Visible) 
+            {
+                optionsCanvas.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                optionsCanvas.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void Options_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Options.Background = Brushes.Green;
+            Options.Foreground = Brushes.Black;
+        }
+
+        private void Options_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Options.Background = Brushes.Black;
+            Options.Foreground = Brushes.DarkSeaGreen;
+        }
+
+        private void FastEncrDecrOnOff_Checked(object sender, RoutedEventArgs e)
+        {
+            fastMode = true;
+        }
+
+        private void FastEncrDecrOnOff_Unchecked(object sender, RoutedEventArgs e)
+        {
+            fastMode = false;
         }
     }
 }
