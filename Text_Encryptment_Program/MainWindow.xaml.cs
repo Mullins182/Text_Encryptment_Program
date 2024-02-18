@@ -36,8 +36,8 @@ namespace Text_Encryptment_Program
         bool showKeyTable                   = false;
         bool fastMode                       = false;
 
-        ulong access_code                     = 52565854;
-        ulong access_code_input               = 0;
+        ulong access_code                   = 52565854;
+        ulong access_code_input             = 0;
 
         AccessWindow UserAccess             = new AccessWindow();
 
@@ -47,6 +47,10 @@ namespace Text_Encryptment_Program
         public MainWindow()
         {
             InitializeComponent();
+
+            Stack1.Visibility   = Visibility.Hidden;
+            Stack2.Visibility   = Visibility.Hidden;
+            Options.Visibility  = Visibility.Hidden;
 
             AuthorizeAccess();
         }
@@ -59,12 +63,12 @@ namespace Text_Encryptment_Program
             await Task.Delay(1000);
 
             UserAccess.Show();
-            UserAccess.Focus();
             UserAccess.Topmost = true;
+            UserAccess.Focus();
 
             do
             {
-                await Task.Delay(500);
+                await Task.Delay(200);
 
                 access_code_input = UserAccess.accessCode;
 
@@ -77,11 +81,11 @@ namespace Text_Encryptment_Program
 
             UserAccess.CodeBox.Foreground = Brushes.YellowGreen;
 
-            await Task.Delay(1500);
+            await Task.Delay(1000);
 
-            UserAccess.CodeBox.Text = "CODE ACCEPTED !!!";
+            UserAccess.CodeBox.Text = "Code Accepted !!!";
 
-            await Task.Delay(3500);
+            await Task.Delay(3000);
 
             UserAccess.Close();
 
@@ -94,16 +98,18 @@ namespace Text_Encryptment_Program
 
             Stack1.Visibility           = Visibility.Visible;
             Stack2.Visibility           = Visibility.Visible;
+            Options.Visibility          = Visibility.Visible;
 
             DecryptBox.Content          = "Decrypted Text";
             EncryptBox.Content          = "Encrypted Text";
             OpenFile.Content            = "Add Text From File";
-            ClearBox.Content            = "Clear Text-Box";
-            ClearEncrBox.Content        = "Clear Text-Box";
+            ClearBox.Content            = "Clear Box";
+            ClearEncrBox.Content        = "Clear Box";
             Encrypt.Content             = "Start Encrypting";
             Decrypt.Content             = "Start Decrypting";
-            KeyTable.Content            = "Show Key-Tables";
+            KeyTable.Content            = "Show Key-Table";
             ManualText.Content          = "Edit Text";
+            ManualText2.Content         = "Edit Text";
         }
 
         private void DecryptBoxLabelAnim_Tick(object? sender, EventArgs e)
@@ -137,7 +143,9 @@ namespace Text_Encryptment_Program
             KeyTable.IsEnabled      = false;
             OpenFile.IsEnabled      = false;
             ClearBox.IsEnabled      = false;
+            ClearEncrBox.IsEnabled  = false;
             ManualText.IsEnabled    = false;
+            ManualText2.IsEnabled   = false;
         }
 
         private void EnableAllButtons()
@@ -147,7 +155,9 @@ namespace Text_Encryptment_Program
             KeyTable.IsEnabled      = true;
             OpenFile.IsEnabled      = true;
             ClearBox.IsEnabled      = true;
+            ClearEncrBox.IsEnabled  = true;
             ManualText.IsEnabled    = true;
+            ManualText2.IsEnabled   = true;
         }
 
         private void OpenFile_Click(object sender, RoutedEventArgs e)
@@ -442,7 +452,19 @@ namespace Text_Encryptment_Program
 
         private void Quit_Click(object sender, RoutedEventArgs e)
         {
+            UserAccess.Close();
+
             this.Close();
+        }
+        private void Quit_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Quit.Background = Brushes.Green;
+            Quit.Foreground = Brushes.Black;
+        }
+        private void Quit_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Quit.Background = Brushes.Black;
+            Quit.Foreground = Brushes.OrangeRed;
         }
 
         private void KeyTable_MouseEnter(object sender, MouseEventArgs e)
@@ -467,16 +489,6 @@ namespace Text_Encryptment_Program
             Decrypt.Foreground = Brushes.DarkSeaGreen;
         }
 
-        private void Quit_MouseEnter(object sender, MouseEventArgs e)
-        {
-            Quit.Background = Brushes.Green;
-            Quit.Foreground = Brushes.Black;
-        }
-        private void Quit_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Quit.Background = Brushes.Black;
-            Quit.Foreground = Brushes.OrangeRed;
-        }
 
         private void OpenFile_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -592,6 +604,32 @@ namespace Text_Encryptment_Program
         private void FastEncrDecrOnOff_Unchecked(object sender, RoutedEventArgs e)
         {
             fastMode = false;
+        }
+
+        private void ManualText2_Click(object sender, RoutedEventArgs e)
+        {
+            if(EncryptedText.IsReadOnly)
+            {
+                EncryptedText.IsReadOnly = false;
+                ManualText2.BorderBrush = Brushes.Green;
+            }
+            else
+            {
+                EncryptedText.IsReadOnly = true;
+                ManualText2.BorderBrush = Brushes.OrangeRed;
+            }
+        }
+
+        private void ManualText2_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ManualText2.Background = Brushes.Green;
+            ManualText2.Foreground = Brushes.Black;
+        }
+
+        private void ManualText2_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ManualText2.Background = Brushes.Black;
+            ManualText2.Foreground = Brushes.DarkSeaGreen;
         }
     }
 }
