@@ -6,7 +6,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Svengraph-I-Love-Lock.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Svengraph-I-Love-Lock.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Update="TextSample.txt">
