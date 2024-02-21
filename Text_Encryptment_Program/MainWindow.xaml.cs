@@ -48,9 +48,8 @@ namespace Text_Encryptment_Program
         {
             InitializeComponent();
 
-            Stack1.Visibility   = Visibility.Hidden;
-            Stack2.Visibility   = Visibility.Hidden;
-            Options.Visibility  = Visibility.Hidden;
+            ButtonStack.Visibility  = Visibility.Hidden;
+            Options.Visibility      = Visibility.Hidden;
 
             AuthorizeAccess();
         }
@@ -63,8 +62,8 @@ namespace Text_Encryptment_Program
             await Task.Delay(1000);
 
             UserAccess.Show();
-            UserAccess.Topmost = true;
             UserAccess.Focus();
+            UserAccess.Topmost = true;
 
             do
             {
@@ -96,20 +95,19 @@ namespace Text_Encryptment_Program
             EncryptBoxLabelAnim.Tick    += EncryptBoxLabelAnim_Tick;
             DecryptBoxLabelAnim.Tick    += DecryptBoxLabelAnim_Tick;
 
-            Stack1.Visibility           = Visibility.Visible;
-            Stack2.Visibility           = Visibility.Visible;
+            ButtonStack.Visibility      = Visibility.Visible;
             Options.Visibility          = Visibility.Visible;
 
             DecryptBox.Content          = "Decrypted Text";
             EncryptBox.Content          = "Encrypted Text";
-            OpenFile.Content            = "Add Text From File";
-            ClearBox.Content            = "Clear Box";
-            ClearEncrBox.Content        = "Clear Box";
-            Encrypt.Content             = "Start Encrypting";
-            Decrypt.Content             = "Start Decrypting";
-            KeyTable.Content            = "Show Key-Table";
-            ManualText.Content          = "Edit Text";
-            ManualText2.Content         = "Edit Text";
+            //OpenFile.Content            = "Add Text From File";
+            //ClearBox.Content            = "Clear Box";
+            //ClearEncrBox.Content        = "Clear Box";
+            //Encrypt.Content             = "Start Encrypting";
+            //Decrypt.Content             = "Start Decrypting";
+            //KeyTable.Content            = "Show Key-Table";
+            //ManualText.Content          = "Edit Text";
+            //ManualText2.Content         = "Edit Text";
         }
 
         private void DecryptBoxLabelAnim_Tick(object? sender, EventArgs e)
