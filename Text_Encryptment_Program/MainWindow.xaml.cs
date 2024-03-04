@@ -48,7 +48,7 @@ namespace Text_Encryptment_Program
         {
             InitializeComponent();
 
-            ButtonStack.Visibility  = Visibility.Hidden;
+            button_stackpanel.Visibility  = Visibility.Hidden;
             Options.Visibility      = Visibility.Hidden;
 
             AuthorizeAccess();
@@ -95,7 +95,7 @@ namespace Text_Encryptment_Program
             EncryptBoxLabelAnim.Tick    += EncryptBoxLabelAnim_Tick;
             DecryptBoxLabelAnim.Tick    += DecryptBoxLabelAnim_Tick;
 
-            ButtonStack.Visibility      = Visibility.Visible;
+            button_stackpanel.Visibility      = Visibility.Visible;
             Options.Visibility          = Visibility.Visible;
 
             DecryptBox.Content          = "Decrypted Text";

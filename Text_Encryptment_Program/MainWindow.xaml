@@ -76,7 +76,7 @@
                  UseLayoutRounding="True" VerticalScrollBarVisibility="Auto" FontFamily="Century Gothic" FontSize="17" TextWrapping="Wrap" IsReadOnly="True"
                  Padding="4,10,4,10"/>
 
-        <StackPanel x:Name="ButtonStack" Orientation="Horizontal" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Visibility="Visible"
+        <StackPanel x:Name="button_stackpanel" Orientation="Horizontal" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Visibility="Visible"
                     Margin="6,0,6,0">
 
             <Button x:Name="OpenFile" Content="Add Text From File" Width="323" Foreground="DarkSeaGreen" Background="Black" 
