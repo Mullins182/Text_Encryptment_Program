@@ -172,6 +172,8 @@ namespace Text_Encryptment_Program
             //CodeBox.AppendText(e.ToString());
         }
 
+        //  MOUSE ENTER - MOUSE LEAVE METHODS ...
+
         private void reset_MouseEnter(object sender, MouseEventArgs e)
         {
             reset.Foreground = Brushes.GreenYellow;

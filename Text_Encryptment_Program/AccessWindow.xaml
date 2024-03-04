@@ -36,10 +36,10 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,10,10,250">
             <TextBox x:Name="CodeBox" Height="50" Width="400" Background="DarkRed" Text="ENTER ACCESS CODE !" TextAlignment="Center" TextWrapping="NoWrap" 
                      VerticalContentAlignment="Center" AcceptsReturn="False" IsReadOnly="True"
-                     FontFamily="Gothic" FontSize="25" Foreground="OrangeRed"/>
+                     FontFamily="Gothic" FontSize="30" FontWeight="Bold" Foreground="Goldenrod"/>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,10">
             <Button x:Name="one"    Height="60" Width="60" Content="1" FontFamily="Arial Black" FontSize="30" Background="YellowGreen" Click="one_Click" KeyDown="one_KeyDown"/>
             <Button x:Name="two"    Height="60" Width="60" Content="2" FontFamily="Arial Black" FontSize="30" Background="YellowGreen" Click="two_Click"/>
             <Button x:Name="three"  Height="60" Width="60" Content="3" FontFamily="Arial Black" FontSize="30" Background="YellowGreen" Click="three_Click"/>

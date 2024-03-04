@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Text_Encryptment_Program"
         mc:Ignorable="d"
-        Title="Text-Encryption / Decryption Program" Height="900" Width="1750" Background="Black" HorizontalAlignment="Center" VerticalAlignment="Center" WindowStartupLocation="CenterScreen">
+        Title="Text-Encryption / Decryption Program" Height="900" Width="1765" Background="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
+        WindowStartupLocation="CenterScreen">
     
     <!--Control Template Override für Buttons um Highlighting bei Mouseover zu verhindern !-->
     <Window.Resources>
@@ -49,63 +50,76 @@
         <Label x:Name="EncryptBox" Content="Encrypted Text" Grid.Column="1" Grid.Row="0" Height="auto" Width="auto" FontSize="26" FontFamily="Arial Black" FontWeight="ExtraLight"
                HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="OrangeRed" Background="Transparent" Padding="0,10,0,0"/>
 
-        <Canvas  x:Name="optionsCanvas" Width="400" Height="300" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Background="Black" Panel.ZIndex="1"
+        <Canvas  x:Name="optionsCanvas" Width="400" Height="300" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Background="#3A0000" Panel.ZIndex="1"
                  Visibility="Collapsed" VerticalAlignment="Bottom" Margin="0,0,0,13">
-            <RibbonCheckBox x:Name="FastEncrDecrOnOff" Height="auto" Width="auto" Label="Fast Encryption/Decryption On/Off" Foreground="Red"
-                            FontFamily="Arial" FontSize="18" FontWeight="Medium" Margin="15,15,0,10" HorizontalAlignment="Left" VerticalAlignment="Top"
-                            HorizontalContentAlignment="Left" VerticalContentAlignment="Top" IsChecked="False" CheckedBorderBrush="GreenYellow"
-                            Checked="FastEncrDecrOnOff_Checked" Unchecked="FastEncrDecrOnOff_Unchecked"/>
+
+                <RibbonCheckBox x:Name="FastEncrDecrOnOff" Label="Fast Encryption / Decryption" Foreground="Goldenrod" CheckedBackground="Green" BorderBrush="Red"
+                            FontFamily="Arial" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left" VerticalAlignment="Top" Background="DarkRed"
+                            HorizontalContentAlignment="Right" VerticalContentAlignment="Top" IsChecked="False" Margin="25" CheckedBorderBrush="Green"
+                            Checked="FastEncrDecrOnOff_Checked" Unchecked="FastEncrDecrOnOff_Unchecked"
+                            BorderThickness="10" MouseOverBackground="Black" MouseOverBorderBrush="Yellow">
+                    <CheckBox.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1.33" ScaleY="1.33"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </CheckBox.RenderTransform>
+                </RibbonCheckBox>
         </Canvas>
 
-        <TextBox x:Name="DecryptedText" Height="750" MinHeight="150" VerticalAlignment="Bottom" Background="Black" Foreground="DarkOrange" Grid.Column="0" Grid.Row="0" 
+        <TextBox x:Name="DecryptedText" Height="750" MinHeight="150" Width="auto" MinWidth="900" VerticalAlignment="Bottom" Background="Black" Foreground="DarkOrange" Grid.Column="0" Grid.Row="0" 
                  UseLayoutRounding="True" VerticalScrollBarVisibility="Auto" FontFamily="Century Gothic" FontSize="17" TextWrapping="Wrap" IsReadOnly="True"
                  AcceptsReturn="True" AcceptsTab="True" Padding="4,10,4,10"/>
-        <TextBox x:Name="EncryptedText" Height="750" MinHeight="150" VerticalAlignment="Bottom" Background="Black" Foreground="DarkOrange" Grid.Column="1" Grid.Row="0"
+        <TextBox x:Name="EncryptedText" Height="750" MinHeight="150" Width="auto" MinWidth="900" VerticalAlignment="Bottom" Background="Black" Foreground="DarkOrange" Grid.Column="1" Grid.Row="0"
                  UseLayoutRounding="True" VerticalScrollBarVisibility="Auto" FontFamily="Century Gothic" FontSize="17" TextWrapping="Wrap" IsReadOnly="True"
                  Padding="4,10,4,10"/>
 
-        <StackPanel x:Name="Stack1" Orientation="Horizontal" Grid.Column="0" Grid.Row="1" Visibility="Hidden">
-            
-            <Button x:Name="OpenFile" Content="Empty" MinWidth="150" Width="250" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
+        <StackPanel x:Name="button_stackpanel" Orientation="Horizontal" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Visibility="Visible"
+                    Margin="6,0,6,0">
+
+            <Button x:Name="OpenFile" Content="Add Text From File" Width="323" Foreground="DarkSeaGreen" Background="Black" 
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="OpenFile_Click" Template="{StaticResource NoMouseOverButtonTemplate}"
-                    MouseEnter="OpenFile_MouseEnter" MouseLeave="OpenFile_MouseLeave" BorderBrush="OrangeRed" BorderThickness="1" Margin="1,0,1,0"/>
+                    MouseEnter="OpenFile_MouseEnter" MouseLeave="OpenFile_MouseLeave" BorderBrush="OrangeRed" BorderThickness="1" Margin="0,0,3.5,0"/>
 
-            <Button x:Name="ManualText" Content="Empty" MinWidth="150" Width="100" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
+            <Button x:Name="ManualText" Content="Edit Text" MinWidth="150" Width="100" Foreground="DarkSeaGreen" Background="Black"
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Template="{StaticResource NoMouseOverButtonTemplate}"
-                    BorderBrush="OrangeRed" BorderThickness="1" Margin="1,0,1,0" Click="ManualText_Click" MouseEnter="ManualText_MouseEnter" MouseLeave="ManualText_MouseLeave"/>
+                    BorderBrush="OrangeRed" BorderThickness="1" Margin="0,0,3.5,0" Click="ManualText_Click" MouseEnter="ManualText_MouseEnter" MouseLeave="ManualText_MouseLeave"/>
 
-            <Button x:Name="ClearBox" Content="Empty" MinWidth="150" Width="200" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
+            <Button x:Name="ClearBox" Content="Clear Box" Width="130" Foreground="DarkSeaGreen" Background="Black" 
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="ClearBox_Click" Template="{StaticResource NoMouseOverButtonTemplate}"
-                    MouseEnter="ClearBox_MouseEnter" MouseLeave="ClearBox_MouseLeave" BorderBrush="OrangeRed" BorderThickness="1" Margin="1,0,1,0"/>
+                    MouseEnter="ClearBox_MouseEnter" MouseLeave="ClearBox_MouseLeave" BorderBrush="OrangeRed" BorderThickness="1" Margin="0,0,3.5,0"/>
 
-            <Button x:Name="Encrypt" Content="Empty" MinWidth="150" Width="215" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
+            <Button x:Name="Encrypt" Content="Start Encrypting" MinWidth="150" Width="215" Foreground="DarkSeaGreen" Background="Black" 
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Click="Encrypt_Click" Template="{StaticResource NoMouseOverButtonTemplate}"
-                    MouseEnter="Encrypt_MouseEnter" MouseLeave="Encrypt_MouseLeave" BorderBrush="OrangeRed" BorderThickness="1" Margin="1,0,0,0"/>
+                    MouseEnter="Encrypt_MouseEnter" MouseLeave="Encrypt_MouseLeave" BorderBrush="OrangeRed" BorderThickness="1" Margin="0,0,3.5,0"/>
             
-        </StackPanel>
-
-        <Button     x:Name="Options" Content="..." Width="60" Height="50" Foreground="DarkSeaGreen" Background="Black" 
+            <Button x:Name="Options" Content="..." Foreground="DarkSeaGreen" Background="Black"  HorizontalAlignment="Center"
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Template="{StaticResource NoMouseOverButtonTemplate}"
-                    BorderBrush="OrangeRed" BorderThickness="1" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,0" VerticalAlignment="Center"
-                    HorizontalAlignment="Center" Click="Options_Click" MouseEnter="Options_MouseEnter" MouseLeave="Options_MouseLeave"/>
+                    BorderBrush="OrangeRed" BorderThickness="1" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,3.5,0" Width="70"
+                    Click="Options_Click" MouseEnter="Options_MouseEnter" MouseLeave="Options_MouseLeave"/>
 
-        <StackPanel x:Name="Stack2" Orientation="Horizontal" Grid.Column="1" Grid.Row="1" Visibility="Hidden">
-
-            <Button x:Name="Decrypt" Content="Empty" MinWidth="150" Width="200" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
+            <Button x:Name="Decrypt" Content="Start Decrypting" MinWidth="150" Width="200" Foreground="DarkSeaGreen" Background="Black" 
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Template="{StaticResource NoMouseOverButtonTemplate}" Click="Decrypt_Click"
-                    MouseEnter="Decrypt_MouseEnter" MouseLeave="Decrypt_MouseLeave" BorderBrush="OrangeRed" BorderThickness="1" Margin="45,0,1,0"/>
-            
-            <Button x:Name="KeyTable" Content="Empty" MinWidth="150" Width="200" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
-                    FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Template="{StaticResource NoMouseOverButtonTemplate}" Click="KeyTable_Click"
-                    MouseEnter="KeyTable_MouseEnter" MouseLeave="KeyTable_MouseLeave" BorderBrush="OrangeRed" BorderThickness="1" Margin="1,0,1,0"/>
+                    MouseEnter="Decrypt_MouseEnter" MouseLeave="Decrypt_MouseLeave" BorderBrush="OrangeRed" BorderThickness="1" Margin="0,0,3.5,0"/>
 
-            <Button x:Name="ClearEncrBox" Content="Empty" MinWidth="150" Width="200" Height="50" Padding="10,10,10,10" Foreground="DarkSeaGreen" Background="Black" 
+            <Button x:Name="ManualText2" Content="Edit Text" MinWidth="150" Width="100" Foreground="DarkSeaGreen" Background="Black" 
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Template="{StaticResource NoMouseOverButtonTemplate}"
-                    BorderBrush="OrangeRed" BorderThickness="1" Margin="1,0,1,0" Click="ClearEncrBox_Click" MouseEnter="ClearEncrBox_MouseEnter" MouseLeave="ClearEncrBox_MouseLeave"/>
+                    BorderBrush="OrangeRed" BorderThickness="1" Margin="0,0,3.5,0" Click="ManualText2_Click" MouseEnter="ManualText2_MouseEnter"
+                    MouseLeave="ManualText2_MouseLeave"/>
 
-            <Button x:Name="Quit" Content="Quit Program" MinWidth="150" Width="210" Height="50" Padding="10,10,10,10" Foreground="OrangeRed" Background="Black" 
+            <Button x:Name="KeyTable" Content="Show Key-Table" MinWidth="150" Width="170" Foreground="DarkSeaGreen" Background="Black" 
+                    FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Template="{StaticResource NoMouseOverButtonTemplate}" Click="KeyTable_Click"
+                    MouseEnter="KeyTable_MouseEnter" MouseLeave="KeyTable_MouseLeave" BorderBrush="OrangeRed" BorderThickness="1" Margin="0,0,3.5,0"/>
+
+            <Button x:Name="ClearEncrBox" Content="Clear Box" Width="130" Foreground="DarkSeaGreen" Background="Black" 
+                    FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Template="{StaticResource NoMouseOverButtonTemplate}"
+                    BorderBrush="OrangeRed" BorderThickness="1" Margin="0,0,3.5,0" Click="ClearEncrBox_Click" MouseEnter="ClearEncrBox_MouseEnter" MouseLeave="ClearEncrBox_MouseLeave"/>
+
+            <Button x:Name="Quit" Content="Quit Program" Foreground="OrangeRed" Background="Black" Width="167"
                     FontFamily="Comic Sans MS" FontSize="20" FontWeight="DemiBold" Template="{StaticResource NoMouseOverButtonTemplate}" Click="Quit_Click"
-                    MouseEnter="Quit_MouseEnter" MouseLeave="Quit_MouseLeave" BorderBrush="OrangeRed" BorderThickness="1" Margin="1,0,1,0"/>
+                    MouseEnter="Quit_MouseEnter" MouseLeave="Quit_MouseLeave" BorderBrush="OrangeRed" BorderThickness="1"/>
 
         </StackPanel>
 
