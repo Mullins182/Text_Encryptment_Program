@@ -193,6 +193,7 @@ namespace Text_Encryptment_Program
             bool integerRange1      = true;
             bool integerRange2      = false;
             bool integerRange3      = false;
+            bool keyFound           = false;
             int rN                  = 0;
 
             EncryptBox.Content      = "Encrypting in Progress ...";
@@ -239,8 +240,30 @@ namespace Text_Encryptment_Program
                     integerRange1 = true;
                 }
 
-                EncrKeyTable.Add(i, rN);
-                DecrKeyTable.Add(i, DecryptedData[i]);
+                if(EncrKeyTable.Count() == 0)
+                {
+                    EncrKeyTable.Add(DecryptedData[i], rN);
+                }
+
+                foreach (var item in EncrKeyTable.Keys)
+                {
+                    if ((int)DecryptedData[i] == item)
+                    {
+                        keyFound = true;
+                    }
+                }
+                //DecrKeyTable.Add(i, DecryptedData[i]);
+
+                if (keyFound) 
+                {
+                    
+                }
+                else
+                {
+                    EncrKeyTable.Add(DecryptedData[i], rN);
+                }
+
+                keyFound = false;
             }
 
             await Task.Delay(2000);
@@ -258,14 +281,14 @@ namespace Text_Encryptment_Program
                 }
             }
 
-            if  (DecrKeyTable.Count > 0)
+            if  (EncrKeyTable.Count > 0)
             {
                 EncryptedText.AppendText($"{(char)7348}{(char)7348}{(char)7348}");
                 EncryptedText.ScrollToEnd();
 
-                foreach (var item in DecrKeyTable)
+                foreach (var item in EncrKeyTable)
                 {
-                    EncryptedText.AppendText($"{item.Key},{(double)item.Value * 3};");
+                    EncryptedText.AppendText($"{item.Key},{(double)item.Value};");
                     EncryptedText.ScrollToEnd();
                 }
 
@@ -307,14 +330,13 @@ namespace Text_Encryptment_Program
 
                 DecryptedText.AppendText("\n_____________________________________\n");
 
-                DecryptedText.AppendText($"\nEncrypt Key Count: {EncrKeyTable.Count}\nDecryp Key Count: {DecrKeyTable.Count}");
+                DecryptedText.AppendText($"\nEncrypt Key Count: {EncrKeyTable.Count}");
 
                 DecryptedText.AppendText("\n_____________________________________\n\n");
 
                 foreach (var item in EncrKeyTable)
                 {
-                    DecryptedText.AppendText($"\nChar Pos (Key):\t{item.Key}");
-                    DecryptedText.AppendText($"\n\nDecrypted Value:\t{DecrKeyTable[item.Key]}");
+                    DecryptedText.AppendText($"\nDecrypted (Key):\t{item.Key}");
                     DecryptedText.AppendText($"\nEncrypted Value:\t{item.Value}");
                     DecryptedText.AppendText($"\n");
                     DecryptedText.AppendText($"---------------------------------------------");
