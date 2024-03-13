@@ -20,7 +20,7 @@ namespace Text_Encryptment_Program
                 result.Add(item);
             }
 
-            for (int i = 0; i < result.LongCount(); i++)
+            for (int i = 0; i < result.Count(); i++)
             {
                 //result[Pos++] = (char)item.Value;
 

@@ -245,16 +245,16 @@ namespace Text_Encryptment_Program
                     EncrKeyTable.Add(DecryptedData[i], rN);
                 }
 
-                foreach (var item in EncrKeyTable.Keys)
+                foreach (var item in EncrKeyTable)
                 {
-                    if ((int)DecryptedData[i] == item)
+                    if (DecryptedData[i] == item.Key)
                     {
                         keyFound = true;
                     }
                 }
                 //DecrKeyTable.Add(i, DecryptedData[i]);
 
-                if (keyFound) 
+                if (keyFound)
                 {
                     
                 }
@@ -288,7 +288,7 @@ namespace Text_Encryptment_Program
 
                 foreach (var item in EncrKeyTable)
                 {
-                    EncryptedText.AppendText($"{item.Key},{(double)item.Value};");
+                    EncryptedText.AppendText($"{item.Key},{item.Value};");
                     EncryptedText.ScrollToEnd();
                 }
 
@@ -392,23 +392,21 @@ namespace Text_Encryptment_Program
                 {
                     if (item == ',')
                     {
-                        keyAdd = false;
+                        keyAdd      = false;
 
                         continue;
                     }
                     else if (item == ';')
                     {
-                        keyAdd      = true;
-
                         key_Dec     = Convert.ToInt32(key);
                         value_Dec   = Convert.ToInt32(value);
-
-                        //MessageBox.Show(value);
 
                         EncrKeyTable.Add(key_Dec, value_Dec);
 
                         key         = "";
                         value       = "";
+
+                        keyAdd      = true;
 
                         continue;
                     }
@@ -424,7 +422,7 @@ namespace Text_Encryptment_Program
                 }
                 else
                 {
-                    if((int)item == 7348)
+                    if(item == 7348)
                     {
                         keyCharsFound++;
                     }
@@ -439,7 +437,7 @@ namespace Text_Encryptment_Program
 
             foreach (var item in EncryptedData)
             {
-                DecryptedData.Add(TextDecryption.DecryptText(EncrKeyTable, Convert.ToInt32(item)));
+                DecryptedData.Add(TextDecryption.DecryptText(EncrKeyTable, item));
             }
 
             foreach (var item in DecryptedData)
