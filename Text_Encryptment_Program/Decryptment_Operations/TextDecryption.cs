@@ -10,11 +10,21 @@ namespace Text_Encryptment_Program
 {
     public static class TextDecryption                         // Hiermit wird Text Char-weise mithilfe eines Keytable entschlüsselt !
     {
-        public static char DecryptText(Dictionary<int, int> DecrKeyTable, int index) 
+        public static char DecryptText(Dictionary<int, int> EncrKeyTable, int item) 
         {
-            char result;
+            char result = ' ';
 
-            result = Convert.ToChar(DecrKeyTable[index]);
+            foreach (var item1 in EncrKeyTable)
+            {
+                if(item1.Value == item)
+                {
+                    result = Convert.ToChar(item1.Key);
+                }
+                else
+                {
+                    
+                }
+            }
 
             return result;
         }

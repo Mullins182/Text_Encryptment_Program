@@ -48,22 +48,22 @@ namespace Text_Encryptment_Program
         {
             InitializeComponent();
 
-            button_stackpanel.Visibility  = Visibility.Hidden;
-            Options.Visibility      = Visibility.Hidden;
+            button_stackpanel.Visibility    = Visibility.Hidden;
+            Options.Visibility              = Visibility.Hidden;
 
             AuthorizeAccess();
         }
 
         private async void AuthorizeAccess()
         {
-            DecryptBox.Content = "ACCESS DENIED";
-            EncryptBox.Content = "ACCESS DENIED";
+            DecryptBox.Content              = "ACCESS DENIED";
+            EncryptBox.Content              = "ACCESS DENIED";
 
             await Task.Delay(1000);
 
             UserAccess.Show();
             UserAccess.Focus();
-            UserAccess.Topmost = true;
+            UserAccess.Topmost              = true;
 
             do
             {
@@ -401,9 +401,11 @@ namespace Text_Encryptment_Program
                         keyAdd      = true;
 
                         key_Dec     = Convert.ToInt32(key);
-                        value_Dec   = Convert.ToInt32(value) / 3;
+                        value_Dec   = Convert.ToInt32(value);
 
-                        DecrKeyTable.Add(key_Dec, value_Dec);
+                        //MessageBox.Show(value);
+
+                        EncrKeyTable.Add(key_Dec, value_Dec);
 
                         key         = "";
                         value       = "";
@@ -413,11 +415,11 @@ namespace Text_Encryptment_Program
 
                     if(keyAdd)
                     {
-                        key     += item.ToString();
+                        key     += item;
                     }
                     else if(!keyAdd)
                     {
-                        value   += item.ToString();
+                        value   += item;
                     }
                 }
                 else
@@ -435,11 +437,9 @@ namespace Text_Encryptment_Program
 
             await Task.Delay(2000);
 
-            int index = 0;
-
             foreach (var item in EncryptedData)
             {
-                DecryptedData.Add(TextDecryption.DecryptText(DecrKeyTable, index++));
+                DecryptedData.Add(TextDecryption.DecryptText(EncrKeyTable, Convert.ToInt32(item)));
             }
 
             foreach (var item in DecryptedData)
