@@ -33,7 +33,8 @@
     <!--Control Templates Override ENDE !-->
 
     <Grid>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,10,10,250">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,10,300">
+            <Image   Source="png\hal9000.png" Width="150" Margin="0,10,0,15"/>
             <TextBox x:Name="CodeBox" Height="50" Width="400" Background="DarkRed" Text="ENTER ACCESS CODE !" TextAlignment="Center" TextWrapping="NoWrap" 
                      VerticalContentAlignment="Center" AcceptsReturn="False" IsReadOnly="True"
                      FontFamily="Gothic" FontSize="30" FontWeight="Bold" Foreground="Goldenrod"/>

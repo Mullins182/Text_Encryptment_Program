@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,11 +21,24 @@ namespace Text_Encryptment_Program
     /// </summary>
     public partial class AccessWindow : Window
     {
+        public MediaPlayer mediaPlayer = new MediaPlayer();
+
         public ulong accessCode = 0;
 
         public AccessWindow()
         {
             InitializeComponent();
+
+
+            mediaPlayer.Open(new Uri(@"sound_effects/alarm.wav", UriKind.RelativeOrAbsolute));
+
+            mediaPlayer.Play();
+            mediaPlayer.MediaEnded += PlaybackFinished;
+        }
+
+        private void PlaybackFinished(object? sender, EventArgs e)
+        {
+            mediaPlayer.Position = TimeSpan.Zero;
         }
 
         private void one_Click(object sender, RoutedEventArgs e)

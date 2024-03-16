@@ -10,7 +10,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="png\hal9000.png" />
+    <None Remove="sound_effects\alarm.wav" />
+    <None Remove="sound_effects\code_accepted.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Svengraph-I-Love-Lock.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="png\hal9000.png" />
+    <EmbeddedResource Include="sound_effects\alarm.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sound_effects\code_accepted.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
