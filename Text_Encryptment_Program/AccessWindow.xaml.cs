@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Media;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Text_Encryptment_Program
 {
@@ -21,24 +9,34 @@ namespace Text_Encryptment_Program
     /// </summary>
     public partial class AccessWindow : Window
     {
-        public MediaPlayer mediaPlayer = new MediaPlayer();
+        public MediaPlayer alarm_loop       = new MediaPlayer();
+        public MediaPlayer keypad_sound     = new MediaPlayer();
+        public MediaPlayer keypad_reset     = new MediaPlayer();
+        public MediaPlayer code_accepted    = new MediaPlayer();
 
-        public ulong accessCode = 0;
+        public ulong accessCode             = 0;
 
         public AccessWindow()
         {
             InitializeComponent();
 
+            alarm_loop.Open(new Uri("sound_effects/attention.wav", UriKind.RelativeOrAbsolute));
+            keypad_sound.Open(new Uri("sound_effects/button_pressed.wav", UriKind.RelativeOrAbsolute));
+            keypad_reset.Open(new Uri("sound_effects/reset_numpad.wav", UriKind.RelativeOrAbsolute));
+            code_accepted.Open(new Uri("sound_effects/code_accepted.wav", UriKind.RelativeOrAbsolute));
 
-            mediaPlayer.Open(new Uri(@"sound_effects/alarm.wav", UriKind.RelativeOrAbsolute));
+            alarm_loop.MediaEnded += PlaybackFinished;
 
-            mediaPlayer.Play();
-            mediaPlayer.MediaEnded += PlaybackFinished;
+            alarm_loop.Volume   = 0.13;
+            alarm_loop.IsMuted  = true;
+            alarm_loop.Position = TimeSpan.FromSeconds(3);
+            alarm_loop.Play();
         }
 
         private void PlaybackFinished(object? sender, EventArgs e)
         {
-            mediaPlayer.Position = TimeSpan.Zero;
+            alarm_loop.IsMuted  = false;
+            alarm_loop.Position = TimeSpan.Zero;
         }
 
         private void one_Click(object sender, RoutedEventArgs e)
@@ -52,6 +50,9 @@ namespace Text_Encryptment_Program
             {
                 CodeBox.AppendText("1");
             }
+
+            keypad_sound.Position = TimeSpan.Zero;
+            keypad_sound.Play();
         }
 
         private void two_Click(object sender, RoutedEventArgs e)
@@ -65,6 +66,9 @@ namespace Text_Encryptment_Program
             {
                 CodeBox.AppendText("2");
             }
+
+            keypad_sound.Position = TimeSpan.Zero;
+            keypad_sound.Play();
         }
 
         private void three_Click(object sender, RoutedEventArgs e)
@@ -78,6 +82,9 @@ namespace Text_Encryptment_Program
             {
                 CodeBox.AppendText("3");
             }
+
+            keypad_sound.Position = TimeSpan.Zero;
+            keypad_sound.Play();
         }
 
         private void four_Click(object sender, RoutedEventArgs e)
@@ -92,6 +99,8 @@ namespace Text_Encryptment_Program
                 CodeBox.AppendText("4");
             }
 
+            keypad_sound.Position = TimeSpan.Zero;
+            keypad_sound.Play();
         }
 
         private void five_Click(object sender, RoutedEventArgs e)
@@ -106,6 +115,8 @@ namespace Text_Encryptment_Program
                 CodeBox.AppendText("5");
             }
 
+            keypad_sound.Position = TimeSpan.Zero;
+            keypad_sound.Play();
         }
 
         private void six_Click(object sender, RoutedEventArgs e)
@@ -120,6 +131,8 @@ namespace Text_Encryptment_Program
                 CodeBox.AppendText("6");
             }
 
+            keypad_sound.Position = TimeSpan.Zero;
+            keypad_sound.Play();
         }
 
         private void seven_Click(object sender, RoutedEventArgs e)
@@ -134,6 +147,8 @@ namespace Text_Encryptment_Program
                 CodeBox.AppendText("7");
             }
 
+            keypad_sound.Position = TimeSpan.Zero;
+            keypad_sound.Play();
         }
 
         private void eight_Click(object sender, RoutedEventArgs e)
@@ -148,6 +163,8 @@ namespace Text_Encryptment_Program
                 CodeBox.AppendText("8");
             }
 
+            keypad_sound.Position = TimeSpan.Zero;
+            keypad_sound.Play();
         }
 
         private void nine_Click(object sender, RoutedEventArgs e)
@@ -162,12 +179,17 @@ namespace Text_Encryptment_Program
                 CodeBox.AppendText("9");
             }
 
+            keypad_sound.Position = TimeSpan.Zero;
+            keypad_sound.Play();
         }
 
         private void reset_Click(object sender, RoutedEventArgs e)
         {
             CodeBox.Clear();
             CodeBox.Text = "ENTER ACCESS CODE !";
+
+            keypad_reset.Position = TimeSpan.Zero;
+            keypad_reset.Play();
         }
 
         private void enter_Click(object sender, RoutedEventArgs e)
@@ -184,7 +206,7 @@ namespace Text_Encryptment_Program
 
         private void one_KeyDown(object sender, KeyEventArgs e)
         {
-            //CodeBox.AppendText(e.ToString());
+            
         }
 
         //  MOUSE ENTER - MOUSE LEAVE METHODS ...

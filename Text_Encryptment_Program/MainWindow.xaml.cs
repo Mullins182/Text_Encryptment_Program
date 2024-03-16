@@ -67,7 +67,7 @@ namespace Text_Encryptment_Program
 
             do
             {
-                await Task.Delay(200);
+                await Task.Delay(500);
 
                 access_code_input = UserAccess.accessCode;
 
@@ -78,13 +78,21 @@ namespace Text_Encryptment_Program
             }
             while (access_code_input != access_code);
 
+            UserAccess.alarm_loop.Stop();
+            UserAccess.code_accepted.Play();
+
             UserAccess.CodeBox.Foreground = Brushes.YellowGreen;
 
-            await Task.Delay(1000);
+            await Task.Delay(1800);
 
             UserAccess.CodeBox.Text = "Code Accepted !!!";
 
-            await Task.Delay(3000);
+            UserAccess.alarm_loop.Close();
+            UserAccess.code_accepted.Close();
+            UserAccess.keypad_sound.Close();
+            UserAccess.keypad_reset.Close();
+
+            await Task.Delay(1333);
 
             UserAccess.Close();
 
