@@ -98,24 +98,16 @@ namespace Text_Encryptment_Program
 
             await Task.Delay(1000);
 
-            EncryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(500);
-            DecryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(500);
-            EncryptBoxLabelAnim.Tick    += EncryptBoxLabelAnim_Tick;
-            DecryptBoxLabelAnim.Tick    += DecryptBoxLabelAnim_Tick;
+            EncryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
+            DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
+            EncryptBoxLabelAnim.Tick        += EncryptBoxLabelAnim_Tick;
+            DecryptBoxLabelAnim.Tick        += DecryptBoxLabelAnim_Tick;
 
-            button_stackpanel.Visibility      = Visibility.Visible;
-            Options.Visibility          = Visibility.Visible;
+            button_stackpanel.Visibility    = Visibility.Visible;
+            Options.Visibility              = Visibility.Visible;
 
-            DecryptBox.Content          = "Decrypted Text";
-            EncryptBox.Content          = "Encrypted Text";
-            //OpenFile.Content            = "Add Text From File";
-            //ClearBox.Content            = "Clear Box";
-            //ClearEncrBox.Content        = "Clear Box";
-            //Encrypt.Content             = "Start Encrypting";
-            //Decrypt.Content             = "Start Decrypting";
-            //KeyTable.Content            = "Show Key-Table";
-            //ManualText.Content          = "Edit Text";
-            //ManualText2.Content         = "Edit Text";
+            DecryptBox.Content              = "Decrypted Text";
+            EncryptBox.Content              = "Encrypted Text";
         }
 
         private void DecryptBoxLabelAnim_Tick(object? sender, EventArgs e)
