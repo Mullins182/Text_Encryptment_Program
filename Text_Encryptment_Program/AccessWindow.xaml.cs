@@ -9,12 +9,12 @@ namespace Text_Encryptment_Program
     /// </summary>
     public partial class AccessWindow : Window
     {
-        public MediaPlayer alarm_loop       = new MediaPlayer();
-        public MediaPlayer keypad_sound     = new MediaPlayer();
-        public MediaPlayer keypad_reset     = new MediaPlayer();
-        public MediaPlayer code_accepted    = new MediaPlayer();
+        public MediaPlayer alarm_loop = new MediaPlayer();
+        public MediaPlayer keypad_sound = new MediaPlayer();
+        public MediaPlayer keypad_reset = new MediaPlayer();
+        public MediaPlayer code_accepted = new MediaPlayer();
 
-        public ulong accessCode             = 0;
+        public ulong accessCode = 0;
 
         public AccessWindow()
         {
@@ -27,26 +27,28 @@ namespace Text_Encryptment_Program
 
             alarm_loop.MediaEnded += PlaybackFinished;
 
-            alarm_loop.Volume   = 0.13;
-            alarm_loop.IsMuted  = true;
+            alarm_loop.Volume = 0.15;
+            alarm_loop.IsMuted = true;
             alarm_loop.Position = TimeSpan.FromSeconds(3);
             alarm_loop.Play();
+
+            CodeBox.Focus();
         }
 
         private void PlaybackFinished(object? sender, EventArgs e)
         {
-            alarm_loop.IsMuted  = false;
+            alarm_loop.IsMuted = false;
             alarm_loop.Position = TimeSpan.Zero;
         }
 
         private void one_Click(object sender, RoutedEventArgs e)
         {
-            if(CodeBox.Text == "ENTER ACCESS CODE !")
+            if (CodeBox.Text == "ENTER ACCESS CODE !")
             {
                 CodeBox.Clear();
             }
 
-            if(CodeBox.Text.Length < 10) 
+            if (CodeBox.Text.Length < 10)
             {
                 CodeBox.AppendText("1");
             }
@@ -187,6 +189,7 @@ namespace Text_Encryptment_Program
         {
             CodeBox.Clear();
             CodeBox.Text = "ENTER ACCESS CODE !";
+            CodeBox.Focus();
 
             keypad_reset.Position = TimeSpan.Zero;
             keypad_reset.Play();
@@ -194,7 +197,7 @@ namespace Text_Encryptment_Program
 
         private void enter_Click(object sender, RoutedEventArgs e)
         {
-            if(CodeBox.Text == "ENTER ACCESS CODE !")
+            if (CodeBox.Text == "ENTER ACCESS CODE !")
             {
 
             }
@@ -204,9 +207,32 @@ namespace Text_Encryptment_Program
             }
         }
 
-        private void one_KeyDown(object sender, KeyEventArgs e)
+        private void CodeBox_KeyDown(object sender, KeyEventArgs e)
         {
-            
+            if (CodeBox.Text == "ENTER ACCESS CODE !")
+            {
+                CodeBox.Clear();
+            }
+            else if (e.Key == Key.Enter)
+            {
+                enter_Click(sender, e);
+            }
+            else if (e.Key == Key.Clear)    // Doesn't work yet :(
+            {
+                reset_Click(sender, e);
+            }
+
+            if (CodeBox.Text.Length > 9)
+            {
+                CodeBox.IsReadOnly = true;
+            }
+            else
+            {
+                CodeBox.IsReadOnly = false;
+            }
+
+            keypad_sound.Position = TimeSpan.Zero;
+            keypad_sound.Play();
         }
 
         //  MOUSE ENTER - MOUSE LEAVE METHODS ...
