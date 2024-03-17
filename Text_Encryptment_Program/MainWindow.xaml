@@ -29,10 +29,26 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
+        <!--Control Templates Override ENDE !-->
+        
+        <!-- Preventing Textbox Highlighting on Mouseover -->
+        <Style TargetType="TextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- Preventing Textbox Highlighting on Mouseover END !! -->
     </Window.Resources>
-
-    <!--Control Templates Override ENDE !-->
-
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>

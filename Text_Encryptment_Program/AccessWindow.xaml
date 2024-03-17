@@ -28,9 +28,26 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
-    </Window.Resources>
-
     <!--Control Templates Override ENDE !-->
+        
+        <!-- Preventing Textbox Highlighting on Mouseover -->
+        
+        <Style TargetType="TextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- Preventing Textbox Highlighting on Mouseover END !! -->
+    </Window.Resources>
 
     <Grid>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,10,300">
