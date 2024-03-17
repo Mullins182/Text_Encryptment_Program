@@ -13,16 +13,24 @@ namespace Text_Encryptment_Program
         {
             List<char> result = new List<char>();
 
-            int Pos = 0;
+            //int Pos = 0;
 
             foreach (var item in decrText)
             {
                 result.Add(item);
             }
 
-            foreach (var item in keyTable)
+            for (int i = 0; i < result.Count(); i++)
             {
-                result[Pos++] = (char)item.Value;
+                //result[Pos++] = (char)item.Value;
+
+                foreach (var item_Dict in keyTable)
+                {
+                    if(item_Dict.Key == (int)result[i])
+                    {
+                        result[i] = (char)item_Dict.Value;
+                    }
+                }
             }
 
             return result;

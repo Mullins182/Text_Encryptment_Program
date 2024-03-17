@@ -29,10 +29,26 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
+        <!--Control Templates Override ENDE !-->
+        
+        <!-- Preventing Textbox Highlighting on Mouseover -->
+        <Style TargetType="TextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- Preventing Textbox Highlighting on Mouseover END !! -->
     </Window.Resources>
-
-    <!--Control Templates Override ENDE !-->
-
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -50,12 +66,12 @@
         <Label x:Name="EncryptBox" Content="Encrypted Text" Grid.Column="1" Grid.Row="0" Height="auto" Width="auto" FontSize="26" FontFamily="Arial Black" FontWeight="ExtraLight"
                HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="OrangeRed" Background="Transparent" Padding="0,10,0,0"/>
 
-        <Canvas  x:Name="optionsCanvas" Width="400" Height="300" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Background="#3A0000" Panel.ZIndex="1"
-                 Visibility="Collapsed" VerticalAlignment="Bottom" Margin="0,0,0,13">
+        <Canvas  x:Name="optionsCanvas" Width="400" Height="300" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Background="#3A0000" 
+                 Panel.ZIndex="1" Visibility="Collapsed" VerticalAlignment="Bottom" Margin="0,0,0,13">
 
-                <RibbonCheckBox x:Name="FastEncrDecrOnOff" Label="Fast Encryption / Decryption" Foreground="Goldenrod" CheckedBackground="Green" BorderBrush="Red"
-                            FontFamily="Arial" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left" VerticalAlignment="Top" Background="DarkRed"
-                            HorizontalContentAlignment="Right" VerticalContentAlignment="Top" IsChecked="False" Margin="25" CheckedBorderBrush="Green"
+            <RibbonCheckBox x:Name="FastEncrDecrOnOff" Label="Fast Encryption / Decryption" Foreground="Goldenrod" CheckedBackground="Lime" BorderBrush="Red"
+                            FontFamily="Arial Black" FontSize="15" FontWeight="Medium" HorizontalAlignment="Left" VerticalAlignment="Top" Background="DarkRed"
+                            HorizontalContentAlignment="Right" VerticalContentAlignment="Top" IsChecked="False" Margin="20" CheckedBorderBrush="Lime"
                             Checked="FastEncrDecrOnOff_Checked" Unchecked="FastEncrDecrOnOff_Unchecked"
                             BorderThickness="10" MouseOverBackground="Black" MouseOverBorderBrush="Yellow">
                     <CheckBox.RenderTransform>

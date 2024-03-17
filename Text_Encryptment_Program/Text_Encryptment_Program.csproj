@@ -10,7 +10,39 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="png\hal9000.png" />
+    <None Remove="sound_effects\access_denied.mp3" />
+    <None Remove="sound_effects\access_granted.mp3" />
+    <None Remove="sound_effects\button_pressed.wav" />
+    <None Remove="sound_effects\pling.mp3" />
+    <None Remove="sound_effects\reset_numpad.wav" />
+    <None Remove="sound_effects\window_popup.mp3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Svengraph-I-Love-Lock.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="png\hal9000.png" />
+    <EmbeddedResource Include="sound_effects\access_denied.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sound_effects\access_granted.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sound_effects\button_pressed.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sound_effects\pling.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sound_effects\reset_numpad.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sound_effects\window_popup.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

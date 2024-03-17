@@ -28,19 +28,37 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
+    <!--Control Templates Override ENDE !-->
+        
+        <!-- Preventing Textbox Highlighting on Mouseover -->
+        
+        <Style TargetType="TextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- Preventing Textbox Highlighting on Mouseover END !! -->
     </Window.Resources>
 
-    <!--Control Templates Override ENDE !-->
-
     <Grid>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,10,10,250">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,20,0,0">
             <TextBox x:Name="CodeBox" Height="50" Width="400" Background="DarkRed" Text="ENTER ACCESS CODE !" TextAlignment="Center" TextWrapping="NoWrap" 
-                     VerticalContentAlignment="Center" AcceptsReturn="False" IsReadOnly="True"
-                     FontFamily="Gothic" FontSize="30" FontWeight="Bold" Foreground="Goldenrod"/>
+                     VerticalContentAlignment="Center" AcceptsReturn="False" IsReadOnly="True" BorderThickness="1.8" BorderBrush="Red"
+                     FontFamily="Gothic" FontSize="30" FontWeight="Bold" Foreground="Goldenrod" KeyDown="CodeBox_KeyDown" CaretBrush="DarkRed"/>
+            <Image   Source="png\hal9000.png" Width="150" Margin="0,20,0,15"/>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,10">
-            <Button x:Name="one"    Height="60" Width="60" Content="1" FontFamily="Arial Black" FontSize="30" Background="YellowGreen" Click="one_Click" KeyDown="one_KeyDown"/>
+            <Button x:Name="one"    Height="60" Width="60" Content="1" FontFamily="Arial Black" FontSize="30" Background="YellowGreen" Click="one_Click"/>
             <Button x:Name="two"    Height="60" Width="60" Content="2" FontFamily="Arial Black" FontSize="30" Background="YellowGreen" Click="two_Click"/>
             <Button x:Name="three"  Height="60" Width="60" Content="3" FontFamily="Arial Black" FontSize="30" Background="YellowGreen" Click="three_Click"/>
         </StackPanel>

@@ -33,11 +33,11 @@ namespace Text_Encryptment_Program
         List<string> TextData               = new List<string>();
         List<string> textCache              = new List<string>();
 
-        bool showKeyTable                   = false;
-        bool fastMode                       = false;
+        private bool showKeyTable           = false;
+        private bool fastMode               = false;
 
-        ulong access_code                   = 52565854;
-        ulong access_code_input             = 0;
+        private static ulong access_code    = 52565854;
+        private ulong access_code_input     = 0;
 
         AccessWindow UserAccess             = new AccessWindow();
 
@@ -48,26 +48,31 @@ namespace Text_Encryptment_Program
         {
             InitializeComponent();
 
-            button_stackpanel.Visibility  = Visibility.Hidden;
-            Options.Visibility      = Visibility.Hidden;
+            button_stackpanel.Visibility    = Visibility.Hidden;
+            Options.Visibility              = Visibility.Hidden;
 
             AuthorizeAccess();
         }
 
+        public static ulong GetAccessCode()
+        {
+            return access_code;
+        }
+
         private async void AuthorizeAccess()
         {
-            DecryptBox.Content = "ACCESS DENIED";
-            EncryptBox.Content = "ACCESS DENIED";
+            DecryptBox.Content              = "ACCESS DENIED";
+            EncryptBox.Content              = "ACCESS DENIED";
 
             await Task.Delay(1000);
 
             UserAccess.Show();
             UserAccess.Focus();
-            UserAccess.Topmost = true;
+            UserAccess.Topmost              = true;
 
             do
             {
-                await Task.Delay(200);
+                await Task.Delay(500);
 
                 access_code_input = UserAccess.accessCode;
 
@@ -80,34 +85,37 @@ namespace Text_Encryptment_Program
 
             UserAccess.CodeBox.Foreground = Brushes.YellowGreen;
 
-            await Task.Delay(1000);
+            UserAccess.pling.Play();
+
+            await Task.Delay(1500);
+
+            UserAccess.code_accepted.Play();
 
             UserAccess.CodeBox.Text = "Code Accepted !!!";
 
-            await Task.Delay(3000);
+            await Task.Delay(2500);
+
+            UserAccess.window_popup.Close();
+            UserAccess.code_accepted.Close();
+            UserAccess.keypad_sound.Close();
+            UserAccess.keypad_reset.Close();
+
+            await Task.Delay(333);
 
             UserAccess.Close();
 
             await Task.Delay(1000);
 
-            EncryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(500);
-            DecryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(500);
-            EncryptBoxLabelAnim.Tick    += EncryptBoxLabelAnim_Tick;
-            DecryptBoxLabelAnim.Tick    += DecryptBoxLabelAnim_Tick;
+            EncryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
+            DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
+            EncryptBoxLabelAnim.Tick        += EncryptBoxLabelAnim_Tick;
+            DecryptBoxLabelAnim.Tick        += DecryptBoxLabelAnim_Tick;
 
-            button_stackpanel.Visibility      = Visibility.Visible;
-            Options.Visibility          = Visibility.Visible;
+            button_stackpanel.Visibility    = Visibility.Visible;
+            Options.Visibility              = Visibility.Visible;
 
-            DecryptBox.Content          = "Decrypted Text";
-            EncryptBox.Content          = "Encrypted Text";
-            //OpenFile.Content            = "Add Text From File";
-            //ClearBox.Content            = "Clear Box";
-            //ClearEncrBox.Content        = "Clear Box";
-            //Encrypt.Content             = "Start Encrypting";
-            //Decrypt.Content             = "Start Decrypting";
-            //KeyTable.Content            = "Show Key-Table";
-            //ManualText.Content          = "Edit Text";
-            //ManualText2.Content         = "Edit Text";
+            DecryptBox.Content              = "Decrypted Text";
+            EncryptBox.Content              = "Encrypted Text";
         }
 
         private void DecryptBoxLabelAnim_Tick(object? sender, EventArgs e)
@@ -190,9 +198,12 @@ namespace Text_Encryptment_Program
         {
             DisableAllButtons();
 
+            List<int> randoms = new List<int>();
+
             bool integerRange1      = true;
             bool integerRange2      = false;
             bool integerRange3      = false;
+            bool keyFound           = false;
             int rN                  = 0;
 
             EncryptBox.Content      = "Encrypting in Progress ...";
@@ -216,6 +227,7 @@ namespace Text_Encryptment_Program
 
             for (int i = 0; i < DecryptedData.Count; i++) 
             {
+                JumpHere:
                 
                 if (integerRange1)
                 {
@@ -239,8 +251,42 @@ namespace Text_Encryptment_Program
                     integerRange1 = true;
                 }
 
-                EncrKeyTable.Add(i, rN);
-                DecrKeyTable.Add(i, DecryptedData[i]);
+                if (randoms.Count != 0)
+                {
+                    foreach (var item in randoms)
+                    {
+                        if (rN == item)
+                        {
+                            goto JumpHere;
+                        }
+                    }
+                }
+
+                if(EncrKeyTable.Count == 0)
+                {
+                    EncrKeyTable.Add(Convert.ToInt32(DecryptedData[i]), rN);
+                    randoms.Add(rN);
+                }
+
+                foreach (var item in EncrKeyTable)
+                {
+                    if (Convert.ToInt32(DecryptedData[i]) == item.Key)
+                    {
+                        keyFound = true;
+                    }
+                }
+
+                if (keyFound)
+                {
+                    
+                }
+                else
+                {
+                    EncrKeyTable.Add(Convert.ToInt32(DecryptedData[i]), rN);
+                    randoms.Add(rN);
+                }
+
+                keyFound = false;
             }
 
             await Task.Delay(2000);
@@ -258,19 +304,24 @@ namespace Text_Encryptment_Program
                 }
             }
 
-            if  (DecrKeyTable.Count > 0)
+            if  (EncrKeyTable.Count > 0)
             {
                 EncryptedText.AppendText($"{(char)7348}{(char)7348}{(char)7348}");
                 EncryptedText.ScrollToEnd();
 
-                foreach (var item in DecrKeyTable)
+                foreach (var item in EncrKeyTable)
                 {
-                    EncryptedText.AppendText($"{item.Key},{(double)item.Value * 3};");
+                    EncryptedText.AppendText($"{item.Key},{item.Value};");
                     EncryptedText.ScrollToEnd();
                 }
 
                 //EncryptedText.AppendText($"{(char)7347}{(char)7347}{(char)7347}");
                 //EncryptedText.ScrollToEnd();
+            }
+
+            if (fastMode)
+            {
+                EncryptedText.ScrollToHome();
             }
 
             EncryptBox.Content              = "Successfully Encrypted";
@@ -307,19 +358,20 @@ namespace Text_Encryptment_Program
 
                 DecryptedText.AppendText("\n_____________________________________\n");
 
-                DecryptedText.AppendText($"\nEncrypt Key Count: {EncrKeyTable.Count}\nDecryp Key Count: {DecrKeyTable.Count}");
+                DecryptedText.AppendText($"\nEncrypt Key Count: {EncrKeyTable.Count}");
 
                 DecryptedText.AppendText("\n_____________________________________\n\n");
 
                 foreach (var item in EncrKeyTable)
                 {
-                    DecryptedText.AppendText($"\nChar Pos (Key):\t{item.Key}");
-                    DecryptedText.AppendText($"\n\nDecrypted Value:\t{DecrKeyTable[item.Key]}");
+                    DecryptedText.AppendText($"\nDecrypted (Key):\t{item.Key}");
                     DecryptedText.AppendText($"\nEncrypted Value:\t{item.Value}");
                     DecryptedText.AppendText($"\n");
                     DecryptedText.AppendText($"---------------------------------------------");
                     DecryptedText.AppendText($"\n");
                 }
+
+                DecryptedText.ScrollToHome();
             }
             else
             {
@@ -333,6 +385,8 @@ namespace Text_Encryptment_Program
                 {
                     DecryptedText.Text = $"{item}";
                 }
+
+                DecryptedText.ScrollToHome();
 
                 textCache.Clear();
             }
@@ -370,37 +424,37 @@ namespace Text_Encryptment_Program
                 {
                     if (item == ',')
                     {
-                        keyAdd = false;
+                        keyAdd      = false;
 
                         continue;
                     }
                     else if (item == ';')
                     {
-                        keyAdd      = true;
-
                         key_Dec     = Convert.ToInt32(key);
-                        value_Dec   = Convert.ToInt32(value) / 3;
+                        value_Dec   = Convert.ToInt32(value);
 
-                        DecrKeyTable.Add(key_Dec, value_Dec);
+                        EncrKeyTable.Add(key_Dec, value_Dec);
 
                         key         = "";
                         value       = "";
+
+                        keyAdd      = true;
 
                         continue;
                     }
 
                     if(keyAdd)
                     {
-                        key     += item.ToString();
+                        key     += item;
                     }
                     else if(!keyAdd)
                     {
-                        value   += item.ToString();
+                        value   += item;
                     }
                 }
                 else
                 {
-                    if((int)item == 7348)
+                    if(item == 7348)
                     {
                         keyCharsFound++;
                     }
@@ -413,11 +467,9 @@ namespace Text_Encryptment_Program
 
             await Task.Delay(2000);
 
-            int index = 0;
-
             foreach (var item in EncryptedData)
             {
-                DecryptedData.Add(TextDecryption.DecryptText(DecrKeyTable, index++));
+                DecryptedData.Add(TextDecryption.DecryptText(EncrKeyTable, item));
             }
 
             foreach (var item in DecryptedData)
@@ -429,6 +481,11 @@ namespace Text_Encryptment_Program
                 {
                     await Task.Delay(5);
                 }
+            }
+
+            if (fastMode)
+            {
+                DecryptedText.ScrollToHome();
             }
 
             DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(150);
