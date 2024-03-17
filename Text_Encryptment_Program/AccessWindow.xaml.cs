@@ -9,10 +9,12 @@ namespace Text_Encryptment_Program
     /// </summary>
     public partial class AccessWindow : Window
     {
-        public MediaPlayer alarm_loop       = new MediaPlayer();
+        public MediaPlayer window_popup     = new MediaPlayer();
         public MediaPlayer keypad_sound     = new MediaPlayer();
         public MediaPlayer keypad_reset     = new MediaPlayer();
+        public MediaPlayer pling            = new MediaPlayer();
         public MediaPlayer code_accepted    = new MediaPlayer();
+        public MediaPlayer access_denied    = new MediaPlayer();
 
         public ulong accessCode             = 0;
 
@@ -20,27 +22,41 @@ namespace Text_Encryptment_Program
         {
             InitializeComponent();
 
-            alarm_loop.Open(new Uri("sound_effects/attention.wav", UriKind.RelativeOrAbsolute));
+            pling.Open(new Uri("sound_effects/pling.mp3", UriKind.RelativeOrAbsolute));
+            window_popup.Open(new Uri("sound_effects/window_popup.mp3", UriKind.RelativeOrAbsolute));
             keypad_sound.Open(new Uri("sound_effects/button_pressed.wav", UriKind.RelativeOrAbsolute));
             keypad_reset.Open(new Uri("sound_effects/reset_numpad.wav", UriKind.RelativeOrAbsolute));
-            code_accepted.Open(new Uri("sound_effects/code_accepted.wav", UriKind.RelativeOrAbsolute));
+            code_accepted.Open(new Uri("sound_effects/access_granted.mp3", UriKind.RelativeOrAbsolute));
+            access_denied.Open(new Uri("sound_effects/access_denied.mp3", UriKind.RelativeOrAbsolute));
 
-            alarm_loop.MediaEnded += PlaybackFinished;
+            pling.IsMuted           = true;
+            window_popup.IsMuted    = true;
+            keypad_sound.IsMuted    = true;
+            keypad_reset.IsMuted    = true;
+            code_accepted.IsMuted   = true;
+            access_denied.IsMuted   = true;
 
-            alarm_loop.Volume = 0.15;
-            alarm_loop.IsMuted = true;
-            alarm_loop.Position = TimeSpan.FromSeconds(3);
-            alarm_loop.Play();
+            InitializeCompleted();
+        }
+
+        private async void InitializeCompleted()
+        {
+            await Task.Delay(1000);
+
+            pling.IsMuted           = false;
+            window_popup.IsMuted    = false;
+            keypad_sound.IsMuted    = false;
+            keypad_reset.IsMuted    = false;
+            code_accepted.IsMuted   = false;
+            access_denied.IsMuted   = false;
+
+            window_popup.Volume     = 1.0;
+            code_accepted.Volume    = 1.0;
+
+            window_popup.Play();
 
             CodeBox.Focus();
         }
-
-        private void PlaybackFinished(object? sender, EventArgs e)
-        {
-            alarm_loop.IsMuted  = false;
-            alarm_loop.Position = TimeSpan.Zero;
-        }
-
         private void one_Click(object sender, RoutedEventArgs e)
         {
             if (CodeBox.Text == "ENTER ACCESS CODE !")
@@ -204,6 +220,12 @@ namespace Text_Encryptment_Program
             else
             {
                 accessCode = Convert.ToUInt64(CodeBox.Text);
+
+                if (accessCode != MainWindow.GetAccessCode())
+                {
+                    access_denied.Position = TimeSpan.Zero;
+                    access_denied.Play();
+                }
             }
         }
 

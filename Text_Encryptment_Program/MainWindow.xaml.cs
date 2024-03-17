@@ -33,11 +33,11 @@ namespace Text_Encryptment_Program
         List<string> TextData               = new List<string>();
         List<string> textCache              = new List<string>();
 
-        bool showKeyTable                   = false;
-        bool fastMode                       = false;
+        private bool showKeyTable           = false;
+        private bool fastMode               = false;
 
-        ulong access_code                   = 52565854;
-        ulong access_code_input             = 0;
+        private static ulong access_code    = 52565854;
+        private ulong access_code_input     = 0;
 
         AccessWindow UserAccess             = new AccessWindow();
 
@@ -52,6 +52,11 @@ namespace Text_Encryptment_Program
             Options.Visibility              = Visibility.Hidden;
 
             AuthorizeAccess();
+        }
+
+        public static ulong GetAccessCode()
+        {
+            return access_code;
         }
 
         private async void AuthorizeAccess()
@@ -78,21 +83,24 @@ namespace Text_Encryptment_Program
             }
             while (access_code_input != access_code);
 
-            UserAccess.alarm_loop.Stop();
-            UserAccess.code_accepted.Play();
-
             UserAccess.CodeBox.Foreground = Brushes.YellowGreen;
 
-            await Task.Delay(1800);
+            UserAccess.pling.Play();
+
+            await Task.Delay(1500);
+
+            UserAccess.code_accepted.Play();
 
             UserAccess.CodeBox.Text = "Code Accepted !!!";
 
-            UserAccess.alarm_loop.Close();
+            await Task.Delay(2500);
+
+            UserAccess.window_popup.Close();
             UserAccess.code_accepted.Close();
             UserAccess.keypad_sound.Close();
             UserAccess.keypad_reset.Close();
 
-            await Task.Delay(1333);
+            await Task.Delay(333);
 
             UserAccess.Close();
 
