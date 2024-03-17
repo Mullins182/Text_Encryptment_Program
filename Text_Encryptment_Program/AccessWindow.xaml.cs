@@ -9,12 +9,12 @@ namespace Text_Encryptment_Program
     /// </summary>
     public partial class AccessWindow : Window
     {
-        public MediaPlayer alarm_loop = new MediaPlayer();
-        public MediaPlayer keypad_sound = new MediaPlayer();
-        public MediaPlayer keypad_reset = new MediaPlayer();
-        public MediaPlayer code_accepted = new MediaPlayer();
+        public MediaPlayer alarm_loop       = new MediaPlayer();
+        public MediaPlayer keypad_sound     = new MediaPlayer();
+        public MediaPlayer keypad_reset     = new MediaPlayer();
+        public MediaPlayer code_accepted    = new MediaPlayer();
 
-        public ulong accessCode = 0;
+        public ulong accessCode             = 0;
 
         public AccessWindow()
         {
@@ -37,7 +37,7 @@ namespace Text_Encryptment_Program
 
         private void PlaybackFinished(object? sender, EventArgs e)
         {
-            alarm_loop.IsMuted = false;
+            alarm_loop.IsMuted  = false;
             alarm_loop.Position = TimeSpan.Zero;
         }
 
@@ -217,7 +217,7 @@ namespace Text_Encryptment_Program
             {
                 enter_Click(sender, e);
             }
-            else if (e.Key == Key.Clear)    // Doesn't work yet :(
+            else if (e.Key == Key.Back)    // Doesn't work yet :(
             {
                 reset_Click(sender, e);
             }

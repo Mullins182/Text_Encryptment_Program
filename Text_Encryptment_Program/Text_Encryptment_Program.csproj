@@ -11,9 +11,7 @@
 
   <ItemGroup>
     <None Remove="png\hal9000.png" />
-    <None Remove="sound_effects\attention.wav" />
     <None Remove="sound_effects\button_pressed.wav" />
-    <None Remove="sound_effects\code_accepted.wav" />
     <None Remove="sound_effects\reset_numpad.wav" />
   </ItemGroup>
 
@@ -23,13 +21,7 @@
 
   <ItemGroup>
     <Resource Include="png\hal9000.png" />
-    <EmbeddedResource Include="sound_effects\attention.wav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="sound_effects\button_pressed.wav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="sound_effects\code_accepted.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="sound_effects\reset_numpad.wav">
