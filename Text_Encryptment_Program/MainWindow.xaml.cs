@@ -198,6 +198,8 @@ namespace Text_Encryptment_Program
         {
             DisableAllButtons();
 
+            List<int> randoms = new List<int>();
+
             bool integerRange1      = true;
             bool integerRange2      = false;
             bool integerRange3      = false;
@@ -225,6 +227,7 @@ namespace Text_Encryptment_Program
 
             for (int i = 0; i < DecryptedData.Count; i++) 
             {
+                JumpHere:
                 
                 if (integerRange1)
                 {
@@ -248,19 +251,30 @@ namespace Text_Encryptment_Program
                     integerRange1 = true;
                 }
 
-                if(EncrKeyTable.Count() == 0)
+                if (randoms.Count != 0)
                 {
-                    EncrKeyTable.Add(DecryptedData[i], rN);
+                    foreach (var item in randoms)
+                    {
+                        if (rN == item)
+                        {
+                            goto JumpHere;
+                        }
+                    }
+                }
+
+                if(EncrKeyTable.Count == 0)
+                {
+                    EncrKeyTable.Add(Convert.ToInt32(DecryptedData[i]), rN);
+                    randoms.Add(rN);
                 }
 
                 foreach (var item in EncrKeyTable)
                 {
-                    if (DecryptedData[i] == item.Key)
+                    if (Convert.ToInt32(DecryptedData[i]) == item.Key)
                     {
                         keyFound = true;
                     }
                 }
-                //DecrKeyTable.Add(i, DecryptedData[i]);
 
                 if (keyFound)
                 {
@@ -268,7 +282,8 @@ namespace Text_Encryptment_Program
                 }
                 else
                 {
-                    EncrKeyTable.Add(DecryptedData[i], rN);
+                    EncrKeyTable.Add(Convert.ToInt32(DecryptedData[i]), rN);
+                    randoms.Add(rN);
                 }
 
                 keyFound = false;
@@ -302,6 +317,11 @@ namespace Text_Encryptment_Program
 
                 //EncryptedText.AppendText($"{(char)7347}{(char)7347}{(char)7347}");
                 //EncryptedText.ScrollToEnd();
+            }
+
+            if (fastMode)
+            {
+                EncryptedText.ScrollToHome();
             }
 
             EncryptBox.Content              = "Successfully Encrypted";
@@ -350,6 +370,8 @@ namespace Text_Encryptment_Program
                     DecryptedText.AppendText($"---------------------------------------------");
                     DecryptedText.AppendText($"\n");
                 }
+
+                DecryptedText.ScrollToHome();
             }
             else
             {
@@ -363,6 +385,8 @@ namespace Text_Encryptment_Program
                 {
                     DecryptedText.Text = $"{item}";
                 }
+
+                DecryptedText.ScrollToHome();
 
                 textCache.Clear();
             }
@@ -457,6 +481,11 @@ namespace Text_Encryptment_Program
                 {
                     await Task.Delay(5);
                 }
+            }
+
+            if (fastMode)
+            {
+                DecryptedText.ScrollToHome();
             }
 
             DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(150);
