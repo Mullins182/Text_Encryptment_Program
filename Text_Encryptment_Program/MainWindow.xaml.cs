@@ -296,7 +296,7 @@ namespace Text_Encryptment_Program
 
                 foreach (var item in EncrKeyTable)
                 {
-                    EncryptedText.AppendText($"{item.Key},{item.Value};");
+                    EncryptedText.AppendText($"{item.Key * 7},{item.Value * 2};");
                     EncryptedText.ScrollToEnd();
                 }
 
@@ -415,8 +415,8 @@ namespace Text_Encryptment_Program
                     }
                     else if (item == ';')
                     {
-                        key_Dec     = Convert.ToInt32(key);
-                        value_Dec   = Convert.ToInt32(value);
+                        key_Dec     = Convert.ToInt32(key) / 7;
+                        value_Dec   = Convert.ToInt32(value) / 2;
 
                         EncrKeyTable.Add(key_Dec, value_Dec);
 
