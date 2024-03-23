@@ -1,48 +1,33 @@
-﻿using System;
-using System.Linq;
-using System.Security.Cryptography.Xml;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Shell;
 using System.Windows.Threading;
 using Text_Encryptment_Program.Other_Methods;
 
 namespace Text_Encryptment_Program
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        DispatcherTimer EncryptBoxLabelAnim = new DispatcherTimer(DispatcherPriority.Send);
-        DispatcherTimer DecryptBoxLabelAnim = new DispatcherTimer(DispatcherPriority.Send);
+        private DispatcherTimer EncryptBoxLabelAnim = new(DispatcherPriority.Send);
+        private DispatcherTimer DecryptBoxLabelAnim = new(DispatcherPriority.Send);
 
-        Dictionary<int, int> EncrKeyTable   = new Dictionary<int, int>();
-        Dictionary<int, int> DecrKeyTable   = new Dictionary<int, int>();
+        private AccessWindow UserAccess             = new();
+        private Random generateRandoms              = new();
 
-        List<char> EncryptedData            = new List<char>();
-        List<char> DecryptedData            = new List<char>();
-        List<string> TextData               = new List<string>();
-        List<string> textCache              = new List<string>();
+        private Dictionary<int, int> EncrKeyTable   = [];
+        private Dictionary<int, int> DecrKeyTable   = [];
 
-        private bool showKeyTable           = false;
-        private bool fastMode               = false;
+        private List<char> EncryptedData            = [];
+        private List<char> DecryptedData            = [];
+        private List<string> TextData               = [];
+        private List<string> textCache              = [];
 
-        private static ulong access_code    = 52565854;
-        private ulong access_code_input     = 0;
+        private bool showKeyTable                   = false;
+        private bool fastMode                       = false;
 
-        AccessWindow UserAccess             = new AccessWindow();
+        private static readonly ulong access_code   = 52565854;
+        private static ulong access_code_input      = 0;
 
-        Random generateRandoms              = new Random();                       // Neue Instanz der Random Klasse erstellen !
-                                                                                  // GenerateRandoms.Next() = Zufallszahl zwischen (x, y) erzeugen ! (x ist inklusiv, y ist exklusiv)
 
         public MainWindow()
         {
@@ -59,7 +44,7 @@ namespace Text_Encryptment_Program
             return access_code;
         }
 
-        private async void AuthorizeAccess()
+        public async void AuthorizeAccess()
         {
             DecryptBox.Content              = "ACCESS DENIED";
             EncryptBox.Content              = "ACCESS DENIED";
@@ -118,7 +103,7 @@ namespace Text_Encryptment_Program
             EncryptBox.Content              = "Encrypted Text";
         }
 
-        private void DecryptBoxLabelAnim_Tick(object? sender, EventArgs e)
+        public void DecryptBoxLabelAnim_Tick(object? sender, EventArgs e)
         {
             if(DecryptBox.Visibility == Visibility.Visible) 
             {
@@ -130,7 +115,7 @@ namespace Text_Encryptment_Program
             }
         }
 
-        private void EncryptBoxLabelAnim_Tick(object? sender, EventArgs e)
+        public void EncryptBoxLabelAnim_Tick(object? sender, EventArgs e)
         {
             if (EncryptBox.Visibility == Visibility.Visible)
             {
@@ -142,7 +127,7 @@ namespace Text_Encryptment_Program
             }
         }
 
-        private void DisableAllButtons()
+        public void DisableAllButtons()
         {
             Encrypt.IsEnabled       = false;
             Decrypt.IsEnabled       = false;
@@ -154,7 +139,7 @@ namespace Text_Encryptment_Program
             ManualText2.IsEnabled   = false;
         }
 
-        private void EnableAllButtons()
+        public void EnableAllButtons()
         {
             Encrypt.IsEnabled       = true;
             Decrypt.IsEnabled       = true;
@@ -166,7 +151,7 @@ namespace Text_Encryptment_Program
             ManualText2.IsEnabled   = true;
         }
 
-        private void OpenFile_Click(object sender, RoutedEventArgs e)
+        public void OpenFile_Click(object sender, RoutedEventArgs e)
         {
 
             // Configure open file dialog box
