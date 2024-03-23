@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Text_Encryptment_Program"
         mc:Ignorable="d"
-        Title="Text-Encryption / Decryption Program" Height="900" Width="1765" Background="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
+        Title="Text-Encryption / Decryption Program | Version Beta 0.9 |" Height="900" Width="1765" Background="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
         WindowStartupLocation="CenterScreen" MinWidth="500" MinHeight="900">
     
     <!--Control Template Override für Buttons um Highlighting bei Mouseover zu verhindern !-->

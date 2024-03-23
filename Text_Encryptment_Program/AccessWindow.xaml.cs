@@ -207,7 +207,7 @@ namespace Text_Encryptment_Program
             CodeBox.Text = "ENTER ACCESS CODE !";
             CodeBox.Focus();
 
-            keypad_reset.Position = TimeSpan.Zero;
+            keypad_reset.Position = TimeSpan.FromMilliseconds(500);
             keypad_reset.Play();
         }
 
