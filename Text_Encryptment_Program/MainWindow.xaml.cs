@@ -14,7 +14,7 @@ namespace Text_Encryptment_Program
         private AccessWindow UserAccess             = new();
         private Random generateRandoms              = new();
 
-        private Dictionary<int, int> EncrKeyTable   = [];
+        private Dictionary<double, double> EncrKeyTable   = [];
 
         private List<char> EncryptedData            = [];
         private List<char> DecryptedData            = [];
@@ -294,7 +294,7 @@ namespace Text_Encryptment_Program
 
                 foreach (var item in EncrKeyTable)
                 {
-                    EncryptedText.AppendText($"{item.Key * 7}~{item.Value * 2};");
+                    EncryptedText.AppendText($"{item.Key / 16}~{item.Value / 32};");
                     EncryptedText.ScrollToEnd();
                 }
 
@@ -397,6 +397,8 @@ namespace Text_Encryptment_Program
             int keyCharsFound   = 0;
             string key          = "";
             string value        = "";
+            double keyDouble    = 0.00;
+            double valueDouble  = 0.00;
             int key_Dec         = 0;
             int value_Dec       = 0;
 
@@ -412,8 +414,10 @@ namespace Text_Encryptment_Program
                     }
                     else if (item == ';')
                     {
-                        key_Dec     = Convert.ToInt32(key) / 7;
-                        value_Dec   = Convert.ToInt32(value) / 2;
+                        keyDouble   = Convert.ToDouble(key);
+                        valueDouble = Convert.ToDouble(value);
+                        key_Dec     = Convert.ToInt32(keyDouble * 16);
+                        value_Dec   = Convert.ToInt32(valueDouble * 32);
 
                         EncrKeyTable.Add(key_Dec, value_Dec);
 

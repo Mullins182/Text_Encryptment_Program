@@ -2,7 +2,7 @@
 {
     public static class TextEncryption                     // Hiermit wird der Text der Decrypted Text Box verschlüsselt !
     {
-        public static List<char> EncryptText(List<char> decrText, Dictionary<int, int> keyTable) 
+        public static List<char> EncryptText(List<char> decrText, Dictionary<double, double> keyTable) 
         {
             List<char> result = new List<char>();
 

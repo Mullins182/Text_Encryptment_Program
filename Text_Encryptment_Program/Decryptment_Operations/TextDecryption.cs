@@ -2,7 +2,7 @@
 {
     public class TextDecryption                         // Hiermit wird Text Char-weise mithilfe eines Keytable entschlüsselt !
     {
-        public static char DecryptText(Dictionary<int, int> EncrKeyTable, char item) 
+        public static char DecryptText(Dictionary<double, double> EncrKeyTable, char item) 
         {
             char result = 'X';
 
