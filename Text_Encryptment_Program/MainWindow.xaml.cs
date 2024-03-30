@@ -294,7 +294,7 @@ namespace Text_Encryptment_Program
 
                 foreach (var item in EncrKeyTable)
                 {
-                    EncryptedText.AppendText($"{item.Key / 16}~{item.Value / 32};");
+                    EncryptedText.AppendText($"{Math.Round((item.Key / 4.00), 5)}~{Math.Round((item.Value / 500.00), 5)};");
                     EncryptedText.ScrollToEnd();
                 }
 
@@ -416,8 +416,8 @@ namespace Text_Encryptment_Program
                     {
                         keyDouble   = Convert.ToDouble(key);
                         valueDouble = Convert.ToDouble(value);
-                        key_Dec     = Convert.ToInt32(keyDouble * 16);
-                        value_Dec   = Convert.ToInt32(valueDouble * 32);
+                        key_Dec     = Convert.ToInt32(keyDouble * 4.00);
+                        value_Dec   = Convert.ToInt32(valueDouble * 500.00);
 
                         EncrKeyTable.Add(key_Dec, value_Dec);
 
