@@ -14,8 +14,7 @@ namespace Text_Encryptment_Program
         private AccessWindow UserAccess             = new();
         private Random generateRandoms              = new();
 
-        private Dictionary<int, int> EncrKeyTable   = [];
-        private Dictionary<int, int> DecrKeyTable   = [];
+        private Dictionary<double, double> EncrKeyTable   = [];
 
         private List<char> EncryptedData            = [];
         private List<char> DecryptedData            = [];
@@ -201,7 +200,6 @@ namespace Text_Encryptment_Program
             EncryptedText.Clear();
             DecryptedData.Clear();
             EncrKeyTable.Clear();
-            DecrKeyTable.Clear();
 
             await Task.Delay(2000);
 
@@ -249,13 +247,13 @@ namespace Text_Encryptment_Program
 
                 if(EncrKeyTable.Count == 0)
                 {
-                    EncrKeyTable.Add(Convert.ToInt32(DecryptedData[i]), rN);
+                    EncrKeyTable.Add(DecryptedData[i], rN);
                     randoms.Add(rN);
                 }
 
                 foreach (var item in EncrKeyTable)
                 {
-                    if (Convert.ToInt32(DecryptedData[i]) == item.Key)
+                    if (DecryptedData[i] == item.Key)
                     {
                         keyFound = true;
                     }
@@ -267,7 +265,7 @@ namespace Text_Encryptment_Program
                 }
                 else
                 {
-                    EncrKeyTable.Add(Convert.ToInt32(DecryptedData[i]), rN);
+                    EncrKeyTable.Add(DecryptedData[i], rN);
                     randoms.Add(rN);
                 }
 
@@ -296,7 +294,7 @@ namespace Text_Encryptment_Program
 
                 foreach (var item in EncrKeyTable)
                 {
-                    EncryptedText.AppendText($"{item.Key * 7},{item.Value * 2};");
+                    EncryptedText.AppendText($"{Math.Round((item.Key / 4.00), 5)}~{Math.Round((item.Value / 500.00), 5)};");
                     EncryptedText.ScrollToEnd();
                 }
 
@@ -384,7 +382,6 @@ namespace Text_Encryptment_Program
             DecryptedText.Clear();
             EncryptedData.Clear();
             DecryptedData.Clear();
-            DecrKeyTable.Clear();
             EncrKeyTable.Clear();
 
             DecryptBoxLabelAnim.Start();
@@ -400,6 +397,8 @@ namespace Text_Encryptment_Program
             int keyCharsFound   = 0;
             string key          = "";
             string value        = "";
+            double keyDouble    = 0.00;
+            double valueDouble  = 0.00;
             int key_Dec         = 0;
             int value_Dec       = 0;
 
@@ -407,7 +406,7 @@ namespace Text_Encryptment_Program
             {
                 if(keyCharsFound == 3)
                 {
-                    if (item == ',')
+                    if (item == '~')
                     {
                         keyAdd      = false;
 
@@ -415,8 +414,10 @@ namespace Text_Encryptment_Program
                     }
                     else if (item == ';')
                     {
-                        key_Dec     = Convert.ToInt32(key) / 7;
-                        value_Dec   = Convert.ToInt32(value) / 2;
+                        keyDouble   = Convert.ToDouble(key);
+                        valueDouble = Convert.ToDouble(value);
+                        key_Dec     = Convert.ToInt32(keyDouble * 4.00);
+                        value_Dec   = Convert.ToInt32(valueDouble * 500.00);
 
                         EncrKeyTable.Add(key_Dec, value_Dec);
 
