@@ -4,18 +4,13 @@
     {
         public static List<char> EncryptText(List<char> decrText, Dictionary<double, double> keyTable) 
         {
-            List<char> result = new List<char>();
+            List<char> result = [.. decrText];
 
-            foreach (var item in decrText)
-            {
-                result.Add(item);
-            }
-
-            for (int i = 0; i < result.Count(); i++)
+            for (int i = 0; i < result.Count; i++)
             {
                 foreach (var item_Dict in keyTable)
                 {
-                    if(item_Dict.Key == (int)result[i])
+                    if(item_Dict.Key == result[i])
                     {
                         result[i] = (char)item_Dict.Value;
                     }
