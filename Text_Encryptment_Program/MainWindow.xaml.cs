@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using Text_Encryptment_Program.Encryptment_Operations;
 using Text_Encryptment_Program.Other_Methods;
 
 namespace Text_Encryptment_Program
@@ -23,6 +24,7 @@ namespace Text_Encryptment_Program
 
         private bool showKeyTable                   = false;
         private bool fastMode                       = false;
+        private bool EncryptMeth2                   = true;
 
         private static readonly ulong access_code   = 52565854;
         private static ulong access_code_input      = 0;
@@ -274,38 +276,65 @@ namespace Text_Encryptment_Program
 
             await Task.Delay(2000);
 
-            EncryptedData = TextEncryption.EncryptText(DecryptedData, EncrKeyTable);
-
-            foreach (var item in EncryptedData)
+            if (!EncryptMeth2)
             {
-                EncryptedText.AppendText($"{item}");
-                EncryptedText.ScrollToEnd();
+                EncryptedData = TextEncryptionMethod1.EncryptText(DecryptedData, EncrKeyTable);
 
-                if(!fastMode)
+                foreach (var item in EncryptedData)
                 {
-                    await Task.Delay(5);
+                    EncryptedText.AppendText($"{item}");
+                    EncryptedText.ScrollToEnd();
+
+                    if(!fastMode)
+                    {
+                        await Task.Delay(5);
+                    }
                 }
             }
+            else
+            {
+                for (int i = 0; i < EncrKeyTable.Count; i++)
+                {
+                    string encryptString = "";
+
+                    EncryptedData = TextEncryptionMethod2.EncryptText(DecryptedData, EncrKeyTable, i);
+
+                    foreach (var item in EncryptedData)
+                    {
+                        encryptString += item;
+                    }
+
+                    EncryptedText.Text = encryptString;
+                    DecryptedData = EncryptedData;      // DecryptedData Points now to EncryptedData !
+                    await Task.Delay(25);
+                }
+
+                DecryptedData = [];                 // Remove Pointer to EncryptedData !
+            }
+
 
             if  (EncrKeyTable.Count > 0)
             {
                 EncryptedText.AppendText($"{(char)7348}{(char)7348}{(char)7348}");
-                EncryptedText.ScrollToEnd();
-
+                
                 foreach (var item in EncrKeyTable)
                 {
                     EncryptedText.AppendText($"{Math.Round((item.Key / 4.00), 5)}~{Math.Round((item.Value / 500.00), 5)};");
-                    EncryptedText.ScrollToEnd();
+
+                    if (!EncryptMeth2 && !fastMode)
+                    {
+                        EncryptedText.ScrollToEnd();
+                    }
                 }
 
                 //EncryptedText.AppendText($"{(char)7347}{(char)7347}{(char)7347}");
                 //EncryptedText.ScrollToEnd();
             }
 
-            if (fastMode)
-            {
-                EncryptedText.ScrollToHome();
-            }
+            //if (fastMode)
+            //{
+            //    EncryptedText.ScrollToHome();
+            //}
 
             EncryptBox.Content              = "Successfully Encrypted";
             Encrypt.BorderBrush             = Brushes.OrangeRed;
