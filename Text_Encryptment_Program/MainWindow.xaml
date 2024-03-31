@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Text_Encryptment_Program"
         mc:Ignorable="d"
-        Title="Text-Encryption / Decryption Program | Version Beta 0.91 |" Height="900" Width="1765" Background="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
+        Title="Text-Encryption / Decryption Program | Version Beta 0.96 |" Height="900" Width="1765" Background="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
         WindowStartupLocation="CenterScreen" MinWidth="500" MinHeight="900">
     
     <!--Control Template Override für Buttons um Highlighting bei Mouseover zu verhindern !-->
@@ -90,7 +90,7 @@
                  AcceptsReturn="True" AcceptsTab="True" Padding="4,10,4,10"/>
         <TextBox x:Name="EncryptedText" Height="750" MinHeight="150" Width="auto" MinWidth="100" VerticalAlignment="Bottom" Background="Black" Foreground="DarkOrange" Grid.Column="1" Grid.Row="0"
                  UseLayoutRounding="True" VerticalScrollBarVisibility="Hidden" FontFamily="Century Gothic" FontSize="17" TextWrapping="Wrap" IsReadOnly="True"
-                 Padding="4,10,4,10"/>
+                 AcceptsReturn="True" AcceptsTab="True" Padding="4,10,4,10"/>
 
         <StackPanel x:Name="button_stackpanel" Orientation="Horizontal" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Visibility="Visible"
                     Margin="6,0,6,0">
