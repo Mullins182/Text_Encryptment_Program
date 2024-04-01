@@ -398,7 +398,7 @@ namespace Text_Encryptment_Program
             }
         }
 
-        private async Task<string> Decrypt_Click(object sender, RoutedEventArgs e)
+        private async void Decrypt_Click(object sender, RoutedEventArgs e)
         {
             DisableAllButtons();
             
@@ -437,20 +437,29 @@ namespace Text_Encryptment_Program
                     }
                     else if (item == ';')
                     {
-                        
-                        keyDouble   = Convert.ToDouble(key);
-                        valueDouble = Convert.ToDouble(value);
-                        key_Dec     = Convert.ToInt32(keyDouble * 4.00);
-                        value_Dec   = Convert.ToInt32(valueDouble * 500.00);
+                        if (key == "" || value == "")
+                        {
+                            DecryptBox.Content = "FAILED !!!";
+                            DecryptedText.Text = "Decrypting Failed: Readed Key or Value Empty !";
 
-                        EncrKeyTable.Add(key_Dec, value_Dec);
+                            goto DecryptFail;
+                        }
+                        else
+                        {
+                            keyDouble   = Convert.ToDouble(key);
+                            valueDouble = Convert.ToDouble(value);
+                            key_Dec     = Convert.ToInt32(keyDouble * 4.00);
+                            value_Dec   = Convert.ToInt32(valueDouble * 500.00);
 
-                        key         = "";
-                        value       = "";
+                            EncrKeyTable.Add(key_Dec, value_Dec);
 
-                        keyAdd      = true;
+                            key         = "";
+                            value       = "";
 
-                        continue;
+                            keyAdd      = true;
+
+                            continue;
+                        }
                     }
 
                     if(keyAdd)
@@ -501,6 +510,8 @@ namespace Text_Encryptment_Program
             DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(150);
             DecryptBox.Content              = "Successfully Decrypted";
 
+            DecryptFail:                                                        // JUMP POINT !
+
             Decrypt.BorderBrush             = Brushes.OrangeRed;
             Decrypt.Content                 = "Start Decrypting";
 
@@ -514,7 +525,6 @@ namespace Text_Encryptment_Program
 
             EnableAllButtons();
 
-            return "fff";
         }
 
         // Button Click-Events
