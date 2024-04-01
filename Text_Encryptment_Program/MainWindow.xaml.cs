@@ -204,9 +204,14 @@ namespace Text_Encryptment_Program
             DecryptedData.Clear();
             EncrKeyTable.Clear();
 
+            if (EncryptMeth2)
+            {
+                EncryptedText.AppendText(DecryptedText.Text);
+            }
+
             await Task.Delay(2000);
 
-            foreach (var item in DecryptedText.Text)                // DecryptedData wird mit Chars aus der Decrypted Text Box beschrieben !
+            foreach (var item in DecryptedText.Text)
             {
                 DecryptedData.Add(item);
             }
@@ -307,8 +312,23 @@ namespace Text_Encryptment_Program
 
                     EncryptedText.Text = encryptString;
                     DecryptedData = EncryptedData;      // DecryptedData Points now to EncryptedData !
-                    await Task.Delay(25);
+                    await Task.Delay(100);
                 }
+
+                // Encrypt Method for Spaces, Newlines and Tabs
+                string encryptLastString = "";
+
+                await Task.Delay(1777);
+
+                EncryptedData = TextEncryptionMethod2.EncryptText(DecryptedData, EncrKeyTable);
+
+                foreach (var item in EncryptedData)
+                {
+                    encryptLastString += item;
+                }
+
+                EncryptedText.Text = encryptLastString;
+                // Encrypt Spaces, Newlines and Tabs END !!
 
                 DecryptedData = [];                 // Remove Pointer to EncryptedData !
             }
@@ -415,8 +435,6 @@ namespace Text_Encryptment_Program
             Decrypt.BorderBrush     = Brushes.GreenYellow;
             DecryptBox.Foreground   = Brushes.YellowGreen;
 
-            await Task.Delay(2000);
-
             bool keyAdd         = true;
             int keyCharsFound   = 0;
             string key          = "";
@@ -485,7 +503,26 @@ namespace Text_Encryptment_Program
                 }
             }
 
-            await Task.Delay(2000);
+            if (EncryptMeth2)
+            {
+                string decryptString = "";
+
+                DecryptedText.AppendText(EncryptedText.Text);
+
+                await Task.Delay(3500);
+
+                DecryptedData = TextDecryptionMethod2.DecryptText(EncrKeyTable, EncryptedData);
+                EncryptedData = DecryptedData;
+
+                foreach (var item in DecryptedData)
+                {
+                    decryptString += item;
+                }
+
+                DecryptedText.Text = decryptString;
+            }
+
+            await Task.Delay(4400);
 
             if (!EncryptMeth2)
             {
@@ -520,7 +557,7 @@ namespace Text_Encryptment_Program
 
                     DecryptedText.Text = decryptString;
                     EncryptedData = DecryptedData;      // EncryptedData Points now to DecryptedData !
-                    await Task.Delay(25);
+                    await Task.Delay(100);
                 }
 
                 EncryptedData = [];                     // Remove Pointer to DecryptedData
