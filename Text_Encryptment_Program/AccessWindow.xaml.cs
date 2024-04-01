@@ -25,7 +25,7 @@ namespace Text_Encryptment_Program
             pling.Open(new Uri("sound_effects/pling.mp3", UriKind.RelativeOrAbsolute));
             window_popup.Open(new Uri("sound_effects/window_popup.mp3", UriKind.RelativeOrAbsolute));
             keypad_sound.Open(new Uri("sound_effects/button_pressed.wav", UriKind.RelativeOrAbsolute));
-            keypad_reset.Open(new Uri("sound_effects/reset_numpad.wav", UriKind.RelativeOrAbsolute));
+            keypad_reset.Open(new Uri("sound_effects/error.mp3", UriKind.RelativeOrAbsolute));
             code_accepted.Open(new Uri("sound_effects/access_granted2.mp3", UriKind.RelativeOrAbsolute));
             access_denied.Open(new Uri("sound_effects/access_denied.mp3", UriKind.RelativeOrAbsolute));
 
@@ -207,12 +207,18 @@ namespace Text_Encryptment_Program
             CodeBox.Text = "ENTER ACCESS CODE !";
             CodeBox.Focus();
 
+            keypad_sound.Position = TimeSpan.Zero;
+            keypad_sound.Play();
+
             keypad_reset.Position = TimeSpan.FromMilliseconds(500);
             keypad_reset.Play();
         }
 
         private async void enter_Click(object sender, RoutedEventArgs e)
         {
+            keypad_sound.Position = TimeSpan.Zero;
+            keypad_sound.Play();
+
             bool inputAccept = false;
 
             if (CodeBox.Text == "ENTER ACCESS CODE !")
@@ -243,6 +249,9 @@ namespace Text_Encryptment_Program
                 {
                     CodeBox.Text = "TYPE IN ONLY NUMBERS";
 
+                    keypad_reset.Position = TimeSpan.Zero;
+                    keypad_reset.Play();
+
                     await Task.Delay(3000);
 
                     CodeBox.Text = "ENTER ACCESS CODE !";
@@ -254,19 +263,24 @@ namespace Text_Encryptment_Program
                     access_denied.Play();
                 }
             }
+
+            CodeBox.Focus();
         }
 
         private void CodeBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (CodeBox.Text == "ENTER ACCESS CODE !")
             {
-                CodeBox.Clear();
+                if (e.Key != Key.Enter)
+                {
+                    CodeBox.Clear();
+                }
             }
             else if (e.Key == Key.Enter)
             {
                 enter_Click(sender, e);
             }
-            else if (e.Key == Key.Back)    // Doesn't work yet :(
+            else if (e.Key == Key.R)
             {
                 reset_Click(sender, e);
             }
@@ -284,7 +298,7 @@ namespace Text_Encryptment_Program
             keypad_sound.Play();
         }
 
-        //  MOUSE ENTER - MOUSE LEAVE METHODS ...
+        //  MOUSE ENTER - MOUSE LEAVE EVENT METHODS ...
 
         private void reset_MouseEnter(object sender, MouseEventArgs e)
         {
