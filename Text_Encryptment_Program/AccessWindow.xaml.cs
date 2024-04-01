@@ -211,15 +211,42 @@ namespace Text_Encryptment_Program
             keypad_reset.Play();
         }
 
-        private void enter_Click(object sender, RoutedEventArgs e)
+        private async void enter_Click(object sender, RoutedEventArgs e)
         {
+            bool inputAccept = false;
+
             if (CodeBox.Text == "ENTER ACCESS CODE !")
             {
 
             }
             else
             {
-                accessCode = Convert.ToUInt64(CodeBox.Text);
+                foreach (var item in CodeBox.Text)
+                {
+                    if (item != '0' && item != '1' && item != '2' && item != '3' && item != '4' && item != '5' &&
+                        item != '6' && item != '7' && item != '8' && item != '9')
+                    {
+                        inputAccept = false;
+                        break;
+                    }
+                    else
+                    {
+                        inputAccept = true;
+                    }
+                }
+
+                if (inputAccept)
+                {
+                    accessCode = Convert.ToUInt64(CodeBox.Text);                
+                }
+                else
+                {
+                    CodeBox.Text = "TYPE IN ONLY NUMBERS";
+
+                    await Task.Delay(3000);
+
+                    CodeBox.Text = "ENTER ACCESS CODE !";
+                }
 
                 if (accessCode != MainWindow.GetAccessCode())
                 {
