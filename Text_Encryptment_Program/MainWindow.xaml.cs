@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using Text_Encryptment_Program.Decryptment_Operations;
 using Text_Encryptment_Program.Encryptment_Operations;
 using Text_Encryptment_Program.Other_Methods;
 
@@ -486,20 +487,43 @@ namespace Text_Encryptment_Program
 
             await Task.Delay(2000);
 
-            foreach (var item in EncryptedData)
+            if (!EncryptMeth2)
             {
-                DecryptedData.Add(TextDecryption.DecryptText(EncrKeyTable, item));
-            }
-
-            foreach (var item in DecryptedData)
-            {
-                DecryptedText.AppendText($"{item}");
-                DecryptedText.ScrollToEnd();
-
-                if(!fastMode)
+                foreach (var item in EncryptedData)
                 {
-                    await Task.Delay(5);
+                    DecryptedData.Add(TextDecryptionMethod1.DecryptText(EncrKeyTable, item));
                 }
+
+                foreach (var item in DecryptedData)
+                {
+                    DecryptedText.AppendText($"{item}");
+                    DecryptedText.ScrollToEnd();
+
+                    if(!fastMode)
+                    {
+                        await Task.Delay(5);
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < EncrKeyTable.Count; i++)
+                {
+                    string decryptString = "";
+
+                    DecryptedData = TextDecryptionMethod2.DecryptText(EncrKeyTable, EncryptedData, i);
+
+                    foreach (var item in DecryptedData)
+                    {
+                        decryptString += item;
+                    }
+
+                    DecryptedText.Text = decryptString;
+                    EncryptedData = DecryptedData;      // EncryptedData Points now to DecryptedData !
+                    await Task.Delay(25);
+                }
+
+                EncryptedData = [];                     // Remove Pointer to DecryptedData
             }
 
             if (fastMode)

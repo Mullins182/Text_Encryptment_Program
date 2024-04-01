@@ -1,4 +1,4 @@
-﻿namespace Text_Encryptment_Program
+﻿namespace Text_Encryptment_Program.Encryptment_Operations
 {
     public static class TextEncryptionMethod1                     // Hiermit wird der Text der Decrypted Text Box verschlüsselt !
     {

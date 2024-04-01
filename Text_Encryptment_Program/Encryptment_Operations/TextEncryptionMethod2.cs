@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Text_Encryptment_Program.Encryptment_Operations
+﻿namespace Text_Encryptment_Program.Encryptment_Operations
 {
     public static class TextEncryptionMethod2
     {
