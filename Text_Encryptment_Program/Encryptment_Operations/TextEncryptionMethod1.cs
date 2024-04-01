@@ -1,6 +1,6 @@
-﻿namespace Text_Encryptment_Program
+﻿namespace Text_Encryptment_Program.Encryptment_Operations
 {
-    public static class TextEncryption                     // Hiermit wird der Text der Decrypted Text Box verschlüsselt !
+    public static class TextEncryptionMethod1                     // Hiermit wird der Text der Decrypted Text Box verschlüsselt !
     {
         public static List<char> EncryptText(List<char> decrText, Dictionary<double, double> keyTable) 
         {

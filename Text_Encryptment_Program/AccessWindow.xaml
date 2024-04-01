@@ -76,9 +76,9 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,360,10,10">
-            <Button x:Name="reset"    Height="30" Width="80" Content="RESET" FontFamily="Gothic" FontWeight="Bold" FontSize="20" Margin="5" Click="reset_Click" Foreground="Black"
+            <Button x:Name="reset"    Height="30" Width="80" Content="[R]ESET" FontFamily="Gothic" FontWeight="Bold" FontSize="20" Margin="5" Click="reset_Click" Foreground="Black"
                     Background="OrangeRed" MouseEnter="reset_MouseEnter" MouseLeave="reset_MouseLeave" Template="{StaticResource NoMouseOverButtonTemplate}"/>
-            <Button x:Name="enter"    Height="30" Width="80" Content="ENTER" FontFamily="Gothic" FontWeight="Bold" FontSize="20" Margin="5" Click="enter_Click" Foreground="Black"
+            <Button x:Name="enter"    Height="30" Width="80" Content="[ENTER]" FontFamily="Gothic" FontWeight="Bold" FontSize="20" Margin="5" Click="enter_Click" Foreground="Black"
                     Background="OrangeRed" MouseEnter="enter_MouseEnter" MouseLeave="enter_MouseLeave" Template="{StaticResource NoMouseOverButtonTemplate}"/>
         </StackPanel>
 

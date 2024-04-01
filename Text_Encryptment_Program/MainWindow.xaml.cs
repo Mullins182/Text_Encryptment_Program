@@ -2,6 +2,8 @@
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using Text_Encryptment_Program.Decryptment_Operations;
+using Text_Encryptment_Program.Encryptment_Operations;
 using Text_Encryptment_Program.Other_Methods;
 
 namespace Text_Encryptment_Program
@@ -23,6 +25,7 @@ namespace Text_Encryptment_Program
 
         private bool showKeyTable                   = false;
         private bool fastMode                       = false;
+        private bool EncryptMeth2                   = true;
 
         private static readonly ulong access_code   = 52565854;
         private static ulong access_code_input      = 0;
@@ -201,9 +204,14 @@ namespace Text_Encryptment_Program
             DecryptedData.Clear();
             EncrKeyTable.Clear();
 
+            if (EncryptMeth2)
+            {
+                EncryptedText.AppendText(DecryptedText.Text);
+            }
+
             await Task.Delay(2000);
 
-            foreach (var item in DecryptedText.Text)                // DecryptedData wird mit Chars aus der Decrypted Text Box beschrieben !
+            foreach (var item in DecryptedText.Text)
             {
                 DecryptedData.Add(item);
             }
@@ -274,37 +282,73 @@ namespace Text_Encryptment_Program
 
             await Task.Delay(2000);
 
-            EncryptedData = TextEncryption.EncryptText(DecryptedData, EncrKeyTable);
-
-            foreach (var item in EncryptedData)
+            if (!EncryptMeth2)
             {
-                EncryptedText.AppendText($"{item}");
-                EncryptedText.ScrollToEnd();
+                EncryptedData = TextEncryptionMethod1.EncryptText(DecryptedData, EncrKeyTable);
 
-                if(!fastMode)
+                foreach (var item in EncryptedData)
                 {
-                    await Task.Delay(5);
+                    EncryptedText.AppendText($"{item}");
+                    EncryptedText.ScrollToEnd();
+
+                    if(!fastMode)
+                    {
+                        await Task.Delay(5);
+                    }
                 }
+            }
+            else
+            {
+                for (int i = 0; i < EncrKeyTable.Count; i++)
+                {
+                    string encryptString = "";
+
+                    EncryptedData = TextEncryptionMethod2.EncryptText(DecryptedData, EncrKeyTable, i);
+
+                    foreach (var item in EncryptedData)
+                    {
+                        encryptString += item;
+                    }
+
+                    EncryptedText.Text = encryptString;
+                    DecryptedData = EncryptedData;      // DecryptedData Points now to EncryptedData !
+                    await Task.Delay(100);
+                }
+
+                // Encrypt Method for Spaces, Newlines and Tabs
+                string encryptLastString = "";
+
+                await Task.Delay(1777);
+
+                EncryptedData = TextEncryptionMethod2.EncryptText(DecryptedData, EncrKeyTable);
+
+                foreach (var item in EncryptedData)
+                {
+                    encryptLastString += item;
+                }
+
+                EncryptedText.Text = encryptLastString;
+                // Encrypt Spaces, Newlines and Tabs END !!
+
+                DecryptedData = [];                 // Remove Pointer to EncryptedData !
             }
 
             if  (EncrKeyTable.Count > 0)
             {
                 EncryptedText.AppendText($"{(char)7348}{(char)7348}{(char)7348}");
-                EncryptedText.ScrollToEnd();
-
+                
                 foreach (var item in EncrKeyTable)
                 {
                     EncryptedText.AppendText($"{Math.Round((item.Key / 4.00), 5)}~{Math.Round((item.Value / 500.00), 5)};");
-                    EncryptedText.ScrollToEnd();
+
+                    if (!EncryptMeth2 && !fastMode)
+                    {
+                        EncryptedText.ScrollToEnd();
+                    }
                 }
 
                 //EncryptedText.AppendText($"{(char)7347}{(char)7347}{(char)7347}");
                 //EncryptedText.ScrollToEnd();
-            }
-
-            if (fastMode)
-            {
-                EncryptedText.ScrollToHome();
             }
 
             EncryptBox.Content              = "Successfully Encrypted";
@@ -324,7 +368,7 @@ namespace Text_Encryptment_Program
             EnableAllButtons();
         }
 
-        private void KeyTable_Click(object sender, RoutedEventArgs e)       // Hier noch Daten in Liste sichern und beim erneuten Click wieder in Box laden !
+        private void KeyTable_Click(object sender, RoutedEventArgs e)
         {
 
             if (!showKeyTable) 
@@ -332,8 +376,6 @@ namespace Text_Encryptment_Program
                 showKeyTable = true;
 
                 KeyTable.BorderBrush = Brushes.Green;
-
-                //KeyTable.BorderBrush is  ? Brushes.GreenYellow : Brushes.OrangeRed;   // Test vereinfachte if-abfrage
 
                 textCache.Add(DecryptedText.Text);
 
@@ -391,8 +433,6 @@ namespace Text_Encryptment_Program
             Decrypt.BorderBrush     = Brushes.GreenYellow;
             DecryptBox.Foreground   = Brushes.YellowGreen;
 
-            await Task.Delay(2000);
-
             bool keyAdd         = true;
             int keyCharsFound   = 0;
             string key          = "";
@@ -414,19 +454,29 @@ namespace Text_Encryptment_Program
                     }
                     else if (item == ';')
                     {
-                        keyDouble   = Convert.ToDouble(key);
-                        valueDouble = Convert.ToDouble(value);
-                        key_Dec     = Convert.ToInt32(keyDouble * 4.00);
-                        value_Dec   = Convert.ToInt32(valueDouble * 500.00);
+                        if (key == "" || value == "")
+                        {
+                            DecryptBox.Content = "FAILED !!!";
+                            DecryptedText.Text = "Decrypting Failed: Readed Key or Value Empty !";
 
-                        EncrKeyTable.Add(key_Dec, value_Dec);
+                            goto DecryptFail;
+                        }
+                        else
+                        {
+                            keyDouble   = Convert.ToDouble(key);
+                            valueDouble = Convert.ToDouble(value);
+                            key_Dec     = Convert.ToInt32(keyDouble * 4.00);
+                            value_Dec   = Convert.ToInt32(valueDouble * 500.00);
 
-                        key         = "";
-                        value       = "";
+                            EncrKeyTable.Add(key_Dec, value_Dec);
 
-                        keyAdd      = true;
+                            key         = "";
+                            value       = "";
 
-                        continue;
+                            keyAdd      = true;
+
+                            continue;
+                        }
                     }
 
                     if(keyAdd)
@@ -451,22 +501,64 @@ namespace Text_Encryptment_Program
                 }
             }
 
-            await Task.Delay(2000);
-
-            foreach (var item in EncryptedData)
+            if (EncryptMeth2)
             {
-                DecryptedData.Add(TextDecryption.DecryptText(EncrKeyTable, item));
+                string decryptString = "";
+
+                DecryptedText.AppendText(EncryptedText.Text);
+
+                await Task.Delay(3500);
+
+                DecryptedData = TextDecryptionMethod2.DecryptText(EncrKeyTable, EncryptedData);
+                EncryptedData = DecryptedData;
+
+                foreach (var item in DecryptedData)
+                {
+                    decryptString += item;
+                }
+
+                DecryptedText.Text = decryptString;
             }
 
-            foreach (var item in DecryptedData)
-            {
-                DecryptedText.AppendText($"{item}");
-                DecryptedText.ScrollToEnd();
+            await Task.Delay(4400);
 
-                if(!fastMode)
+            if (!EncryptMeth2)
+            {
+                foreach (var item in EncryptedData)
                 {
-                    await Task.Delay(5);
+                    DecryptedData.Add(TextDecryptionMethod1.DecryptText(EncrKeyTable, item));
                 }
+
+                foreach (var item in DecryptedData)
+                {
+                    DecryptedText.AppendText($"{item}");
+                    DecryptedText.ScrollToEnd();
+
+                    if(!fastMode)
+                    {
+                        await Task.Delay(5);
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < EncrKeyTable.Count; i++)
+                {
+                    string decryptString = "";
+
+                    DecryptedData = TextDecryptionMethod2.DecryptText(EncrKeyTable, EncryptedData, i);
+
+                    foreach (var item in DecryptedData)
+                    {
+                        decryptString += item;
+                    }
+
+                    DecryptedText.Text = decryptString;
+                    EncryptedData = DecryptedData;      // EncryptedData Points now to DecryptedData !
+                    await Task.Delay(100);
+                }
+
+                EncryptedData = [];                     // Remove Pointer to DecryptedData
             }
 
             if (fastMode)
@@ -476,6 +568,8 @@ namespace Text_Encryptment_Program
 
             DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(150);
             DecryptBox.Content              = "Successfully Decrypted";
+
+            DecryptFail:                                                        // JUMP POINT !
 
             Decrypt.BorderBrush             = Brushes.OrangeRed;
             Decrypt.Content                 = "Start Decrypting";
@@ -489,7 +583,10 @@ namespace Text_Encryptment_Program
             DecryptBoxLabelAnim.Stop();
 
             EnableAllButtons();
+
         }
+
+        // Button Click-Events
 
         private void Quit_Click(object sender, RoutedEventArgs e)
         {
@@ -497,11 +594,102 @@ namespace Text_Encryptment_Program
 
             this.Close();
         }
+
+        private void Options_Click(object sender, RoutedEventArgs e)
+        {
+            if (optionsCanvas.Visibility == Visibility.Visible)
+            {
+                optionsCanvas.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                optionsCanvas.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void ClearBox_Click(object sender, RoutedEventArgs e)
+        {
+            DecryptedText.Clear();
+        }
+
+        private void ClearEncrBox_Click(object sender, RoutedEventArgs e)
+        {
+            EncryptedText.Clear();
+        }
+
+        private void ManualText_Click(object sender, RoutedEventArgs e)
+        {
+            if (DecryptedText.IsReadOnly)
+            {
+                DecryptedText.IsReadOnly = false;
+                ManualText.BorderBrush = Brushes.Green;
+            }
+            else
+            {
+                DecryptedText.IsReadOnly = true;
+                ManualText.BorderBrush = Brushes.OrangeRed;
+            }
+        }
+
+        private void ManualText2_Click(object sender, RoutedEventArgs e)
+        {
+            if (EncryptedText.IsReadOnly)
+            {
+                EncryptedText.IsReadOnly = false;
+                ManualText2.BorderBrush = Brushes.Green;
+            }
+            else
+            {
+                EncryptedText.IsReadOnly = true;
+                ManualText2.BorderBrush = Brushes.OrangeRed;
+            }
+        }
+
+        // Options Canvas Check-Events
+
+        private void EncryptionMethodOne_Checked(object sender, RoutedEventArgs e)
+        {
+            EncryptionMethodOne.Foreground = Brushes.YellowGreen;
+            FastEncrDecrOnOff.Visibility = Visibility.Visible;
+            EncryptMeth2 = false;
+        }
+
+        private void EncryptionMethodOne_Unchecked(object sender, RoutedEventArgs e)
+        {
+            FastEncrDecrOnOff.IsChecked = false;
+            EncryptionMethodOne.Foreground = Brushes.OrangeRed;
+            FastEncrDecrOnOff.Visibility = Visibility.Collapsed;
+        }
+
+        private void EncryptionMethodTwo_Checked(object sender, RoutedEventArgs e)
+        {
+            EncryptionMethodTwo.Foreground = Brushes.YellowGreen;
+            EncryptMeth2 = true;
+        }
+
+        private void EncryptionMethodTwo_Unchecked(object sender, RoutedEventArgs e)
+        {
+            EncryptionMethodTwo.Foreground = Brushes.OrangeRed;
+        }
+
+        private void FastEncrDecrOnOff_Checked(object sender, RoutedEventArgs e)
+        {
+            fastMode = true;
+        }
+
+        private void FastEncrDecrOnOff_Unchecked(object sender, RoutedEventArgs e)
+        {
+            fastMode = false;
+        }
+
+        // Mouse Enter / Leave Events
+
         private void Quit_MouseEnter(object sender, MouseEventArgs e)
         {
             Quit.Background = Brushes.Green;
             Quit.Foreground = Brushes.Black;
         }
+
         private void Quit_MouseLeave(object sender, MouseEventArgs e)
         {
             Quit.Background = Brushes.Black;
@@ -530,7 +718,6 @@ namespace Text_Encryptment_Program
             Decrypt.Foreground = Brushes.DarkSeaGreen;
         }
 
-
         private void OpenFile_MouseEnter(object sender, MouseEventArgs e)
         {
             OpenFile.Background = Brushes.Green;
@@ -542,10 +729,7 @@ namespace Text_Encryptment_Program
             OpenFile.Background = Brushes.Black;
             OpenFile.Foreground = Brushes.DarkSeaGreen;
         }
-        private void ClearBox_Click(object sender, RoutedEventArgs e)
-        {
-            DecryptedText.Clear();
-        }
+
         private void ClearBox_MouseEnter(object sender, MouseEventArgs e)
         {
             ClearBox.Background = Brushes.Green;
@@ -570,20 +754,6 @@ namespace Text_Encryptment_Program
             Encrypt.Foreground = Brushes.DarkSeaGreen;
         }
 
-        private void ManualText_Click(object sender, RoutedEventArgs e)
-        {
-            if(DecryptedText.IsReadOnly) 
-            {
-                DecryptedText.IsReadOnly = false;
-                ManualText.BorderBrush = Brushes.Green;
-            }
-            else
-            {
-                DecryptedText.IsReadOnly = true;
-                ManualText.BorderBrush = Brushes.OrangeRed;
-            }
-        }
-
         private void ManualText_MouseEnter(object sender, MouseEventArgs e)
         {
             ManualText.Background = Brushes.Green;
@@ -594,11 +764,6 @@ namespace Text_Encryptment_Program
         {
             ManualText.Background = Brushes.Black;
             ManualText.Foreground = Brushes.DarkSeaGreen;
-        }
-
-        private void ClearEncrBox_Click(object sender, RoutedEventArgs e)
-        {
-            EncryptedText.Clear();
         }
 
         private void ClearEncrBox_MouseEnter(object sender, MouseEventArgs e)
@@ -613,18 +778,6 @@ namespace Text_Encryptment_Program
             ClearEncrBox.Foreground = Brushes.DarkSeaGreen;
         }
 
-        private void Options_Click(object sender, RoutedEventArgs e)
-        {
-            if(optionsCanvas.Visibility == Visibility.Visible) 
-            {
-                optionsCanvas.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                optionsCanvas.Visibility = Visibility.Visible;
-            }
-        }
-
         private void Options_MouseEnter(object sender, MouseEventArgs e)
         {
             Options.Background = Brushes.Green;
@@ -635,30 +788,6 @@ namespace Text_Encryptment_Program
         {
             Options.Background = Brushes.Black;
             Options.Foreground = Brushes.DarkSeaGreen;
-        }
-
-        private void FastEncrDecrOnOff_Checked(object sender, RoutedEventArgs e)
-        {
-            fastMode = true;
-        }
-
-        private void FastEncrDecrOnOff_Unchecked(object sender, RoutedEventArgs e)
-        {
-            fastMode = false;
-        }
-
-        private void ManualText2_Click(object sender, RoutedEventArgs e)
-        {
-            if(EncryptedText.IsReadOnly)
-            {
-                EncryptedText.IsReadOnly = false;
-                ManualText2.BorderBrush = Brushes.Green;
-            }
-            else
-            {
-                EncryptedText.IsReadOnly = true;
-                ManualText2.BorderBrush = Brushes.OrangeRed;
-            }
         }
 
         private void ManualText2_MouseEnter(object sender, MouseEventArgs e)
