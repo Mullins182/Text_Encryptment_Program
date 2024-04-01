@@ -10,26 +10,25 @@ namespace Text_Encryptment_Program
 {
     public partial class MainWindow : Window
     {
-        private DispatcherTimer EncryptBoxLabelAnim = new(DispatcherPriority.Send);
-        private DispatcherTimer DecryptBoxLabelAnim = new(DispatcherPriority.Send);
+        private DispatcherTimer EncryptBoxLabelAnim     = new(DispatcherPriority.Send);
+        private DispatcherTimer DecryptBoxLabelAnim     = new(DispatcherPriority.Send);
 
-        private AccessWindow UserAccess             = new();
-        private Random generateRandoms              = new();
+        private AccessWindow UserAccess                 = new();
+        private Random generateRandoms                  = new();
 
-        private Dictionary<double, double> EncrKeyTable   = [];
+        private Dictionary<double, double> EncrKeyTable = [];
 
-        private List<char> EncryptedData            = [];
-        private List<char> DecryptedData            = [];
-        private List<string> TextData               = [];
-        private List<string> textCache              = [];
+        private List<char> EncryptedData                = [];
+        private List<char> DecryptedData                = [];
+        private List<string> TextData                   = [];
+        private List<string> textCache                  = [];
 
-        private bool showKeyTable                   = false;
-        private bool fastMode                       = false;
-        private bool EncryptMeth2                   = true;
+        private bool showKeyTable                       = false;
+        private bool fastMode                           = false;
+        private bool EncryptMeth2                       = true;
 
-        private static readonly ulong access_code   = 52565854;
-        private static ulong access_code_input      = 0;
-
+        private static readonly ulong access_code       = 52565854;
+        private static ulong access_code_input          = 0;
 
         public MainWindow()
         {
@@ -289,10 +288,10 @@ namespace Text_Encryptment_Program
                 foreach (var item in EncryptedData)
                 {
                     EncryptedText.AppendText($"{item}");
-                    EncryptedText.ScrollToEnd();
 
                     if(!fastMode)
                     {
+                        EncryptedText.ScrollToEnd();
                         await Task.Delay(5);
                     }
                 }
@@ -312,7 +311,7 @@ namespace Text_Encryptment_Program
 
                     EncryptedText.Text = encryptString;
                     DecryptedData = EncryptedData;      // DecryptedData Points now to EncryptedData !
-                    await Task.Delay(100);
+                    await Task.Delay(133);
                 }
 
                 // Encrypt Method for Spaces, Newlines and Tabs
@@ -341,7 +340,7 @@ namespace Text_Encryptment_Program
                 {
                     EncryptedText.AppendText($"{Math.Round((item.Key / 4.00), 5)}~{Math.Round((item.Value / 500.00), 5)};");
 
-                    if (!EncryptMeth2 && !fastMode)
+                    if (!fastMode)
                     {
                         EncryptedText.ScrollToEnd();
                     }
@@ -457,7 +456,7 @@ namespace Text_Encryptment_Program
                         if (key == "" || value == "")
                         {
                             DecryptBox.Content = "FAILED !!!";
-                            DecryptedText.Text = "Decrypting Failed: Readed Key or Value Empty !";
+                            DecryptedText.Text = "Decrypting Failed: A Key Or Value In The Encryption Key Of The Text Is Empty !";
 
                             goto DecryptFail;
                         }
@@ -499,6 +498,14 @@ namespace Text_Encryptment_Program
                         EncryptedData.Add(item);
                     }
                 }
+            }
+
+            if (EncrKeyTable.Count == 0)
+            {
+                DecryptBox.Content = "FAILED !!!";
+                DecryptedText.Text = "Decrypting Failed: Encryption Key For Decryption Operation Could Not Be Found In Encrypted Textbox !";
+
+                goto DecryptFail;
             }
 
             if (EncryptMeth2)
@@ -555,7 +562,7 @@ namespace Text_Encryptment_Program
 
                     DecryptedText.Text = decryptString;
                     EncryptedData = DecryptedData;      // EncryptedData Points now to DecryptedData !
-                    await Task.Delay(100);
+                    await Task.Delay(133);
                 }
 
                 EncryptedData = [];                     // Remove Pointer to DecryptedData
