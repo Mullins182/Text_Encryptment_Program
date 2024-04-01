@@ -368,7 +368,7 @@ namespace Text_Encryptment_Program
             EnableAllButtons();
         }
 
-        private void KeyTable_Click(object sender, RoutedEventArgs e)       // Hier noch Daten in Liste sichern und beim erneuten Click wieder in Box laden !
+        private void KeyTable_Click(object sender, RoutedEventArgs e)
         {
 
             if (!showKeyTable) 
@@ -376,8 +376,6 @@ namespace Text_Encryptment_Program
                 showKeyTable = true;
 
                 KeyTable.BorderBrush = Brushes.Green;
-
-                //KeyTable.BorderBrush is  ? Brushes.GreenYellow : Brushes.OrangeRed;   // Test vereinfachte if-abfrage
 
                 textCache.Add(DecryptedText.Text);
 
@@ -647,7 +645,32 @@ namespace Text_Encryptment_Program
             }
         }
 
-        // Options Ribbon Radio Button Check-Events
+        // Options Canvas Check-Events
+
+        private void EncryptionMethodOne_Checked(object sender, RoutedEventArgs e)
+        {
+            EncryptionMethodOne.Foreground = Brushes.YellowGreen;
+            FastEncrDecrOnOff.Visibility = Visibility.Visible;
+            EncryptMeth2 = false;
+        }
+
+        private void EncryptionMethodOne_Unchecked(object sender, RoutedEventArgs e)
+        {
+            FastEncrDecrOnOff.IsChecked = false;
+            EncryptionMethodOne.Foreground = Brushes.OrangeRed;
+            FastEncrDecrOnOff.Visibility = Visibility.Collapsed;
+        }
+
+        private void EncryptionMethodTwo_Checked(object sender, RoutedEventArgs e)
+        {
+            EncryptionMethodTwo.Foreground = Brushes.YellowGreen;
+            EncryptMeth2 = true;
+        }
+
+        private void EncryptionMethodTwo_Unchecked(object sender, RoutedEventArgs e)
+        {
+            EncryptionMethodTwo.Foreground = Brushes.OrangeRed;
+        }
 
         private void FastEncrDecrOnOff_Checked(object sender, RoutedEventArgs e)
         {
