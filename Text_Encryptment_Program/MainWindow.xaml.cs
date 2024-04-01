@@ -340,7 +340,7 @@ namespace Text_Encryptment_Program
                 {
                     EncryptedText.AppendText($"{Math.Round((item.Key / 4.00), 5)}~{Math.Round((item.Value / 500.00), 5)};");
 
-                    if (!fastMode)
+                    if (!fastMode && !EncryptMeth2)
                     {
                         EncryptedText.ScrollToEnd();
                     }
