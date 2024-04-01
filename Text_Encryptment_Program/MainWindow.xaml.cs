@@ -312,7 +312,6 @@ namespace Text_Encryptment_Program
                 DecryptedData = [];                 // Remove Pointer to EncryptedData !
             }
 
-
             if  (EncrKeyTable.Count > 0)
             {
                 EncryptedText.AppendText($"{(char)7348}{(char)7348}{(char)7348}");
@@ -330,11 +329,6 @@ namespace Text_Encryptment_Program
                 //EncryptedText.AppendText($"{(char)7347}{(char)7347}{(char)7347}");
                 //EncryptedText.ScrollToEnd();
             }
-
-            //if (fastMode)
-            //{
-            //    EncryptedText.ScrollToHome();
-            //}
 
             EncryptBox.Content              = "Successfully Encrypted";
             Encrypt.BorderBrush             = Brushes.OrangeRed;
@@ -404,7 +398,7 @@ namespace Text_Encryptment_Program
             }
         }
 
-        private async void Decrypt_Click(object sender, RoutedEventArgs e)
+        private async Task<string> Decrypt_Click(object sender, RoutedEventArgs e)
         {
             DisableAllButtons();
             
@@ -443,6 +437,7 @@ namespace Text_Encryptment_Program
                     }
                     else if (item == ';')
                     {
+                        
                         keyDouble   = Convert.ToDouble(key);
                         valueDouble = Convert.ToDouble(value);
                         key_Dec     = Convert.ToInt32(keyDouble * 4.00);
@@ -518,7 +513,11 @@ namespace Text_Encryptment_Program
             DecryptBoxLabelAnim.Stop();
 
             EnableAllButtons();
+
+            return "fff";
         }
+
+        // Button Click-Events
 
         private void Quit_Click(object sender, RoutedEventArgs e)
         {
@@ -526,11 +525,77 @@ namespace Text_Encryptment_Program
 
             this.Close();
         }
+
+        private void Options_Click(object sender, RoutedEventArgs e)
+        {
+            if (optionsCanvas.Visibility == Visibility.Visible)
+            {
+                optionsCanvas.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                optionsCanvas.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void ClearBox_Click(object sender, RoutedEventArgs e)
+        {
+            DecryptedText.Clear();
+        }
+
+        private void ClearEncrBox_Click(object sender, RoutedEventArgs e)
+        {
+            EncryptedText.Clear();
+        }
+
+        private void ManualText_Click(object sender, RoutedEventArgs e)
+        {
+            if (DecryptedText.IsReadOnly)
+            {
+                DecryptedText.IsReadOnly = false;
+                ManualText.BorderBrush = Brushes.Green;
+            }
+            else
+            {
+                DecryptedText.IsReadOnly = true;
+                ManualText.BorderBrush = Brushes.OrangeRed;
+            }
+        }
+
+        private void ManualText2_Click(object sender, RoutedEventArgs e)
+        {
+            if (EncryptedText.IsReadOnly)
+            {
+                EncryptedText.IsReadOnly = false;
+                ManualText2.BorderBrush = Brushes.Green;
+            }
+            else
+            {
+                EncryptedText.IsReadOnly = true;
+                ManualText2.BorderBrush = Brushes.OrangeRed;
+            }
+        }
+
+        // Options Ribbon Radio Button Check-Events
+
+        private void FastEncrDecrOnOff_Checked(object sender, RoutedEventArgs e)
+        {
+            fastMode = true;
+        }
+
+        private void FastEncrDecrOnOff_Unchecked(object sender, RoutedEventArgs e)
+        {
+            fastMode = false;
+        }
+
+        // Mouse Enter / Leave Events
+
         private void Quit_MouseEnter(object sender, MouseEventArgs e)
         {
             Quit.Background = Brushes.Green;
             Quit.Foreground = Brushes.Black;
         }
+
         private void Quit_MouseLeave(object sender, MouseEventArgs e)
         {
             Quit.Background = Brushes.Black;
@@ -559,7 +624,6 @@ namespace Text_Encryptment_Program
             Decrypt.Foreground = Brushes.DarkSeaGreen;
         }
 
-
         private void OpenFile_MouseEnter(object sender, MouseEventArgs e)
         {
             OpenFile.Background = Brushes.Green;
@@ -571,10 +635,7 @@ namespace Text_Encryptment_Program
             OpenFile.Background = Brushes.Black;
             OpenFile.Foreground = Brushes.DarkSeaGreen;
         }
-        private void ClearBox_Click(object sender, RoutedEventArgs e)
-        {
-            DecryptedText.Clear();
-        }
+
         private void ClearBox_MouseEnter(object sender, MouseEventArgs e)
         {
             ClearBox.Background = Brushes.Green;
@@ -599,20 +660,6 @@ namespace Text_Encryptment_Program
             Encrypt.Foreground = Brushes.DarkSeaGreen;
         }
 
-        private void ManualText_Click(object sender, RoutedEventArgs e)
-        {
-            if(DecryptedText.IsReadOnly) 
-            {
-                DecryptedText.IsReadOnly = false;
-                ManualText.BorderBrush = Brushes.Green;
-            }
-            else
-            {
-                DecryptedText.IsReadOnly = true;
-                ManualText.BorderBrush = Brushes.OrangeRed;
-            }
-        }
-
         private void ManualText_MouseEnter(object sender, MouseEventArgs e)
         {
             ManualText.Background = Brushes.Green;
@@ -623,11 +670,6 @@ namespace Text_Encryptment_Program
         {
             ManualText.Background = Brushes.Black;
             ManualText.Foreground = Brushes.DarkSeaGreen;
-        }
-
-        private void ClearEncrBox_Click(object sender, RoutedEventArgs e)
-        {
-            EncryptedText.Clear();
         }
 
         private void ClearEncrBox_MouseEnter(object sender, MouseEventArgs e)
@@ -642,18 +684,6 @@ namespace Text_Encryptment_Program
             ClearEncrBox.Foreground = Brushes.DarkSeaGreen;
         }
 
-        private void Options_Click(object sender, RoutedEventArgs e)
-        {
-            if(optionsCanvas.Visibility == Visibility.Visible) 
-            {
-                optionsCanvas.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                optionsCanvas.Visibility = Visibility.Visible;
-            }
-        }
-
         private void Options_MouseEnter(object sender, MouseEventArgs e)
         {
             Options.Background = Brushes.Green;
@@ -664,30 +694,6 @@ namespace Text_Encryptment_Program
         {
             Options.Background = Brushes.Black;
             Options.Foreground = Brushes.DarkSeaGreen;
-        }
-
-        private void FastEncrDecrOnOff_Checked(object sender, RoutedEventArgs e)
-        {
-            fastMode = true;
-        }
-
-        private void FastEncrDecrOnOff_Unchecked(object sender, RoutedEventArgs e)
-        {
-            fastMode = false;
-        }
-
-        private void ManualText2_Click(object sender, RoutedEventArgs e)
-        {
-            if(EncryptedText.IsReadOnly)
-            {
-                EncryptedText.IsReadOnly = false;
-                ManualText2.BorderBrush = Brushes.Green;
-            }
-            else
-            {
-                EncryptedText.IsReadOnly = true;
-                ManualText2.BorderBrush = Brushes.OrangeRed;
-            }
         }
 
         private void ManualText2_MouseEnter(object sender, MouseEventArgs e)
