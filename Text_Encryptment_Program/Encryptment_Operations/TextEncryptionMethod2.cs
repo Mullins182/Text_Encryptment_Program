@@ -6,7 +6,7 @@
         {
             List<char> workList = [.. decrText];
 
-            if (keyTable.Keys.ElementAt(dictIndex) == 32 || keyTable.Keys.ElementAt(dictIndex) == 10)
+            if (keyTable.Keys.ElementAt(dictIndex) == 10 || keyTable.Keys.ElementAt(dictIndex) == 32)
             {
 
             }
@@ -24,27 +24,17 @@
             return workList;
         }
 
-        public static List<char> EncryptText(List<char> decrText, Dictionary<double, double> keyTable)   // Enryption of Spaces, Newlines and Tabs
+        public static List<char> EncryptText(int decrChar, List<char> decrText, Dictionary<double, double> keyTable)   // Enryption of Spaces, Newlines and Tabs
         {
             List<char> workList = [.. decrText];
 
             for (int i = 0; i < workList.Count; i++)
             {
-                if (workList[i] == 32)
+                if (workList[i] == decrChar)
                 {
                     foreach (var item in keyTable)
                     {
-                        if (item.Key == 32)
-                        {
-                            workList[i] = (char)item.Value;
-                        }
-                    }
-                }
-                else if (workList[i] == 10)
-                {
-                    foreach (var item in keyTable)
-                    {
-                        if (item.Key == 10)
+                        if (item.Key == decrChar)
                         {
                             workList[i] = (char)item.Value;
                         }

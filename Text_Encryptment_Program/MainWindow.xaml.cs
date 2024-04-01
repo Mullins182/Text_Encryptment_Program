@@ -315,11 +315,12 @@ namespace Text_Encryptment_Program
                 }
 
                 // Encrypt Method for Spaces, Newlines and Tabs
+
                 string encryptLastString = "";
 
-                await Task.Delay(1777);
+                await Task.Delay(2777);
 
-                EncryptedData = TextEncryptionMethod2.EncryptText(DecryptedData, EncrKeyTable);
+                EncryptedData = TextEncryptionMethod2.EncryptText(32, DecryptedData, EncrKeyTable);
 
                 foreach (var item in EncryptedData)
                 {
@@ -327,6 +328,22 @@ namespace Text_Encryptment_Program
                 }
 
                 EncryptedText.Text = encryptLastString;
+
+                DecryptedData = EncryptedData;      // DecryptedData Points now to EncryptedData !
+
+                encryptLastString = "";
+
+                await Task.Delay(3777);
+
+                EncryptedData = TextEncryptionMethod2.EncryptText(10, DecryptedData, EncrKeyTable);
+
+                foreach (var item in EncryptedData)
+                {
+                    encryptLastString += item;
+                }
+
+                EncryptedText.Text = encryptLastString;
+
                 // Encrypt Spaces, Newlines and Tabs END !!
 
                 DecryptedData = [];                 // Remove Pointer to EncryptedData !
