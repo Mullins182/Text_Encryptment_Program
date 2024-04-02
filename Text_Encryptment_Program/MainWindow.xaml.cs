@@ -484,7 +484,8 @@ namespace Text_Encryptment_Program
             DecryptBox.Foreground   = Brushes.YellowGreen;
 
             bool keyAdd         = true;
-            int keyCharsFound   = 0;
+            int startCharsCount = 0;
+            int endCharsCount   = 0;
             string key          = "";
             string value        = "";
             double keyDouble    = 0.00;
@@ -494,7 +495,12 @@ namespace Text_Encryptment_Program
 
             foreach (var item in EncryptedText.Text)
             {
-                if(keyCharsFound == 3)
+                if (endCharsCount == 3)
+                {
+                    startCharsCount = 0;
+                }
+
+                if(startCharsCount == 3)
                 {
                     if (item == '~')
                     {
@@ -517,7 +523,7 @@ namespace Text_Encryptment_Program
                             valueDouble = Convert.ToDouble(value);
                             key_Dec     = Convert.ToInt32(keyDouble * 4.00);
                             value_Dec   = Convert.ToInt32(valueDouble * 500.00);
-
+                            
                             EncrKeyTable.Add(key_Dec, value_Dec);
 
                             key         = "";
@@ -528,21 +534,27 @@ namespace Text_Encryptment_Program
                             continue;
                         }
                     }
-
-                    if(keyAdd)
+                    else if (item == 7347)
                     {
-                        key     += item;
+                        endCharsCount++;
                     }
-                    else if(!keyAdd)
+                    else
                     {
-                        value   += item;
+                        if(keyAdd)
+                        {
+                            key     += item;
+                        }
+                        else if(!keyAdd)
+                        {
+                            value   += item;
+                        }
                     }
                 }
                 else
                 {
                     if(item == 7348)
                     {
-                        keyCharsFound++;
+                        startCharsCount++;
                     }
                     else
                     {
