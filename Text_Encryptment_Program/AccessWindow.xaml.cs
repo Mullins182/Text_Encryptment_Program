@@ -26,7 +26,7 @@ namespace Text_Encryptment_Program
             window_popup.Open(new Uri("sound_effects/window_popup.mp3", UriKind.RelativeOrAbsolute));
             keypad_sound.Open(new Uri("sound_effects/button_pressed.wav", UriKind.RelativeOrAbsolute));
             keypad_reset.Open(new Uri("sound_effects/error.mp3", UriKind.RelativeOrAbsolute));
-            code_accepted.Open(new Uri("sound_effects/access_granted2.mp3", UriKind.RelativeOrAbsolute));
+            code_accepted.Open(new Uri("sound_effects/access_granted2e2.mp3", UriKind.RelativeOrAbsolute));
             access_denied.Open(new Uri("sound_effects/access_denied.mp3", UriKind.RelativeOrAbsolute));
 
             pling.IsMuted           = true;
