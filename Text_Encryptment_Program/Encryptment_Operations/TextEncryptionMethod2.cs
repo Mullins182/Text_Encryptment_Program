@@ -6,7 +6,7 @@
         {
             List<char> workList = [.. decrText];
 
-            if (keyTable.Keys.ElementAt(dictIndex) == 10 || keyTable.Keys.ElementAt(dictIndex) == 32)
+            if (keyTable.Keys.ElementAt(dictIndex) == 9 || keyTable.Keys.ElementAt(dictIndex) == 10 || keyTable.Keys.ElementAt(dictIndex) == 32)
             {
 
             }
