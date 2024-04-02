@@ -385,9 +385,8 @@ namespace Text_Encryptment_Program
 
                 rN = generateRandoms.Next(0, EncryptedText.Text.Length);
 
-                EncryptedText.Text = EncryptedText.Text.Insert(rN, $"{(char)7347}{(char)7347}{(char)7347}");
-
-                //EncryptedText.AppendText($"{(char)7348}{(char)7348}{(char)7348}");
+                EncryptedText.Text = EncryptedText.Text.Insert(rN, $"{(char)7347}{(char)7347}{(char)7347}");    // Achtung 7347 & 7348 werden durch insert
+                EncryptedText.Text = EncryptedText.Text.Insert(rN, $"{(char)7348}{(char)7348}{(char)7348}");    // in der Ausgabe vertauscht !!!
 
                 foreach (var item in EncrKeyTable)
                 {
@@ -400,9 +399,6 @@ namespace Text_Encryptment_Program
                         EncryptedText.ScrollToEnd();
                     }
                 }
-
-                //EncryptedText.AppendText($"{(char)7347}{(char)7347}{(char)7347}");
-                //EncryptedText.ScrollToEnd();
             }
 
             EncryptBox.Content              = "Successfully Encrypted";
