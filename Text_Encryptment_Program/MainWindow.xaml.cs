@@ -26,6 +26,7 @@ namespace Text_Encryptment_Program
         private bool showKeyTable                       = false;
         private bool fastMode                           = false;
         private bool EncryptMeth2                       = true;
+        private bool AutoEncryptMeth                    = true;
 
         private static readonly ulong access_code       = 52565854;
         private static ulong access_code_input          = 0;
@@ -203,6 +204,19 @@ namespace Text_Encryptment_Program
             DecryptedData.Clear();
             EncrKeyTable.Clear();
 
+            if (AutoEncryptMeth)
+            {
+                if (DecryptedText.Text.Length > 6500)
+                {
+                    EncryptionMethodOne.IsChecked   = true;
+                    FastEncrDecrOnOff.IsChecked     = true;
+                }
+                else
+                {
+                    EncryptionMethodTwo.IsChecked   = true;
+                }
+            }
+
             if (EncryptMeth2)
             {
                 EncryptedText.AppendText(DecryptedText.Text);
@@ -320,7 +334,21 @@ namespace Text_Encryptment_Program
 
                 await Task.Delay(2777);
 
-                EncryptedData = TextEncryptionMethod2.EncryptText(32, DecryptedData, EncrKeyTable);
+                EncryptedData = TextEncryptionMethod2.EncryptText(9, DecryptedData, EncrKeyTable);        // 9 is Tabstop
+                foreach (var item in EncryptedData)
+                {
+                    encryptLastString += item;
+                }
+
+                EncryptedText.Text = encryptLastString;
+
+                DecryptedData = EncryptedData;      // DecryptedData Points now to EncryptedData !
+
+                encryptLastString = "";
+
+                await Task.Delay(3777);
+
+                EncryptedData = TextEncryptionMethod2.EncryptText(32, DecryptedData, EncrKeyTable);      // 32 is Space Char
 
                 foreach (var item in EncryptedData)
                 {
@@ -335,7 +363,7 @@ namespace Text_Encryptment_Program
 
                 await Task.Delay(3777);
 
-                EncryptedData = TextEncryptionMethod2.EncryptText(10, DecryptedData, EncrKeyTable);
+                EncryptedData = TextEncryptionMethod2.EncryptText(10, DecryptedData, EncrKeyTable);     // 10 is NewLine
 
                 foreach (var item in EncryptedData)
                 {
@@ -349,7 +377,9 @@ namespace Text_Encryptment_Program
                 DecryptedData = [];                 // Remove Pointer to EncryptedData !
             }
 
-            if  (EncrKeyTable.Count > 0)
+            await Task.Delay(3777);
+
+            if (EncrKeyTable.Count > 0)
             {
                 EncryptedText.AppendText($"{(char)7348}{(char)7348}{(char)7348}");
                 
@@ -473,7 +503,7 @@ namespace Text_Encryptment_Program
                         if (key == "" || value == "")
                         {
                             DecryptBox.Content = "FAILED !!!";
-                            DecryptedText.Text = "Decrypting Failed: A Key Or Value In The Encryption Key Of The Text Is Empty !";
+                            DecryptedText.Text = "Decrypting Failed: A Key Or Value In The Encryption Key Of The Text Is Missing !";
 
                             goto DecryptFail;
                         }
@@ -525,7 +555,20 @@ namespace Text_Encryptment_Program
                 goto DecryptFail;
             }
 
-            if (EncryptMeth2)
+            if (AutoEncryptMeth)
+            {
+                if (EncryptedData.Count > 6500)
+                {
+                    EncryptionMethodOne.IsChecked = true;
+                    FastEncrDecrOnOff.IsChecked = true;
+                }
+                else
+                {
+                    EncryptionMethodTwo.IsChecked = true;
+                }
+            }
+
+            if (EncryptMeth2)                   // Decryption of Spaces, Tabs and NewLines
             {
                 string decryptString = "";
 
@@ -533,7 +576,35 @@ namespace Text_Encryptment_Program
 
                 await Task.Delay(3500);
 
-                DecryptedData = TextDecryptionMethod2.DecryptText(EncrKeyTable, EncryptedData);
+                DecryptedData = TextDecryptionMethod2.DecryptText(10, EncrKeyTable, EncryptedData);     // 10 = NewLines
+                EncryptedData = DecryptedData;
+
+                foreach (var item in DecryptedData)
+                {
+                    decryptString += item;
+                }
+
+                DecryptedText.Text = decryptString;
+
+                decryptString = "";
+
+                await Task.Delay(3500);
+
+                DecryptedData = TextDecryptionMethod2.DecryptText(32, EncrKeyTable, EncryptedData);     // 32 = Spaces
+                EncryptedData = DecryptedData;
+
+                foreach (var item in DecryptedData)
+                {
+                    decryptString += item;
+                }
+
+                DecryptedText.Text = decryptString;
+
+                decryptString = "";
+
+                await Task.Delay(3500);
+
+                DecryptedData = TextDecryptionMethod2.DecryptText(9, EncrKeyTable, EncryptedData);      // 9 = Tabstops
                 EncryptedData = DecryptedData;
 
                 foreach (var item in DecryptedData)
@@ -543,6 +614,8 @@ namespace Text_Encryptment_Program
 
                 DecryptedText.Text = decryptString;
             }
+
+            // Decryption of Tabs, Spaces and Newline END !
 
             await Task.Delay(4400);
 
@@ -671,9 +744,25 @@ namespace Text_Encryptment_Program
 
         // Options Canvas Check-Events
 
+        private void AutoEncryptMethod_Click(object sender, RoutedEventArgs e)
+        {
+            if (AutoEncryptMeth)
+            {
+                AutoEncryptMeth = false;
+                AutoEncryptMethod.Foreground = Brushes.OrangeRed;
+                AutoEncryptMethod.BorderBrush = Brushes.Black;
+            }
+            else
+            {
+                AutoEncryptMeth = true;
+                AutoEncryptMethod.Foreground = Brushes.Green;
+                AutoEncryptMethod.BorderBrush = Brushes.Green;
+            }
+        }
+
         private void EncryptionMethodOne_Checked(object sender, RoutedEventArgs e)
         {
-            EncryptionMethodOne.Foreground = Brushes.YellowGreen;
+            EncryptionMethodOne.Foreground = Brushes.Green;
             FastEncrDecrOnOff.Visibility = Visibility.Visible;
             EncryptMeth2 = false;
         }
@@ -687,7 +776,7 @@ namespace Text_Encryptment_Program
 
         private void EncryptionMethodTwo_Checked(object sender, RoutedEventArgs e)
         {
-            EncryptionMethodTwo.Foreground = Brushes.YellowGreen;
+            EncryptionMethodTwo.Foreground = Brushes.Green;
             EncryptMeth2 = true;
         }
 
