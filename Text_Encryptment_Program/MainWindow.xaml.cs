@@ -204,18 +204,18 @@ namespace Text_Encryptment_Program
             DecryptedData.Clear();
             EncrKeyTable.Clear();
 
-            //if (AutoEncryptMeth)
-            //{
-            //    if (DecryptedText.Text.Length > 50)
-            //    {
-            //        EncryptionMethodOne.IsChecked   = true;
-            //        FastEncrDecrOnOff.IsChecked     = true;
-            //    }
-            //    else
-            //    {
-            //        EncryptionMethodTwo.IsChecked   = true;
-            //    }
-            //}
+            if (AutoEncryptMeth)
+            {
+                if (DecryptedText.Text.Length > 6500)
+                {
+                    EncryptionMethodOne.IsChecked   = true;
+                    FastEncrDecrOnOff.IsChecked     = true;
+                }
+                else
+                {
+                    EncryptionMethodTwo.IsChecked   = true;
+                }
+            }
 
             if (EncryptMeth2)
             {
@@ -553,6 +553,19 @@ namespace Text_Encryptment_Program
                 DecryptedText.Text = "Decrypting Failed: Encryption Key For Decryption Operation Could Not Be Found In Encrypted Textbox !";
 
                 goto DecryptFail;
+            }
+
+            if (AutoEncryptMeth)
+            {
+                if (EncryptedData.Count > 6500)
+                {
+                    EncryptionMethodOne.IsChecked = true;
+                    FastEncrDecrOnOff.IsChecked = true;
+                }
+                else
+                {
+                    EncryptionMethodTwo.IsChecked = true;
+                }
             }
 
             if (EncryptMeth2)                   // Decryption of Spaces, Tabs and NewLines
