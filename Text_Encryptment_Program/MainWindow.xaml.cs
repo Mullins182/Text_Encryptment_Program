@@ -503,7 +503,7 @@ namespace Text_Encryptment_Program
                         if (key == "" || value == "")
                         {
                             DecryptBox.Content = "FAILED !!!";
-                            DecryptedText.Text = "Decrypting Failed: A Key Or Value In The Encryption Key Of The Text Is Empty !";
+                            DecryptedText.Text = "Decrypting Failed: A Key Or Value In The Encryption Key Of The Text Is Missing !";
 
                             goto DecryptFail;
                         }
@@ -744,9 +744,25 @@ namespace Text_Encryptment_Program
 
         // Options Canvas Check-Events
 
+        private void AutoEncryptMethod_Click(object sender, RoutedEventArgs e)
+        {
+            if (AutoEncryptMeth)
+            {
+                AutoEncryptMeth = false;
+                AutoEncryptMethod.Foreground = Brushes.OrangeRed;
+                AutoEncryptMethod.BorderBrush = Brushes.Black;
+            }
+            else
+            {
+                AutoEncryptMeth = true;
+                AutoEncryptMethod.Foreground = Brushes.Green;
+                AutoEncryptMethod.BorderBrush = Brushes.Green;
+            }
+        }
+
         private void EncryptionMethodOne_Checked(object sender, RoutedEventArgs e)
         {
-            EncryptionMethodOne.Foreground = Brushes.YellowGreen;
+            EncryptionMethodOne.Foreground = Brushes.Green;
             FastEncrDecrOnOff.Visibility = Visibility.Visible;
             EncryptMeth2 = false;
         }
@@ -760,7 +776,7 @@ namespace Text_Encryptment_Program
 
         private void EncryptionMethodTwo_Checked(object sender, RoutedEventArgs e)
         {
-            EncryptionMethodTwo.Foreground = Brushes.YellowGreen;
+            EncryptionMethodTwo.Foreground = Brushes.Green;
             EncryptMeth2 = true;
         }
 
