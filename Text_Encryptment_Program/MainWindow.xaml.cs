@@ -381,11 +381,19 @@ namespace Text_Encryptment_Program
 
             if (EncrKeyTable.Count > 0)
             {
-                EncryptedText.AppendText($"{(char)7348}{(char)7348}{(char)7348}");
-                
+                int posKeyTable = EncrKeyTable.Count - 1;
+
+                rN = generateRandoms.Next(0, EncryptedText.Text.Length);
+
+                EncryptedText.Text = EncryptedText.Text.Insert(rN, $"{(char)7347}{(char)7347}{(char)7347}");
+
+                //EncryptedText.AppendText($"{(char)7348}{(char)7348}{(char)7348}");
+
                 foreach (var item in EncrKeyTable)
                 {
-                    EncryptedText.AppendText($"{Math.Round((item.Key / 4.00), 5)}~{Math.Round((item.Value / 500.00), 5)};");
+                    EncryptedText.Text = EncryptedText.Text.Insert((rN + 3), 
+                        $"{Math.Round((EncrKeyTable.Keys.ElementAt(posKeyTable) / 4.00), 5)}" +
+                        $"~{Math.Round((EncrKeyTable.Values.ElementAt(posKeyTable--) / 500.00), 5)};");
 
                     if (!fastMode && !EncryptMeth2)
                     {
