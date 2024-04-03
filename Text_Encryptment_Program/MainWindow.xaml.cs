@@ -16,7 +16,7 @@ namespace Text_Encryptment_Program
         private AccessWindow UserAccess                 = new();
         private Random generateRandoms                  = new();
 
-        private Dictionary<double, double> EncrKeyTable = [];
+        private Dictionary<double, double> keysTable    = [];
 
         private List<char> EncryptedData                = [];
         private List<char> DecryptedData                = [];
@@ -185,12 +185,16 @@ namespace Text_Encryptment_Program
         {
             DisableAllButtons();
 
-            List<int> randoms = new List<int>();
+            List<int> randoms       = new List<int>();
+            List<string> encrKeys   = new List<string>();
+
+            string encrKey          = "";
 
             bool integerRange1      = true;
             bool integerRange2      = false;
             bool integerRange3      = false;
             bool keyFound           = false;
+
             int rN                  = 0;
 
             EncryptBox.Content      = "Encrypting in Progress ...";
@@ -202,7 +206,7 @@ namespace Text_Encryptment_Program
 
             EncryptedText.Clear();
             DecryptedData.Clear();
-            EncrKeyTable.Clear();
+            keysTable.Clear();
 
             if (AutoEncryptMeth)
             {
@@ -266,13 +270,62 @@ namespace Text_Encryptment_Program
                     }
                 }
 
-                if(EncrKeyTable.Count == 0)
+                if(keysTable.Count == 0)
                 {
-                    EncrKeyTable.Add(DecryptedData[i], rN);
+                    string buffer = Convert.ToString((int)DecryptedData[i] + "~" + Convert.ToString(rN) + ";");
+
+                    keysTable.Add(DecryptedData[i], rN);
                     randoms.Add(rN);
+
+                    foreach (var item in buffer)
+                    {
+                        switch (item)
+                        {
+                            case '0':
+                                encrKey += (char)7312;
+                                break;
+                            case '1':
+                                encrKey += (char)7313;
+                                break;
+                            case '2':
+                                encrKey += (char)7314;
+                                break;
+                            case '3':
+                                encrKey += (char)7315;
+                                break;
+                            case '4':
+                                encrKey += (char)7316;
+                                break;
+                            case '5':
+                                encrKey += (char)7317;
+                                break;
+                            case '6':
+                                encrKey += (char)7318;
+                                break;
+                            case '7':
+                                encrKey += (char)7319;
+                                break;
+                            case '8':
+                                encrKey += (char)7320;
+                                break;
+                            case '9':
+                                encrKey += (char)7321;
+                                break;
+                            case '~':
+                                encrKey += (char)7322;
+                                break;
+                            case ';':
+                                encrKey += (char)7323;
+                                break;
+                            default: break;
+                        }
+                    }
+
+                    encrKeys.Add(encrKey);
+                    encrKey = "";
                 }
 
-                foreach (var item in EncrKeyTable)
+                foreach (var item in keysTable)
                 {
                     if (DecryptedData[i] == item.Key)
                     {
@@ -286,8 +339,57 @@ namespace Text_Encryptment_Program
                 }
                 else
                 {
-                    EncrKeyTable.Add(DecryptedData[i], rN);
+                    string buffer = Convert.ToString((int)DecryptedData[i] + "~" + Convert.ToString(rN) + ";");
+
+                    keysTable.Add(DecryptedData[i], rN);
                     randoms.Add(rN);
+
+                    foreach (var item in buffer)
+                    {
+                        switch(item)
+                        {
+                            case '0':
+                                encrKey += (char)7312;
+                                break;
+                            case '1':
+                                encrKey += (char)7313;
+                                break;
+                            case '2':
+                                encrKey += (char)7314;
+                                break;
+                            case '3':
+                                encrKey += (char)7315;
+                                break;
+                            case '4':
+                                encrKey += (char)7316;
+                                break;
+                            case '5':
+                                encrKey += (char)7317;
+                                break;
+                            case '6':
+                                encrKey += (char)7318;
+                                break;
+                            case '7':
+                                encrKey += (char)7319;
+                                break;
+                            case '8':
+                                encrKey += (char)7320;
+                                break;
+                            case '9':
+                                encrKey += (char)7321;
+                                break;
+                            case '~':
+                                encrKey += (char)7322;
+                                break;
+                            case ';':
+                                encrKey += (char)7323;
+                                break;
+                                default: break;
+                        }
+                    }
+
+                    encrKeys.Add(encrKey);
+                    encrKey = "";
                 }
 
                 keyFound = false;
@@ -297,7 +399,7 @@ namespace Text_Encryptment_Program
 
             if (!EncryptMeth2)
             {
-                EncryptedData = TextEncryptionMethod1.EncryptText(DecryptedData, EncrKeyTable);
+                EncryptedData = TextEncryptionMethod1.EncryptText(DecryptedData, keysTable);
 
                 foreach (var item in EncryptedData)
                 {
@@ -312,11 +414,11 @@ namespace Text_Encryptment_Program
             }
             else
             {
-                for (int i = 0; i < EncrKeyTable.Count; i++)
+                for (int i = 0; i < keysTable.Count; i++)
                 {
                     string encryptString = "";
 
-                    EncryptedData = TextEncryptionMethod2.EncryptText(DecryptedData, EncrKeyTable, i);
+                    EncryptedData = TextEncryptionMethod2.EncryptText(DecryptedData, keysTable, i);
 
                     foreach (var item in EncryptedData)
                     {
@@ -334,7 +436,7 @@ namespace Text_Encryptment_Program
 
                 await Task.Delay(2777);
 
-                EncryptedData = TextEncryptionMethod2.EncryptText(9, DecryptedData, EncrKeyTable);        // 9 is Tabstop
+                EncryptedData = TextEncryptionMethod2.EncryptText(9, DecryptedData, keysTable);        // 9 is Tabstop
                 foreach (var item in EncryptedData)
                 {
                     encryptLastString += item;
@@ -348,7 +450,7 @@ namespace Text_Encryptment_Program
 
                 await Task.Delay(3777);
 
-                EncryptedData = TextEncryptionMethod2.EncryptText(32, DecryptedData, EncrKeyTable);      // 32 is Space Char
+                EncryptedData = TextEncryptionMethod2.EncryptText(32, DecryptedData, keysTable);      // 32 is Space Char
 
                 foreach (var item in EncryptedData)
                 {
@@ -363,7 +465,7 @@ namespace Text_Encryptment_Program
 
                 await Task.Delay(3777);
 
-                EncryptedData = TextEncryptionMethod2.EncryptText(10, DecryptedData, EncrKeyTable);     // 10 is NewLine
+                EncryptedData = TextEncryptionMethod2.EncryptText(10, DecryptedData, keysTable);     // 10 is NewLine
 
                 foreach (var item in EncryptedData)
                 {
@@ -379,20 +481,19 @@ namespace Text_Encryptment_Program
 
             await Task.Delay(3777);
 
-            if (EncrKeyTable.Count > 0)
+            if (keysTable.Count > 0)
             {
-                int posKeyTable = EncrKeyTable.Count - 1;
+                int posKeysList = encrKeys.Count - 1;
 
                 rN = generateRandoms.Next(0, EncryptedText.Text.Length);
 
                 EncryptedText.Text = EncryptedText.Text.Insert(rN, $"{(char)7347}{(char)7347}{(char)7347}");    // Achtung 7347 & 7348 werden durch insert
                 EncryptedText.Text = EncryptedText.Text.Insert(rN, $"{(char)7348}{(char)7348}{(char)7348}");    // in der Ausgabe vertauscht !!!
 
-                foreach (var item in EncrKeyTable)
+                foreach (var item in encrKeys)
                 {
-                    EncryptedText.Text = EncryptedText.Text.Insert((rN + 3), 
-                        $"{Math.Round((EncrKeyTable.Keys.ElementAt(posKeyTable) / 4.00), 5)}" +
-                        $"~{Math.Round((EncrKeyTable.Values.ElementAt(posKeyTable--) / 500.00), 5)};");
+                    EncryptedText.Text = EncryptedText.Text.Insert(rN + 3,
+                        $"{encrKeys.ElementAt(posKeysList--)}");
 
                     if (!fastMode && !EncryptMeth2)
                     {
@@ -433,11 +534,11 @@ namespace Text_Encryptment_Program
 
                 DecryptedText.AppendText("\n_____________________________________\n");
 
-                DecryptedText.AppendText($"\nEncrypt Key Count: {EncrKeyTable.Count}");
+                DecryptedText.AppendText($"\nEncrypt Key Count: {keysTable.Count}");
 
                 DecryptedText.AppendText("\n_____________________________________\n\n");
 
-                foreach (var item in EncrKeyTable)
+                foreach (var item in keysTable)
                 {
                     DecryptedText.AppendText($"\nDecrypted (Key):\t{item.Key}");
                     DecryptedText.AppendText($"\nEncrypted Value:\t{item.Value}");
@@ -474,7 +575,7 @@ namespace Text_Encryptment_Program
             DecryptedText.Clear();
             EncryptedData.Clear();
             DecryptedData.Clear();
-            EncrKeyTable.Clear();
+            keysTable.Clear();
 
             DecryptBoxLabelAnim.Start();
 
@@ -488,10 +589,6 @@ namespace Text_Encryptment_Program
             int endCharsCount   = 0;
             string key          = "";
             string value        = "";
-            double keyDouble    = 0.00;
-            double valueDouble  = 0.00;
-            int key_Dec         = 0;
-            int value_Dec       = 0;
 
             foreach (var item in EncryptedText.Text)
             {
@@ -502,51 +599,102 @@ namespace Text_Encryptment_Program
 
                 if(startCharsCount == 3)
                 {
-                    if (item == '~')
+                    if (keyAdd)
                     {
-                        keyAdd      = false;
-
-                        continue;
-                    }
-                    else if (item == ';')
-                    {
-                        if (key == "" || value == "")
+                        switch ((int)item)
                         {
-                            DecryptBox.Content = "FAILED !!!";
-                            DecryptedText.Text = "Decrypting Failed: A Key Or Value In The Encryption Key Of The Text Is Missing !";
-
-                            goto DecryptFail;
+                            case 7312:
+                                key += '0';
+                                break;
+                            case 7313:
+                                key += '1';
+                                break;
+                            case 7314:
+                                key += '2';
+                                break;
+                            case 7315:
+                                key += '3';
+                                break;
+                            case 7316:
+                                key += '4';
+                                break;
+                            case 7317:
+                                key += '5';
+                                break;
+                            case 7318:
+                                key += '6';
+                                break;
+                            case 7319:
+                                key += '7';
+                                break;
+                            case 7320:
+                                key += '8';
+                                break;
+                            case 7321:
+                                key += '9';
+                                break;
+                            case 7322:
+                                keyAdd = false;
+                                continue;
+                            case 7347:
+                                endCharsCount++;
+                                continue;
+                            default: break;
                         }
-                        else
-                        {
-                            keyDouble   = Convert.ToDouble(key);
-                            valueDouble = Convert.ToDouble(value);
-                            key_Dec     = Convert.ToInt32(keyDouble * 4.00);
-                            value_Dec   = Convert.ToInt32(valueDouble * 500.00);
-                            
-                            EncrKeyTable.Add(key_Dec, value_Dec);
-
-                            key         = "";
-                            value       = "";
-
-                            keyAdd      = true;
-
-                            continue;
-                        }
                     }
-                    else if (item == 7347)
+                    else if (!keyAdd)
                     {
-                        endCharsCount++;
-                    }
-                    else
-                    {
-                        if(keyAdd)
+                        switch ((int)item)
                         {
-                            key     += item;
-                        }
-                        else if(!keyAdd)
-                        {
-                            value   += item;
+                            case 7312:
+                                value += '0';
+                                break;
+                            case 7313:
+                                value += '1';
+                                break;
+                            case 7314:
+                                value += '2';
+                                break;
+                            case 7315:
+                                value += '3';
+                                break;
+                            case 7316:
+                                value += '4';
+                                break;
+                            case 7317:
+                                value += '5';
+                                break;
+                            case 7318:
+                                value += '6';
+                                break;
+                            case 7319:
+                                value += '7';
+                                break;
+                            case 7320:
+                                value += '8';
+                                break;
+                            case 7321:
+                                value += '9';
+                                break;
+                            case 7322:
+                                keyAdd = false;
+                                continue;
+                            case 7323:
+                                if (key == "" || value == "")
+                                {
+                                    DecryptBox.Content = "FAILED !!!";
+                                    DecryptedText.Text = "Decrypting Failed: A Key Or Value In The Encryption Key Of The Text Is Missing !";
+                                    goto DecryptFail;
+                                }
+                                else
+                                {
+                                    keysTable.Add(Convert.ToInt32(key), Convert.ToInt32(value));
+                                    key     = "";
+                                    value   = "";
+                                    keyAdd  = true;
+                                    continue;
+                                }
+                            default: break;
                         }
                     }
                 }
@@ -563,7 +711,7 @@ namespace Text_Encryptment_Program
                 }
             }
 
-            if (EncrKeyTable.Count == 0)
+            if (keysTable.Count == 0)
             {
                 DecryptBox.Content = "FAILED !!!";
                 DecryptedText.Text = "Decrypting Failed: Encryption Key For Decryption Operation Could Not Be Found In Encrypted Textbox !";
@@ -592,7 +740,7 @@ namespace Text_Encryptment_Program
 
                 await Task.Delay(3500);
 
-                DecryptedData = TextDecryptionMethod2.DecryptText(10, EncrKeyTable, EncryptedData);     // 10 = NewLines
+                DecryptedData = TextDecryptionMethod2.DecryptText(10, keysTable, EncryptedData);     // 10 = NewLines
                 EncryptedData = DecryptedData;
 
                 foreach (var item in DecryptedData)
@@ -606,7 +754,7 @@ namespace Text_Encryptment_Program
 
                 await Task.Delay(3500);
 
-                DecryptedData = TextDecryptionMethod2.DecryptText(32, EncrKeyTable, EncryptedData);     // 32 = Spaces
+                DecryptedData = TextDecryptionMethod2.DecryptText(32, keysTable, EncryptedData);     // 32 = Spaces
                 EncryptedData = DecryptedData;
 
                 foreach (var item in DecryptedData)
@@ -620,7 +768,7 @@ namespace Text_Encryptment_Program
 
                 await Task.Delay(3500);
 
-                DecryptedData = TextDecryptionMethod2.DecryptText(9, EncrKeyTable, EncryptedData);      // 9 = Tabstops
+                DecryptedData = TextDecryptionMethod2.DecryptText(9, keysTable, EncryptedData);      // 9 = Tabstops
                 EncryptedData = DecryptedData;
 
                 foreach (var item in DecryptedData)
@@ -639,7 +787,7 @@ namespace Text_Encryptment_Program
             {
                 foreach (var item in EncryptedData)
                 {
-                    DecryptedData.Add(TextDecryptionMethod1.DecryptText(EncrKeyTable, item));
+                    DecryptedData.Add(TextDecryptionMethod1.DecryptText(keysTable, item));
                 }
 
                 foreach (var item in DecryptedData)
@@ -655,11 +803,11 @@ namespace Text_Encryptment_Program
             }
             else
             {
-                for (int i = 0; i < EncrKeyTable.Count; i++)
+                for (int i = 0; i < keysTable.Count; i++)
                 {
                     string decryptString = "";
 
-                    DecryptedData = TextDecryptionMethod2.DecryptText(EncrKeyTable, EncryptedData, i);
+                    DecryptedData = TextDecryptionMethod2.DecryptText(keysTable, EncryptedData, i);
 
                     foreach (var item in DecryptedData)
                     {
