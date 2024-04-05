@@ -279,46 +279,7 @@ namespace Text_Encryptment_Program
 
                     foreach (var item in buffer)
                     {
-                        switch (item)
-                        {
-                            case '0':
-                                encrKey += (char)5470;
-                                break;
-                            case '1':
-                                encrKey += (char)5471;
-                                break;
-                            case '2':
-                                encrKey += (char)5472;
-                                break;
-                            case '3':
-                                encrKey += (char)5473;
-                                break;
-                            case '4':
-                                encrKey += (char)5474;
-                                break;
-                            case '5':
-                                encrKey += (char)5475;
-                                break;
-                            case '6':
-                                encrKey += (char)5476;
-                                break;
-                            case '7':
-                                encrKey += (char)5477;
-                                break;
-                            case '8':
-                                encrKey += (char)5478;
-                                break;
-                            case '9':
-                                encrKey += (char)5479;
-                                break;
-                            case '~':
-                                encrKey += (char)5487;
-                                break;
-                            case ';':
-                                encrKey += (char)5482;
-                                break;
-                            default: break;
-                        }
+                        encrKey += SwitchEncryptKey.encryptedChar(item);
                     }
 
                     encrKeys.Add(encrKey);
@@ -346,46 +307,7 @@ namespace Text_Encryptment_Program
 
                     foreach (var item in buffer)
                     {
-                        switch (item)
-                        {
-                            case '0':
-                                encrKey += (char)5470;
-                                break;
-                            case '1':
-                                encrKey += (char)5471;
-                                break;
-                            case '2':
-                                encrKey += (char)5472;
-                                break;
-                            case '3':
-                                encrKey += (char)5473;
-                                break;
-                            case '4':
-                                encrKey += (char)5474;
-                                break;
-                            case '5':
-                                encrKey += (char)5475;
-                                break;
-                            case '6':
-                                encrKey += (char)5476;
-                                break;
-                            case '7':
-                                encrKey += (char)5477;
-                                break;
-                            case '8':
-                                encrKey += (char)5478;
-                                break;
-                            case '9':
-                                encrKey += (char)5479;
-                                break;
-                            case '~':
-                                encrKey += (char)5487;
-                                break;
-                            case ';':
-                                encrKey += (char)5482;
-                                break;
-                            default: break;
-                        }
+                        encrKey += SwitchEncryptKey.encryptedChar(item);
                     }
 
                     encrKeys.Add(encrKey);
@@ -601,100 +523,49 @@ namespace Text_Encryptment_Program
                 {
                     if (keyAdd)
                     {
-                        switch ((int)item)
+
+                        if (SwitchDecryptKey.keyAddDecryptChar((int)item) == 'x')
                         {
-                            case 5470:
-                                key += '0';
-                                break;
-                            case 5471:
-                                key += '1';
-                                break;
-                            case 5472:
-                                key += '2';
-                                break;
-                            case 5473:
-                                key += '3';
-                                break;
-                            case 5474:
-                                key += '4';
-                                break;
-                            case 5475:
-                                key += '5';
-                                break;
-                            case 5476:
-                                key += '6';
-                                break;
-                            case 5477:
-                                key += '7';
-                                break;
-                            case 5478:
-                                key += '8';
-                                break;
-                            case 5479:
-                                key += '9';
-                                break;
-                            case 5487:
-                                keyAdd = false;
-                                continue;
-                            case 7347:
-                                endCharsCount++;
-                                continue;
-                            default: break;
+                            endCharsCount++;
+                        }
+                        else if (SwitchDecryptKey.keyAddDecryptChar((int)item) == 'y')
+                        {
+                            keyAdd = false;
+                            continue;
+                        }
+                        else if (SwitchDecryptKey.keyAddDecryptChar((int)item) == 'E')
+                        {
+                            DecryptBox.Content = "FAILED !!!";
+                            DecryptedText.Text = "Decrypting Failed: A key or value in the encryption key of the text has an invalid value !";
+                            DecryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(150);
+                            goto DecryptFail;
+                        }
+                        else
+                        {
+                            key += SwitchDecryptKey.keyAddDecryptChar((int)item);
                         }
                     }
                     else if (!keyAdd)
                     {
-                        switch ((int)item)
+
+                        if (SwitchDecryptKey.noKeyAddDecryptChar((int)item) == 'x')
                         {
-                            case 5470:
-                                value += '0';
-                                break;
-                            case 5471:
-                                value += '1';
-                                break;
-                            case 5472:
-                                value += '2';
-                                break;
-                            case 5473:
-                                value += '3';
-                                break;
-                            case 5474:
-                                value += '4';
-                                break;
-                            case 5475:
-                                value += '5';
-                                break;
-                            case 5476:
-                                value += '6';
-                                break;
-                            case 5477:
-                                value += '7';
-                                break;
-                            case 5478:
-                                value += '8';
-                                break;
-                            case 5479:
-                                value += '9';
-                                break;
-                            case 5487:
-                                keyAdd = false;
-                                continue;
-                            case 5482:
-                                if (key == "" || value == "")
-                                {
-                                    DecryptBox.Content = "FAILED !!!";
-                                    DecryptedText.Text = "Decrypting Failed: A Key Or Value In The Encryption Key Of The Text Is Missing !";
-                                    goto DecryptFail;
-                                }
-                                else
-                                {
-                                    keysTable.Add(Convert.ToInt32(key), Convert.ToInt32(value));
-                                    key     = "";
-                                    value   = "";
-                                    keyAdd  = true;
-                                    continue;
-                                }
-                            default: break;
+                            keysTable.Add(Convert.ToInt32(key), Convert.ToInt32(value));
+                            key = "";
+                            value = "";
+                            keyAdd = true;
+                            continue;
+                        }
+                        else if (SwitchDecryptKey.noKeyAddDecryptChar((int)item) == 'E')
+                        {
+                            DecryptBox.Content = "FAILED !!!";
+                            DecryptedText.Text = "Decrypting Failed: A key or value in the encryption key of the text has an invalid value !";
+                            DecryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(150);
+                            goto DecryptFail;
+                        }
+                        else
+                        {
+                            value += SwitchDecryptKey.noKeyAddDecryptChar((int)item);
                         }
                     }
                 }
@@ -714,8 +585,8 @@ namespace Text_Encryptment_Program
             if (keysTable.Count == 0)
             {
                 DecryptBox.Content = "FAILED !!!";
-                DecryptedText.Text = "Decrypting Failed: Encryption Key For Decryption Operation Could Not Be Found In Encrypted Textbox !";
-
+                DecryptedText.Text = "Decrypting Failed: Encryption key for decryption operation could not be found in encrypted text !";
+                DecryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(150);
                 goto DecryptFail;
             }
 
