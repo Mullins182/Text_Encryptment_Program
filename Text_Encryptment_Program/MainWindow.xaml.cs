@@ -282,40 +282,40 @@ namespace Text_Encryptment_Program
                         switch (item)
                         {
                             case '0':
-                                encrKey += (char)7312;
+                                encrKey += (char)5470;
                                 break;
                             case '1':
-                                encrKey += (char)7313;
+                                encrKey += (char)5471;
                                 break;
                             case '2':
-                                encrKey += (char)7314;
+                                encrKey += (char)5472;
                                 break;
                             case '3':
-                                encrKey += (char)7315;
+                                encrKey += (char)5473;
                                 break;
                             case '4':
-                                encrKey += (char)7316;
+                                encrKey += (char)5474;
                                 break;
                             case '5':
-                                encrKey += (char)7317;
+                                encrKey += (char)5475;
                                 break;
                             case '6':
-                                encrKey += (char)7318;
+                                encrKey += (char)5476;
                                 break;
                             case '7':
-                                encrKey += (char)7319;
+                                encrKey += (char)5477;
                                 break;
                             case '8':
-                                encrKey += (char)7320;
+                                encrKey += (char)5478;
                                 break;
                             case '9':
-                                encrKey += (char)7321;
+                                encrKey += (char)5479;
                                 break;
                             case '~':
-                                encrKey += (char)7322;
+                                encrKey += (char)5487;
                                 break;
                             case ';':
-                                encrKey += (char)7323;
+                                encrKey += (char)5482;
                                 break;
                             default: break;
                         }
@@ -346,45 +346,45 @@ namespace Text_Encryptment_Program
 
                     foreach (var item in buffer)
                     {
-                        switch(item)
+                        switch (item)
                         {
                             case '0':
-                                encrKey += (char)7312;
+                                encrKey += (char)5470;
                                 break;
                             case '1':
-                                encrKey += (char)7313;
+                                encrKey += (char)5471;
                                 break;
                             case '2':
-                                encrKey += (char)7314;
+                                encrKey += (char)5472;
                                 break;
                             case '3':
-                                encrKey += (char)7315;
+                                encrKey += (char)5473;
                                 break;
                             case '4':
-                                encrKey += (char)7316;
+                                encrKey += (char)5474;
                                 break;
                             case '5':
-                                encrKey += (char)7317;
+                                encrKey += (char)5475;
                                 break;
                             case '6':
-                                encrKey += (char)7318;
+                                encrKey += (char)5476;
                                 break;
                             case '7':
-                                encrKey += (char)7319;
+                                encrKey += (char)5477;
                                 break;
                             case '8':
-                                encrKey += (char)7320;
+                                encrKey += (char)5478;
                                 break;
                             case '9':
-                                encrKey += (char)7321;
+                                encrKey += (char)5479;
                                 break;
                             case '~':
-                                encrKey += (char)7322;
+                                encrKey += (char)5487;
                                 break;
                             case ';':
-                                encrKey += (char)7323;
+                                encrKey += (char)5482;
                                 break;
-                                default: break;
+                            default: break;
                         }
                     }
 
@@ -603,37 +603,37 @@ namespace Text_Encryptment_Program
                     {
                         switch ((int)item)
                         {
-                            case 7312:
+                            case 5470:
                                 key += '0';
                                 break;
-                            case 7313:
+                            case 5471:
                                 key += '1';
                                 break;
-                            case 7314:
+                            case 5472:
                                 key += '2';
                                 break;
-                            case 7315:
+                            case 5473:
                                 key += '3';
                                 break;
-                            case 7316:
+                            case 5474:
                                 key += '4';
                                 break;
-                            case 7317:
+                            case 5475:
                                 key += '5';
                                 break;
-                            case 7318:
+                            case 5476:
                                 key += '6';
                                 break;
-                            case 7319:
+                            case 5477:
                                 key += '7';
                                 break;
-                            case 7320:
+                            case 5478:
                                 key += '8';
                                 break;
-                            case 7321:
+                            case 5479:
                                 key += '9';
                                 break;
-                            case 7322:
+                            case 5487:
                                 keyAdd = false;
                                 continue;
                             case 7347:
@@ -646,40 +646,40 @@ namespace Text_Encryptment_Program
                     {
                         switch ((int)item)
                         {
-                            case 7312:
+                            case 5470:
                                 value += '0';
                                 break;
-                            case 7313:
+                            case 5471:
                                 value += '1';
                                 break;
-                            case 7314:
+                            case 5472:
                                 value += '2';
                                 break;
-                            case 7315:
+                            case 5473:
                                 value += '3';
                                 break;
-                            case 7316:
+                            case 5474:
                                 value += '4';
                                 break;
-                            case 7317:
+                            case 5475:
                                 value += '5';
                                 break;
-                            case 7318:
+                            case 5476:
                                 value += '6';
                                 break;
-                            case 7319:
+                            case 5477:
                                 value += '7';
                                 break;
-                            case 7320:
+                            case 5478:
                                 value += '8';
                                 break;
-                            case 7321:
+                            case 5479:
                                 value += '9';
                                 break;
-                            case 7322:
+                            case 5487:
                                 keyAdd = false;
                                 continue;
-                            case 7323:
+                            case 5482:
                                 if (key == "" || value == "")
                                 {
                                     DecryptBox.Content = "FAILED !!!";
