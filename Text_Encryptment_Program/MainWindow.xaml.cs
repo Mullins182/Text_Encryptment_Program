@@ -13,8 +13,8 @@ namespace Text_Encryptment_Program
         private DispatcherTimer EncryptBoxLabelAnim     = new(DispatcherPriority.Send);
         private DispatcherTimer DecryptBoxLabelAnim     = new(DispatcherPriority.Send);
 
-        private AccessWindow UserAccess                 = new();
-        private Random generateRandoms                  = new();
+        private readonly AccessWindow UserAccess        = new();
+        private readonly Random generateRandoms         = new();
 
         private Dictionary<double, double> keysTable    = [];
 
@@ -185,8 +185,8 @@ namespace Text_Encryptment_Program
         {
             DisableAllButtons();
 
-            List<int> randoms       = new List<int>();
-            List<string> encrKeys   = new List<string>();
+            List<int> randoms       = [];
+            List<string> encrKeys   = [];
 
             string encrKey          = "";
 
@@ -279,7 +279,7 @@ namespace Text_Encryptment_Program
 
                     foreach (var item in buffer)
                     {
-                        encrKey += SwitchEncryptKey.encryptedChar(item);
+                        encrKey += SwitchEncryptKey.EncryptedChar(item);
                     }
 
                     encrKeys.Add(encrKey);
@@ -307,7 +307,7 @@ namespace Text_Encryptment_Program
 
                     foreach (var item in buffer)
                     {
-                        encrKey += SwitchEncryptKey.encryptedChar(item);
+                        encrKey += SwitchEncryptKey.EncryptedChar(item);
                     }
 
                     encrKeys.Add(encrKey);
@@ -524,16 +524,16 @@ namespace Text_Encryptment_Program
                     if (keyAdd)
                     {
 
-                        if (SwitchDecryptKey.keyAddDecryptChar((int)item) == 'x')
+                        if (SwitchDecryptKey.KeyAddDecryptChar((int)item) == 'x')
                         {
                             endCharsCount++;
                         }
-                        else if (SwitchDecryptKey.keyAddDecryptChar((int)item) == 'y')
+                        else if (SwitchDecryptKey.KeyAddDecryptChar((int)item) == 'y')
                         {
                             keyAdd = false;
                             continue;
                         }
-                        else if (SwitchDecryptKey.keyAddDecryptChar((int)item) == 'E')
+                        else if (SwitchDecryptKey.KeyAddDecryptChar((int)item) == 'E')
                         {
                             DecryptBox.Content = "FAILED !!!";
                             DecryptedText.Text = "Decrypting Failed: A key or value in the encryption key of the text has an invalid value !";
@@ -542,13 +542,13 @@ namespace Text_Encryptment_Program
                         }
                         else
                         {
-                            key += SwitchDecryptKey.keyAddDecryptChar((int)item);
+                            key += SwitchDecryptKey.KeyAddDecryptChar((int)item);
                         }
                     }
                     else if (!keyAdd)
                     {
 
-                        if (SwitchDecryptKey.noKeyAddDecryptChar((int)item) == 'x')
+                        if (SwitchDecryptKey.NoKeyAddDecryptChar((int)item) == 'x')
                         {
                             keysTable.Add(Convert.ToInt32(key), Convert.ToInt32(value));
                             key = "";
@@ -556,7 +556,7 @@ namespace Text_Encryptment_Program
                             keyAdd = true;
                             continue;
                         }
-                        else if (SwitchDecryptKey.noKeyAddDecryptChar((int)item) == 'E')
+                        else if (SwitchDecryptKey.NoKeyAddDecryptChar((int)item) == 'E')
                         {
                             DecryptBox.Content = "FAILED !!!";
                             DecryptedText.Text = "Decrypting Failed: A key or value in the encryption key of the text has an invalid value !";
@@ -565,7 +565,7 @@ namespace Text_Encryptment_Program
                         }
                         else
                         {
-                            value += SwitchDecryptKey.noKeyAddDecryptChar((int)item);
+                            value += SwitchDecryptKey.NoKeyAddDecryptChar((int)item);
                         }
                     }
                 }

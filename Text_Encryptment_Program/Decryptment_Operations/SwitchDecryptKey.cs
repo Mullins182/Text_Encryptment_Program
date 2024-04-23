@@ -9,31 +9,31 @@ namespace Text_Encryptment_Program.Decryptment_Operations
 {
     public static class SwitchDecryptKey
     {
-        public static char keyAddDecryptChar(int Key)
+        public static char KeyAddDecryptChar(int Key)
         {
             switch (Key)
             {
-                case 5470:
+                case 5821:
                     return '0';
-                case 5471:
+                case 5822:
                     return '1';
-                case 5472:
+                case 5823:
                     return '2';
-                case 5473:
+                case 5824:
                     return '3';
-                case 5474:
+                case 5825:
                     return '4';
-                case 5475:
+                case 5826:
                     return '5';
-                case 5476:
+                case 5828:
                     return '6';
-                case 5477:
+                case 5829:
                     return '7';
-                case 5478:
+                case 5830:
                     return '8';
-                case 5479:
+                case 5831:
                     return '9';
-                case 5487:
+                case 5867:
                     return 'y';
                 case 7347:
                     return 'x';
@@ -41,31 +41,31 @@ namespace Text_Encryptment_Program.Decryptment_Operations
             }
         }
 
-        public static char noKeyAddDecryptChar(int Key)
+        public static char NoKeyAddDecryptChar(int Key)
         {
             switch (Key)
             {
-                case 5470:
+                case 5821:
                     return '0';
-                case 5471:
+                case 5822:
                     return '1';
-                case 5472:
+                case 5823:
                     return '2';
-                case 5473:
+                case 5824:
                     return '3';
-                case 5474:
+                case 5825:
                     return '4';
-                case 5475:
+                case 5826:
                     return '5';
-                case 5476:
+                case 5828:
                     return '6';
-                case 5477:
+                case 5829:
                     return '7';
-                case 5478:
+                case 5830:
                     return '8';
-                case 5479:
+                case 5831:
                     return '9';
-                case 5482:
+                case 5863:
                     return 'x';
                 default: return 'E';
             }
