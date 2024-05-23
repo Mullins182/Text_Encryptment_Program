@@ -284,7 +284,7 @@ namespace Text_Encryptment_Program
 
                 if(keysTable.Count == 0)
                 {
-                    string buffer = Convert.ToString((int)DecryptedData[i] + "~" + Convert.ToString(rN) + ";");
+                    string buffer = Convert.ToString((int)DecryptedData[i] + "~" + rN.ToString() + ";");
 
                     keysTable.Add(DecryptedData[i], rN);
                     randoms.Add(rN);
