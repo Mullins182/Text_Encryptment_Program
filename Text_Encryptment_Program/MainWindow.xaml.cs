@@ -141,7 +141,6 @@ namespace Text_Encryptment_Program
 
         public void OpenFile_Click(object sender, RoutedEventArgs e)
         {
-
             // Configure open file dialog box
             var dialog = new Microsoft.Win32.OpenFileDialog();
             dialog.FileName = "Select a txt file !"; // Default file name
@@ -167,9 +166,45 @@ namespace Text_Encryptment_Program
             }
         }
 
+        private async void EncryptingConfigIsActive(bool config)
+        {
+            if (config)
+            {
+                DisableAllButtons();
+
+                EncryptBox.Content              = "Encrypting in Progress ...";
+                Encrypt.Content                 = "ENCRYPTING ...";
+                Encrypt.BorderBrush             = Brushes.GreenYellow;
+                EncryptBox.Foreground           = Brushes.YellowGreen;
+
+                EncryptBoxLabelAnim.Start();
+
+                EncryptedText.Clear();
+                DecryptedData.Clear();
+            }
+            else
+            {
+                EncryptBox.Content              = "Successfully Encrypted";
+                Encrypt.BorderBrush             = Brushes.OrangeRed;
+                Encrypt.Content                 = "Start Encrypting";
+
+                EncryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(150);
+
+                await Task.Delay(3500);
+
+                EncryptBoxLabelAnim.Stop();
+                EncryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
+                EncryptBox.Foreground           = Brushes.OrangeRed;
+                EncryptBox.Content              = "Encrypted Text";
+                EncryptBox.Visibility           = Visibility.Visible;
+
+                EnableAllButtons();
+            }
+        }
+
         private async void Encrypt_Click(object sender, RoutedEventArgs e)
         {
-            DisableAllButtons();
+            EncryptingConfigIsActive(true);
 
             List<int> randoms       = [];
             List<string> encrKeys   = [];
@@ -183,15 +218,6 @@ namespace Text_Encryptment_Program
 
             int rN                  = 0;
 
-            EncryptBox.Content      = "Encrypting in Progress ...";
-            Encrypt.Content         = "ENCRYPTING ...";
-            Encrypt.BorderBrush     = Brushes.GreenYellow;
-            EncryptBox.Foreground   = Brushes.YellowGreen;
-
-            EncryptBoxLabelAnim.Start();
-
-            EncryptedText.Clear();
-            DecryptedData.Clear();
             keysTable.Clear();
 
             if (AutoEncryptMeth)
@@ -410,21 +436,7 @@ namespace Text_Encryptment_Program
                 }
             }
 
-            EncryptBox.Content              = "Successfully Encrypted";
-            Encrypt.BorderBrush             = Brushes.OrangeRed;
-            Encrypt.Content                 = "Start Encrypting";
-
-            EncryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(150);
-
-            await Task.Delay(3500);
-
-            EncryptBoxLabelAnim.Stop();
-            EncryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
-            EncryptBox.Foreground           = Brushes.OrangeRed;
-            EncryptBox.Content              = "Encrypted Text";
-            EncryptBox.Visibility           = Visibility.Visible;
-
-            EnableAllButtons();
+            EncryptingConfigIsActive(false);
         }
 
         private void KeyTable_Click(object sender, RoutedEventArgs e)
@@ -476,21 +488,44 @@ namespace Text_Encryptment_Program
             }
         }
 
+        private async void DecryptingConfigIsActive(bool config)
+        {
+            if (config)
+            {
+                DisableAllButtons();
+
+                DecryptedText.Clear();
+                EncryptedData.Clear();
+                DecryptedData.Clear();
+                keysTable.Clear();
+
+                DecryptBoxLabelAnim.Start();
+
+                DecryptBox.Content              = "Decrypting in Progress ...";
+                Decrypt.Content                 = "DECRYPTING ...";
+                Decrypt.BorderBrush             = Brushes.GreenYellow;
+                DecryptBox.Foreground           = Brushes.YellowGreen;
+            }
+            else
+            {
+                Decrypt.BorderBrush             = Brushes.OrangeRed;
+                Decrypt.Content                 = "Start Decrypting";
+
+                await Task.Delay(3500);
+
+                DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
+                DecryptBox.Foreground           = Brushes.OrangeRed;
+                DecryptBox.Content              = "Decrypted Text";
+                DecryptBox.Visibility           = Visibility.Visible;
+
+                DecryptBoxLabelAnim.Stop();
+
+                EnableAllButtons();
+            }
+        }
         private async void Decrypt_Click(object sender, RoutedEventArgs e)
         {
-            DisableAllButtons();
-            
-            DecryptedText.Clear();
-            EncryptedData.Clear();
-            DecryptedData.Clear();
-            keysTable.Clear();
-
-            DecryptBoxLabelAnim.Start();
-
-            DecryptBox.Content      = "Decrypting in Progress ...";
-            Decrypt.Content         = "DECRYPTING ...";
-            Decrypt.BorderBrush     = Brushes.GreenYellow;
-            DecryptBox.Foreground   = Brushes.YellowGreen;
+            DecryptingConfigIsActive(true);
 
             bool keyAdd         = true;
             int startCharsCount = 0;
@@ -689,19 +724,7 @@ namespace Text_Encryptment_Program
 
             DecryptFail:                                                        // JUMP POINT !
 
-            Decrypt.BorderBrush             = Brushes.OrangeRed;
-            Decrypt.Content                 = "Start Decrypting";
-
-            await Task.Delay(3500);
-
-            DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
-            DecryptBox.Foreground           = Brushes.OrangeRed;
-            DecryptBox.Content              = "Decrypted Text";
-            DecryptBox.Visibility           = Visibility.Visible;
-            DecryptBoxLabelAnim.Stop();
-
-            EnableAllButtons();
-
+            DecryptingConfigIsActive(false);
         }
 
         // Button Click-Events
