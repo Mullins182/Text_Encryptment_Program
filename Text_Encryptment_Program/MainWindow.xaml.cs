@@ -107,26 +107,12 @@ namespace Text_Encryptment_Program
 
         public void DecryptBoxLabelAnim_Tick(object? sender, EventArgs e)
         {
-            if(DecryptBox.Visibility == Visibility.Visible) 
-            {
-                DecryptBox.Visibility = Visibility.Hidden;            
-            }
-            else
-            {
-                DecryptBox.Visibility = Visibility.Visible;
-            }
+            DecryptBox.Visibility = DecryptBox.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
         }
 
         public void EncryptBoxLabelAnim_Tick(object? sender, EventArgs e)
         {
-            if (EncryptBox.Visibility == Visibility.Visible)
-            {
-                EncryptBox.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                EncryptBox.Visibility = Visibility.Visible;
-            }
+            EncryptBox.Visibility = EncryptBox.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
         }
 
         public void DisableAllButtons()
