@@ -763,12 +763,16 @@ namespace Text_Encryptment_Program
             if (DecryptedText.IsReadOnly)
             {
                 DecryptedText.IsReadOnly = false;
-                ManualText.BorderBrush = Brushes.Green;
+                ManualText.BorderBrush = Brushes.YellowGreen;
+                ManualText.Foreground = Brushes.Green;
+                ManualText.Background = Brushes.Black;
             }
             else
             {
                 DecryptedText.IsReadOnly = true;
                 ManualText.BorderBrush = Brushes.OrangeRed;
+                ManualText.Foreground = Brushes.DarkSeaGreen;
+                ManualText.Background = Brushes.Black;
             }
         }
 
@@ -777,12 +781,16 @@ namespace Text_Encryptment_Program
             if (EncryptedText.IsReadOnly)
             {
                 EncryptedText.IsReadOnly = false;
-                ManualText2.BorderBrush = Brushes.Green;
+                ManualText2.BorderBrush = Brushes.YellowGreen;
+                ManualText2.Foreground = Brushes.Green;
+                ManualText2.Background = Brushes.Black;
             }
             else
             {
                 EncryptedText.IsReadOnly = true;
                 ManualText2.BorderBrush = Brushes.OrangeRed;
+                ManualText2.Foreground = Brushes.DarkSeaGreen;
+                ManualText2.Background = Brushes.Black;
             }
         }
 
@@ -843,8 +851,8 @@ namespace Text_Encryptment_Program
 
         private void Quit_MouseEnter(object sender, MouseEventArgs e)
         {
-            Quit.Background = Brushes.Green;
-            Quit.Foreground = Brushes.Black;
+            Quit.Background = Brushes.DarkRed;
+            Quit.Foreground = Brushes.Yellow;
         }
 
         private void Quit_MouseLeave(object sender, MouseEventArgs e)
@@ -855,8 +863,8 @@ namespace Text_Encryptment_Program
 
         private void KeyTable_MouseEnter(object sender, MouseEventArgs e)
         {
-            KeyTable.Background = Brushes.Green;
-            KeyTable.Foreground = Brushes.Black;
+            KeyTable.Background = Brushes.DarkRed;
+            KeyTable.Foreground = Brushes.DarkSeaGreen;
         }
         private void KeyTable_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -865,8 +873,8 @@ namespace Text_Encryptment_Program
         }
         private void Decrypt_MouseEnter(object sender, MouseEventArgs e)
         {
-            Decrypt.Background = Brushes.Green;
-            Decrypt.Foreground = Brushes.Black;
+            Decrypt.Background = Brushes.DarkRed;
+            Decrypt.Foreground = Brushes.DarkSeaGreen;
         }
 
         private void Decrypt_MouseLeave(object sender, MouseEventArgs e)
@@ -877,8 +885,8 @@ namespace Text_Encryptment_Program
 
         private void OpenFile_MouseEnter(object sender, MouseEventArgs e)
         {
-            OpenFile.Background = Brushes.Green;
-            OpenFile.Foreground = Brushes.Black;
+            OpenFile.Background = Brushes.DarkRed;
+            OpenFile.Foreground = Brushes.DarkSeaGreen;
         }
 
         private void OpenFile_MouseLeave(object sender, MouseEventArgs e)
@@ -889,8 +897,8 @@ namespace Text_Encryptment_Program
 
         private void ClearBox_MouseEnter(object sender, MouseEventArgs e)
         {
-            ClearBox.Background = Brushes.Green;
-            ClearBox.Foreground = Brushes.Black;
+            ClearBox.Background = Brushes.DarkRed;
+            ClearBox.Foreground = Brushes.DarkSeaGreen;
         }
 
         private void ClearBox_MouseLeave(object sender, MouseEventArgs e)
@@ -901,8 +909,8 @@ namespace Text_Encryptment_Program
 
         private void Encrypt_MouseEnter(object sender, MouseEventArgs e)
         {
-            Encrypt.Background = Brushes.Green;
-            Encrypt.Foreground = Brushes.Black;
+            Encrypt.Background = Brushes.DarkRed;
+            Encrypt.Foreground = Brushes.DarkSeaGreen;
         }
 
         private void Encrypt_MouseLeave(object sender, MouseEventArgs e)
@@ -913,20 +921,20 @@ namespace Text_Encryptment_Program
 
         private void ManualText_MouseEnter(object sender, MouseEventArgs e)
         {
-            ManualText.Background = Brushes.Green;
-            ManualText.Foreground = Brushes.Black;
+            ManualText.Background = DecryptedText.IsReadOnly ? Brushes.DarkRed : Brushes.Black;
+            ManualText.Foreground = ManualText.Background == Brushes.DarkRed ? Brushes.DarkSeaGreen : DecryptedText.IsReadOnly ? Brushes.DarkSeaGreen : Brushes.Green;
         }
 
         private void ManualText_MouseLeave(object sender, MouseEventArgs e)
         {
             ManualText.Background = Brushes.Black;
-            ManualText.Foreground = Brushes.DarkSeaGreen;
+            ManualText.Foreground = DecryptedText.IsReadOnly ? Brushes.DarkSeaGreen : Brushes.Green;
         }
 
         private void ClearEncrBox_MouseEnter(object sender, MouseEventArgs e)
         {
-            ClearEncrBox.Background = Brushes.Green;
-            ClearEncrBox.Foreground = Brushes.Black;
+            ClearEncrBox.Background = Brushes.DarkRed;
+            ClearEncrBox.Foreground = Brushes.DarkSeaGreen;
         }
 
         private void ClearEncrBox_MouseLeave(object sender, MouseEventArgs e)
@@ -937,8 +945,8 @@ namespace Text_Encryptment_Program
 
         private void Options_MouseEnter(object sender, MouseEventArgs e)
         {
-            Options.Background = Brushes.Green;
-            Options.Foreground = Brushes.Black;
+            Options.Background = Brushes.DarkRed;
+            Options.Foreground = Brushes.DarkSeaGreen;
         }
 
         private void Options_MouseLeave(object sender, MouseEventArgs e)
@@ -949,14 +957,14 @@ namespace Text_Encryptment_Program
 
         private void ManualText2_MouseEnter(object sender, MouseEventArgs e)
         {
-            ManualText2.Background = Brushes.Green;
-            ManualText2.Foreground = Brushes.Black;
+            ManualText2.Background = EncryptedText.IsReadOnly ? Brushes.DarkRed : Brushes.Black;
+            ManualText2.Foreground = ManualText2.Background == Brushes.DarkRed ? Brushes.DarkSeaGreen : EncryptedText.IsReadOnly ? Brushes.DarkSeaGreen : Brushes.Green;
         }
 
         private void ManualText2_MouseLeave(object sender, MouseEventArgs e)
         {
             ManualText2.Background = Brushes.Black;
-            ManualText2.Foreground = Brushes.DarkSeaGreen;
+            ManualText2.Foreground = EncryptedText.IsReadOnly ? Brushes.DarkSeaGreen : Brushes.Green;
         }
     }
 }
