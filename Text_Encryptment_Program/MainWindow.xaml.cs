@@ -13,8 +13,8 @@ namespace Text_Encryptment_Program
         private DispatcherTimer EncryptBoxLabelAnim     = new(DispatcherPriority.Send);
         private DispatcherTimer DecryptBoxLabelAnim     = new(DispatcherPriority.Send);
 
-        private AccessWindow UserAccess                 = new();
-        private Random generateRandoms                  = new();
+        private readonly AccessWindow UserAccess        = new();
+        private readonly Random generateRandoms         = new();
 
         private Dictionary<double, double> keysTable    = [];
 
@@ -107,26 +107,12 @@ namespace Text_Encryptment_Program
 
         public void DecryptBoxLabelAnim_Tick(object? sender, EventArgs e)
         {
-            if(DecryptBox.Visibility == Visibility.Visible) 
-            {
-                DecryptBox.Visibility = Visibility.Hidden;            
-            }
-            else
-            {
-                DecryptBox.Visibility = Visibility.Visible;
-            }
+            DecryptBox.Visibility = DecryptBox.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
         }
 
         public void EncryptBoxLabelAnim_Tick(object? sender, EventArgs e)
         {
-            if (EncryptBox.Visibility == Visibility.Visible)
-            {
-                EncryptBox.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                EncryptBox.Visibility = Visibility.Visible;
-            }
+            EncryptBox.Visibility = EncryptBox.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
         }
 
         public void DisableAllButtons()
@@ -155,7 +141,6 @@ namespace Text_Encryptment_Program
 
         public void OpenFile_Click(object sender, RoutedEventArgs e)
         {
-
             // Configure open file dialog box
             var dialog = new Microsoft.Win32.OpenFileDialog();
             dialog.FileName = "Select a txt file !"; // Default file name
@@ -181,12 +166,48 @@ namespace Text_Encryptment_Program
             }
         }
 
+        private async void EncryptingConfigIsActive(bool config)
+        {
+            if (config)
+            {
+                DisableAllButtons();
+
+                EncryptBox.Content              = "Encrypting in Progress ...";
+                Encrypt.Content                 = "ENCRYPTING ...";
+                Encrypt.BorderBrush             = Brushes.GreenYellow;
+                EncryptBox.Foreground           = Brushes.YellowGreen;
+
+                EncryptBoxLabelAnim.Start();
+
+                EncryptedText.Clear();
+                DecryptedData.Clear();
+            }
+            else
+            {
+                EncryptBox.Content              = "Successfully Encrypted";
+                Encrypt.BorderBrush             = Brushes.OrangeRed;
+                Encrypt.Content                 = "Start Encrypting";
+
+                EncryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(150);
+
+                await Task.Delay(3500);
+
+                EncryptBoxLabelAnim.Stop();
+                EncryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
+                EncryptBox.Foreground           = Brushes.OrangeRed;
+                EncryptBox.Content              = "Encrypted Text";
+                EncryptBox.Visibility           = Visibility.Visible;
+
+                EnableAllButtons();
+            }
+        }
+
         private async void Encrypt_Click(object sender, RoutedEventArgs e)
         {
-            DisableAllButtons();
+            EncryptingConfigIsActive(true);
 
-            List<int> randoms       = new List<int>();
-            List<string> encrKeys   = new List<string>();
+            List<int> randoms       = [];
+            List<string> encrKeys   = [];
 
             string encrKey          = "";
 
@@ -197,15 +218,6 @@ namespace Text_Encryptment_Program
 
             int rN                  = 0;
 
-            EncryptBox.Content      = "Encrypting in Progress ...";
-            Encrypt.Content         = "ENCRYPTING ...";
-            Encrypt.BorderBrush     = Brushes.GreenYellow;
-            EncryptBox.Foreground   = Brushes.YellowGreen;
-
-            EncryptBoxLabelAnim.Start();
-
-            EncryptedText.Clear();
-            DecryptedData.Clear();
             keysTable.Clear();
 
             if (AutoEncryptMeth)
@@ -272,53 +284,14 @@ namespace Text_Encryptment_Program
 
                 if(keysTable.Count == 0)
                 {
-                    string buffer = Convert.ToString((int)DecryptedData[i] + "~" + Convert.ToString(rN) + ";");
+                    string buffer = Convert.ToString((int)DecryptedData[i] + "~" + rN.ToString() + ";");
 
                     keysTable.Add(DecryptedData[i], rN);
                     randoms.Add(rN);
 
                     foreach (var item in buffer)
                     {
-                        switch (item)
-                        {
-                            case '0':
-                                encrKey += (char)5470;
-                                break;
-                            case '1':
-                                encrKey += (char)5471;
-                                break;
-                            case '2':
-                                encrKey += (char)5472;
-                                break;
-                            case '3':
-                                encrKey += (char)5473;
-                                break;
-                            case '4':
-                                encrKey += (char)5474;
-                                break;
-                            case '5':
-                                encrKey += (char)5475;
-                                break;
-                            case '6':
-                                encrKey += (char)5476;
-                                break;
-                            case '7':
-                                encrKey += (char)5477;
-                                break;
-                            case '8':
-                                encrKey += (char)5478;
-                                break;
-                            case '9':
-                                encrKey += (char)5479;
-                                break;
-                            case '~':
-                                encrKey += (char)5487;
-                                break;
-                            case ';':
-                                encrKey += (char)5482;
-                                break;
-                            default: break;
-                        }
+                        encrKey += SwitchEncryptKey.EncryptedChar(item);
                     }
 
                     encrKeys.Add(encrKey);
@@ -346,46 +319,7 @@ namespace Text_Encryptment_Program
 
                     foreach (var item in buffer)
                     {
-                        switch (item)
-                        {
-                            case '0':
-                                encrKey += (char)5470;
-                                break;
-                            case '1':
-                                encrKey += (char)5471;
-                                break;
-                            case '2':
-                                encrKey += (char)5472;
-                                break;
-                            case '3':
-                                encrKey += (char)5473;
-                                break;
-                            case '4':
-                                encrKey += (char)5474;
-                                break;
-                            case '5':
-                                encrKey += (char)5475;
-                                break;
-                            case '6':
-                                encrKey += (char)5476;
-                                break;
-                            case '7':
-                                encrKey += (char)5477;
-                                break;
-                            case '8':
-                                encrKey += (char)5478;
-                                break;
-                            case '9':
-                                encrKey += (char)5479;
-                                break;
-                            case '~':
-                                encrKey += (char)5487;
-                                break;
-                            case ';':
-                                encrKey += (char)5482;
-                                break;
-                            default: break;
-                        }
+                        encrKey += SwitchEncryptKey.EncryptedChar(item);
                     }
 
                     encrKeys.Add(encrKey);
@@ -502,87 +436,47 @@ namespace Text_Encryptment_Program
                 }
             }
 
-            EncryptBox.Content              = "Successfully Encrypted";
-            Encrypt.BorderBrush             = Brushes.OrangeRed;
-            Encrypt.Content                 = "Start Encrypting";
-
-            EncryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(150);
-
-            await Task.Delay(3500);
-
-            EncryptBoxLabelAnim.Stop();
-            EncryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
-            EncryptBox.Foreground           = Brushes.OrangeRed;
-            EncryptBox.Content              = "Encrypted Text";
-            EncryptBox.Visibility           = Visibility.Visible;
-
-            EnableAllButtons();
+            EncryptingConfigIsActive(false);
         }
 
-        private void KeyTable_Click(object sender, RoutedEventArgs e)
+        private async void DecryptingConfigIsActive(bool config)
         {
-
-            if (!showKeyTable) 
+            if (config)
             {
-                showKeyTable = true;
-
-                KeyTable.BorderBrush = Brushes.Green;
-
-                textCache.Add(DecryptedText.Text);
+                DisableAllButtons();
 
                 DecryptedText.Clear();
+                EncryptedData.Clear();
+                DecryptedData.Clear();
+                keysTable.Clear();
 
-                DecryptedText.AppendText("\n_____________________________________\n");
+                DecryptBoxLabelAnim.Start();
 
-                DecryptedText.AppendText($"\nEncrypt Key Count: {keysTable.Count}");
-
-                DecryptedText.AppendText("\n_____________________________________\n\n");
-
-                foreach (var item in keysTable)
-                {
-                    DecryptedText.AppendText($"\nDecrypted (Key):\t{item.Key}");
-                    DecryptedText.AppendText($"\nEncrypted Value:\t{item.Value}");
-                    DecryptedText.AppendText($"\n");
-                    DecryptedText.AppendText($"---------------------------------------------");
-                    DecryptedText.AppendText($"\n");
-                }
-
-                DecryptedText.ScrollToHome();
+                DecryptBox.Content              = "Decrypting in Progress ...";
+                Decrypt.Content                 = "DECRYPTING ...";
+                Decrypt.BorderBrush             = Brushes.GreenYellow;
+                DecryptBox.Foreground           = Brushes.YellowGreen;
             }
             else
             {
-                showKeyTable = false;
+                Decrypt.BorderBrush             = Brushes.OrangeRed;
+                Decrypt.Content                 = "Start Decrypting";
 
-                KeyTable.BorderBrush = Brushes.OrangeRed;
+                await Task.Delay(3500);
 
-                DecryptedText.Clear();
+                DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
+                DecryptBox.Foreground           = Brushes.OrangeRed;
+                DecryptBox.Content              = "Decrypted Text";
+                DecryptBox.Visibility           = Visibility.Visible;
 
-                foreach (var item in textCache)
-                {
-                    DecryptedText.Text = $"{item}";
-                }
+                DecryptBoxLabelAnim.Stop();
 
-                DecryptedText.ScrollToHome();
-
-                textCache.Clear();
+                EnableAllButtons();
             }
         }
-
         private async void Decrypt_Click(object sender, RoutedEventArgs e)
         {
-            DisableAllButtons();
-            
-            DecryptedText.Clear();
-            EncryptedData.Clear();
-            DecryptedData.Clear();
-            keysTable.Clear();
-
-            DecryptBoxLabelAnim.Start();
-
-            DecryptBox.Content      = "Decrypting in Progress ...";
-            Decrypt.Content         = "DECRYPTING ...";
-            Decrypt.BorderBrush     = Brushes.GreenYellow;
-            DecryptBox.Foreground   = Brushes.YellowGreen;
+            DecryptingConfigIsActive(true);
 
             bool keyAdd         = true;
             int startCharsCount = 0;
@@ -601,100 +495,49 @@ namespace Text_Encryptment_Program
                 {
                     if (keyAdd)
                     {
-                        switch ((int)item)
+
+                        if (SwitchDecryptKey.KeyAddDecryptChar((int)item) == 'x')
                         {
-                            case 5470:
-                                key += '0';
-                                break;
-                            case 5471:
-                                key += '1';
-                                break;
-                            case 5472:
-                                key += '2';
-                                break;
-                            case 5473:
-                                key += '3';
-                                break;
-                            case 5474:
-                                key += '4';
-                                break;
-                            case 5475:
-                                key += '5';
-                                break;
-                            case 5476:
-                                key += '6';
-                                break;
-                            case 5477:
-                                key += '7';
-                                break;
-                            case 5478:
-                                key += '8';
-                                break;
-                            case 5479:
-                                key += '9';
-                                break;
-                            case 5487:
-                                keyAdd = false;
-                                continue;
-                            case 7347:
-                                endCharsCount++;
-                                continue;
-                            default: break;
+                            endCharsCount++;
+                        }
+                        else if (SwitchDecryptKey.KeyAddDecryptChar((int)item) == 'y')
+                        {
+                            keyAdd = false;
+                            continue;
+                        }
+                        else if (SwitchDecryptKey.KeyAddDecryptChar((int)item) == 'E')
+                        {
+                            DecryptBox.Content = "FAILED !!!";
+                            DecryptedText.Text = "Decrypting Failed: A key or value in the encryption key of the text has an invalid value !";
+                            DecryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(150);
+                            goto DecryptFail;
+                        }
+                        else
+                        {
+                            key += SwitchDecryptKey.KeyAddDecryptChar((int)item);
                         }
                     }
                     else if (!keyAdd)
                     {
-                        switch ((int)item)
+
+                        if (SwitchDecryptKey.NoKeyAddDecryptChar((int)item) == 'x')
                         {
-                            case 5470:
-                                value += '0';
-                                break;
-                            case 5471:
-                                value += '1';
-                                break;
-                            case 5472:
-                                value += '2';
-                                break;
-                            case 5473:
-                                value += '3';
-                                break;
-                            case 5474:
-                                value += '4';
-                                break;
-                            case 5475:
-                                value += '5';
-                                break;
-                            case 5476:
-                                value += '6';
-                                break;
-                            case 5477:
-                                value += '7';
-                                break;
-                            case 5478:
-                                value += '8';
-                                break;
-                            case 5479:
-                                value += '9';
-                                break;
-                            case 5487:
-                                keyAdd = false;
-                                continue;
-                            case 5482:
-                                if (key == "" || value == "")
-                                {
-                                    DecryptBox.Content = "FAILED !!!";
-                                    DecryptedText.Text = "Decrypting Failed: A Key Or Value In The Encryption Key Of The Text Is Missing !";
-                                    goto DecryptFail;
-                                }
-                                else
-                                {
-                                    keysTable.Add(Convert.ToInt32(key), Convert.ToInt32(value));
-                                    key     = "";
-                                    value   = "";
-                                    keyAdd  = true;
-                                    continue;
-                                }
-                            default: break;
+                            keysTable.Add(Convert.ToInt32(key), Convert.ToInt32(value));
+                            key = "";
+                            value = "";
+                            keyAdd = true;
+                            continue;
+                        }
+                        else if (SwitchDecryptKey.NoKeyAddDecryptChar((int)item) == 'E')
+                        {
+                            DecryptBox.Content = "FAILED !!!";
+                            DecryptedText.Text = "Decrypting Failed: A key or value in the encryption key of the text has an invalid value !";
+                            DecryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(150);
+                            goto DecryptFail;
+                        }
+                        else
+                        {
+                            value += SwitchDecryptKey.NoKeyAddDecryptChar((int)item);
                         }
                     }
                 }
@@ -714,8 +557,8 @@ namespace Text_Encryptment_Program
             if (keysTable.Count == 0)
             {
                 DecryptBox.Content = "FAILED !!!";
-                DecryptedText.Text = "Decrypting Failed: Encryption Key For Decryption Operation Could Not Be Found In Encrypted Textbox !";
-
+                DecryptedText.Text = "Decrypting Failed: Encryption key for decryption operation could not be found in encrypted text !";
+                DecryptBoxLabelAnim.Interval = TimeSpan.FromMilliseconds(150);
                 goto DecryptFail;
             }
 
@@ -832,19 +675,7 @@ namespace Text_Encryptment_Program
 
             DecryptFail:                                                        // JUMP POINT !
 
-            Decrypt.BorderBrush             = Brushes.OrangeRed;
-            Decrypt.Content                 = "Start Decrypting";
-
-            await Task.Delay(3500);
-
-            DecryptBoxLabelAnim.Interval    = TimeSpan.FromMilliseconds(500);
-            DecryptBox.Foreground           = Brushes.OrangeRed;
-            DecryptBox.Content              = "Decrypted Text";
-            DecryptBox.Visibility           = Visibility.Visible;
-            DecryptBoxLabelAnim.Stop();
-
-            EnableAllButtons();
-
+            DecryptingConfigIsActive(false);
         }
 
         // Button Click-Events
@@ -883,12 +714,16 @@ namespace Text_Encryptment_Program
             if (DecryptedText.IsReadOnly)
             {
                 DecryptedText.IsReadOnly = false;
-                ManualText.BorderBrush = Brushes.Green;
+                ManualText.BorderBrush = Brushes.YellowGreen;
+                ManualText.Foreground = Brushes.Green;
+                ManualText.Background = Brushes.Black;
             }
             else
             {
                 DecryptedText.IsReadOnly = true;
                 ManualText.BorderBrush = Brushes.OrangeRed;
+                ManualText.Foreground = Brushes.DarkSeaGreen;
+                ManualText.Background = Brushes.Black;
             }
         }
 
@@ -897,12 +732,68 @@ namespace Text_Encryptment_Program
             if (EncryptedText.IsReadOnly)
             {
                 EncryptedText.IsReadOnly = false;
-                ManualText2.BorderBrush = Brushes.Green;
+                ManualText2.BorderBrush = Brushes.YellowGreen;
+                ManualText2.Foreground = Brushes.Green;
+                ManualText2.Background = Brushes.Black;
             }
             else
             {
                 EncryptedText.IsReadOnly = true;
                 ManualText2.BorderBrush = Brushes.OrangeRed;
+                ManualText2.Foreground = Brushes.DarkSeaGreen;
+                ManualText2.Background = Brushes.Black;
+            }
+        }
+        private void KeyTable_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (!showKeyTable)
+            {
+                showKeyTable = true;
+
+                KeyTable.BorderBrush    = Brushes.YellowGreen;
+                KeyTable.Foreground     = Brushes.Green;
+                KeyTable.Background     = Brushes.Black;
+
+                textCache.Add(DecryptedText.Text);
+
+                DecryptedText.Clear();
+
+                DecryptedText.AppendText("\n_____________________________________\n");
+
+                DecryptedText.AppendText($"\nEncrypt Key Count: {keysTable.Count}");
+
+                DecryptedText.AppendText("\n_____________________________________\n\n");
+
+                foreach (var item in keysTable)
+                {
+                    DecryptedText.AppendText($"\nDecrypted (Key):\t{item.Key}");
+                    DecryptedText.AppendText($"\nEncrypted Value:\t{item.Value}");
+                    DecryptedText.AppendText($"\n");
+                    DecryptedText.AppendText($"---------------------------------------------");
+                    DecryptedText.AppendText($"\n");
+                }
+
+                DecryptedText.ScrollToHome();
+            }
+            else
+            {
+                showKeyTable = false;
+
+                KeyTable.BorderBrush    = Brushes.OrangeRed;
+                KeyTable.Foreground     = Brushes.DarkSeaGreen;
+                KeyTable.Background     = Brushes.Black;
+
+                DecryptedText.Clear();
+
+                foreach (var item in textCache)
+                {
+                    DecryptedText.Text = $"{item}";
+                }
+
+                DecryptedText.ScrollToHome();
+
+                textCache.Clear();
             }
         }
 
@@ -963,8 +854,8 @@ namespace Text_Encryptment_Program
 
         private void Quit_MouseEnter(object sender, MouseEventArgs e)
         {
-            Quit.Background = Brushes.Green;
-            Quit.Foreground = Brushes.Black;
+            Quit.Background = Brushes.DarkRed;
+            Quit.Foreground = Brushes.Yellow;
         }
 
         private void Quit_MouseLeave(object sender, MouseEventArgs e)
@@ -975,18 +866,18 @@ namespace Text_Encryptment_Program
 
         private void KeyTable_MouseEnter(object sender, MouseEventArgs e)
         {
-            KeyTable.Background = Brushes.Green;
-            KeyTable.Foreground = Brushes.Black;
+            KeyTable.Background = showKeyTable ? Brushes.Black : Brushes.DarkRed;
+            KeyTable.Foreground = showKeyTable ? Brushes.Green : Brushes.DarkSeaGreen;
         }
         private void KeyTable_MouseLeave(object sender, MouseEventArgs e)
         {
             KeyTable.Background = Brushes.Black;
-            KeyTable.Foreground = Brushes.DarkSeaGreen;
+            KeyTable.Foreground = showKeyTable ? Brushes.Green : Brushes.DarkSeaGreen;
         }
         private void Decrypt_MouseEnter(object sender, MouseEventArgs e)
         {
-            Decrypt.Background = Brushes.Green;
-            Decrypt.Foreground = Brushes.Black;
+            Decrypt.Background = Brushes.DarkRed;
+            Decrypt.Foreground = Brushes.DarkSeaGreen;
         }
 
         private void Decrypt_MouseLeave(object sender, MouseEventArgs e)
@@ -997,8 +888,8 @@ namespace Text_Encryptment_Program
 
         private void OpenFile_MouseEnter(object sender, MouseEventArgs e)
         {
-            OpenFile.Background = Brushes.Green;
-            OpenFile.Foreground = Brushes.Black;
+            OpenFile.Background = Brushes.DarkRed;
+            OpenFile.Foreground = Brushes.DarkSeaGreen;
         }
 
         private void OpenFile_MouseLeave(object sender, MouseEventArgs e)
@@ -1009,8 +900,8 @@ namespace Text_Encryptment_Program
 
         private void ClearBox_MouseEnter(object sender, MouseEventArgs e)
         {
-            ClearBox.Background = Brushes.Green;
-            ClearBox.Foreground = Brushes.Black;
+            ClearBox.Background = Brushes.DarkRed;
+            ClearBox.Foreground = Brushes.DarkSeaGreen;
         }
 
         private void ClearBox_MouseLeave(object sender, MouseEventArgs e)
@@ -1021,8 +912,8 @@ namespace Text_Encryptment_Program
 
         private void Encrypt_MouseEnter(object sender, MouseEventArgs e)
         {
-            Encrypt.Background = Brushes.Green;
-            Encrypt.Foreground = Brushes.Black;
+            Encrypt.Background = Brushes.DarkRed;
+            Encrypt.Foreground = Brushes.DarkSeaGreen;
         }
 
         private void Encrypt_MouseLeave(object sender, MouseEventArgs e)
@@ -1033,20 +924,20 @@ namespace Text_Encryptment_Program
 
         private void ManualText_MouseEnter(object sender, MouseEventArgs e)
         {
-            ManualText.Background = Brushes.Green;
-            ManualText.Foreground = Brushes.Black;
+            ManualText.Background = DecryptedText.IsReadOnly ? Brushes.DarkRed : Brushes.Black;
+            ManualText.Foreground = ManualText.Background == Brushes.DarkRed ? Brushes.DarkSeaGreen : DecryptedText.IsReadOnly ? Brushes.DarkSeaGreen : Brushes.Green;
         }
 
         private void ManualText_MouseLeave(object sender, MouseEventArgs e)
         {
             ManualText.Background = Brushes.Black;
-            ManualText.Foreground = Brushes.DarkSeaGreen;
+            ManualText.Foreground = DecryptedText.IsReadOnly ? Brushes.DarkSeaGreen : Brushes.Green;
         }
 
         private void ClearEncrBox_MouseEnter(object sender, MouseEventArgs e)
         {
-            ClearEncrBox.Background = Brushes.Green;
-            ClearEncrBox.Foreground = Brushes.Black;
+            ClearEncrBox.Background = Brushes.DarkRed;
+            ClearEncrBox.Foreground = Brushes.DarkSeaGreen;
         }
 
         private void ClearEncrBox_MouseLeave(object sender, MouseEventArgs e)
@@ -1057,8 +948,8 @@ namespace Text_Encryptment_Program
 
         private void Options_MouseEnter(object sender, MouseEventArgs e)
         {
-            Options.Background = Brushes.Green;
-            Options.Foreground = Brushes.Black;
+            Options.Background = Brushes.DarkRed;
+            Options.Foreground = Brushes.DarkSeaGreen;
         }
 
         private void Options_MouseLeave(object sender, MouseEventArgs e)
@@ -1069,14 +960,14 @@ namespace Text_Encryptment_Program
 
         private void ManualText2_MouseEnter(object sender, MouseEventArgs e)
         {
-            ManualText2.Background = Brushes.Green;
-            ManualText2.Foreground = Brushes.Black;
+            ManualText2.Background = EncryptedText.IsReadOnly ? Brushes.DarkRed : Brushes.Black;
+            ManualText2.Foreground = ManualText2.Background == Brushes.DarkRed ? Brushes.DarkSeaGreen : EncryptedText.IsReadOnly ? Brushes.DarkSeaGreen : Brushes.Green;
         }
 
         private void ManualText2_MouseLeave(object sender, MouseEventArgs e)
         {
             ManualText2.Background = Brushes.Black;
-            ManualText2.Foreground = Brushes.DarkSeaGreen;
+            ManualText2.Foreground = EncryptedText.IsReadOnly ? Brushes.DarkSeaGreen : Brushes.Green;
         }
     }
 }
