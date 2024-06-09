@@ -439,55 +439,6 @@ namespace Text_Encryptment_Program
             EncryptingConfigIsActive(false);
         }
 
-        private void KeyTable_Click(object sender, RoutedEventArgs e)
-        {
-
-            if (!showKeyTable) 
-            {
-                showKeyTable = true;
-
-                KeyTable.BorderBrush = Brushes.Green;
-
-                textCache.Add(DecryptedText.Text);
-
-                DecryptedText.Clear();
-
-                DecryptedText.AppendText("\n_____________________________________\n");
-
-                DecryptedText.AppendText($"\nEncrypt Key Count: {keysTable.Count}");
-
-                DecryptedText.AppendText("\n_____________________________________\n\n");
-
-                foreach (var item in keysTable)
-                {
-                    DecryptedText.AppendText($"\nDecrypted (Key):\t{item.Key}");
-                    DecryptedText.AppendText($"\nEncrypted Value:\t{item.Value}");
-                    DecryptedText.AppendText($"\n");
-                    DecryptedText.AppendText($"---------------------------------------------");
-                    DecryptedText.AppendText($"\n");
-                }
-
-                DecryptedText.ScrollToHome();
-            }
-            else
-            {
-                showKeyTable = false;
-
-                KeyTable.BorderBrush = Brushes.OrangeRed;
-
-                DecryptedText.Clear();
-
-                foreach (var item in textCache)
-                {
-                    DecryptedText.Text = $"{item}";
-                }
-
-                DecryptedText.ScrollToHome();
-
-                textCache.Clear();
-            }
-        }
-
         private async void DecryptingConfigIsActive(bool config)
         {
             if (config)
@@ -793,6 +744,58 @@ namespace Text_Encryptment_Program
                 ManualText2.Background = Brushes.Black;
             }
         }
+        private void KeyTable_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (!showKeyTable)
+            {
+                showKeyTable = true;
+
+                KeyTable.BorderBrush    = Brushes.YellowGreen;
+                KeyTable.Foreground     = Brushes.Green;
+                KeyTable.Background     = Brushes.Black;
+
+                textCache.Add(DecryptedText.Text);
+
+                DecryptedText.Clear();
+
+                DecryptedText.AppendText("\n_____________________________________\n");
+
+                DecryptedText.AppendText($"\nEncrypt Key Count: {keysTable.Count}");
+
+                DecryptedText.AppendText("\n_____________________________________\n\n");
+
+                foreach (var item in keysTable)
+                {
+                    DecryptedText.AppendText($"\nDecrypted (Key):\t{item.Key}");
+                    DecryptedText.AppendText($"\nEncrypted Value:\t{item.Value}");
+                    DecryptedText.AppendText($"\n");
+                    DecryptedText.AppendText($"---------------------------------------------");
+                    DecryptedText.AppendText($"\n");
+                }
+
+                DecryptedText.ScrollToHome();
+            }
+            else
+            {
+                showKeyTable = false;
+
+                KeyTable.BorderBrush    = Brushes.OrangeRed;
+                KeyTable.Foreground     = Brushes.DarkSeaGreen;
+                KeyTable.Background     = Brushes.Black;
+
+                DecryptedText.Clear();
+
+                foreach (var item in textCache)
+                {
+                    DecryptedText.Text = $"{item}";
+                }
+
+                DecryptedText.ScrollToHome();
+
+                textCache.Clear();
+            }
+        }
 
         // Options Canvas Check-Events
 
@@ -863,13 +866,13 @@ namespace Text_Encryptment_Program
 
         private void KeyTable_MouseEnter(object sender, MouseEventArgs e)
         {
-            KeyTable.Background = Brushes.DarkRed;
-            KeyTable.Foreground = Brushes.DarkSeaGreen;
+            KeyTable.Background = showKeyTable ? Brushes.Black : Brushes.DarkRed;
+            KeyTable.Foreground = showKeyTable ? Brushes.Green : Brushes.DarkSeaGreen;
         }
         private void KeyTable_MouseLeave(object sender, MouseEventArgs e)
         {
             KeyTable.Background = Brushes.Black;
-            KeyTable.Foreground = Brushes.DarkSeaGreen;
+            KeyTable.Foreground = showKeyTable ? Brushes.Green : Brushes.DarkSeaGreen;
         }
         private void Decrypt_MouseEnter(object sender, MouseEventArgs e)
         {
